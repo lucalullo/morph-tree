@@ -9,3 +9,8 @@ Review repository Actions permissions, billing/usage controls and workflow-log r
 A passing hosted zero-fit job does not replace the existing scoped LIVE training evidence or grant automatic official Release GO. The owner decides separately when to tag or publish 1.0.0.
 
 The public repository contains only a curated research index; the full experiment archive stays outside GitHub.
+
+
+## TestPyPI / first release preparation
+
+The manual release workflow `.github/workflows/publish.yml` has been added but **has not been run**. It is separate from the zero-fit CI workflow above. For the exact owner-controlled steps, OIDC setup, tag/commit checks, SHA-256 preservation and an explicit prohibition on automatic official PyPI publication, see [TESTPYPI_PUBLISHING.md](TESTPYPI_PUBLISHING.md).

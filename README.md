@@ -1,4 +1,4 @@
-# MorphTree
+# MorphTree 1.0.0
 
 **MorphTree explores an experimental approach to tabular machine learning: autonomous, validation-guided evolution of native tree-learning algorithms.**
 
@@ -121,3 +121,6 @@ MorphTree is created by Luca Lullo and released under the [MIT License](LICENSE)
 ## Author
 
 Created by [Luca Lullo](https://github.com/lucalullo).
+
+
+For the manual **GitHub → TestPyPI** publication procedure, see [TestPyPI publishing](docs/TESTPYPI_PUBLISHING.md). No registry upload or official PyPI release is implied by this source repository.

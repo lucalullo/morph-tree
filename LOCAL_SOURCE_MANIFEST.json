@@ -1,11 +1,15 @@
 {
-  "bytes": 1000894,
-  "current_build_artifacts": "NONE_BUILT_FOR_VERSION_1_0_0_IN_THIS_ENVIRONMENT",
-  "current_local_handoff": "SLIM_USER_FACING_GITHUB_REPOSITORY",
+  "bytes": 1018887,
+  "current_build_artifacts": "NOT_BUILT_FOR_VERSION_1_0_0_IN_THIS_ENVIRONMENT",
+  "current_local_handoff": "SLIM_GITHUB_REPOSITORY_WITH_TESTPYPI_WORKFLOW_READY",
   "files": {
     ".gitattributes": {
       "bytes": 231,
       "sha256": "725bc925e6ea53df3f31849b5f496670cedf4977f09606e37c9d7f3c802aeb4f"
+    },
+    ".github/workflows/publish.yml": {
+      "bytes": 5089,
+      "sha256": "d07376e887079419b95ea9f13a6f62b1e5a89284e1e3c94f3f027e1b44b5e30b"
     },
     ".github/workflows/test.yml": {
       "bytes": 3559,
@@ -40,8 +44,8 @@
       "sha256": "7c8b833d1ae010c86dfba0a1d5f07e6c5955d325002630ccb9a7b7c50876eb6a"
     },
     "README.md": {
-      "bytes": 7295,
-      "sha256": "5ffa91dac4b852724a21c0b0cd516aed02ff121cfb131c96587c84a4e4a64e79"
+      "bytes": 7497,
+      "sha256": "32f0806b0b4d5a16471895c362c5f00cbf6336c43e4a50a318d158d813e847c0"
     },
     "README_PYPI.md": {
       "bytes": 2140,
@@ -68,8 +72,8 @@
       "sha256": "7f3dc8ee7097399d4c7a7be5275e0e8475f1ed8fe6b60b2ce9714a4b39c62793"
     },
     "docs/CI_PREPARATION.md": {
-      "bytes": 1695,
-      "sha256": "c5e9a5ca50927008b053769531bd717291b744ed05d95763432f32a503c158b9"
+      "bytes": 2103,
+      "sha256": "ace16d28f0a45eae89248f46d50b31c4ae2429013dbf54088d328046d8c5fca0"
     },
     "docs/INSTALLATION.md": {
       "bytes": 1519,
@@ -86,6 +90,10 @@
     "docs/TESTED_DEPENDENCIES.json": {
       "bytes": 8734,
       "sha256": "0744fc3deed80ca0712de420fcbf4b13f864fbd492b27b70a7292827fd3e5d0f"
+    },
+    "docs/TESTPYPI_PUBLISHING.md": {
+      "bytes": 5742,
+      "sha256": "5cbb18e59dcec7d00d19b245fdde738a7f495aafe0562a7e74ee11f08719415b"
     },
     "examples/README.md": {
       "bytes": 456,
@@ -346,6 +354,10 @@
     "tools/installed_candidate_check.py": {
       "bytes": 3892,
       "sha256": "696deb38adcd8f8e6dc70649c62893051d423fd44287344afc53e79b42c3ac08"
+    },
+    "tools/release_gate.py": {
+      "bytes": 6552,
+      "sha256": "55bb77723c2acbf467d0082fcb712ef6e5804f75f46a08285912b0a26b3e4f41"
     }
   },
   "git_initialized": false,
