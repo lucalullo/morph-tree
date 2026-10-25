@@ -1,4 +1,4 @@
-# MorphTree 1.0.0
+# MorphTree
 
 **MorphTree explores an experimental approach to tabular machine learning: autonomous, validation-guided evolution of native tree-learning algorithms.**
 
