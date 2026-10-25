@@ -1,0 +1,140 @@
+{
+  "FunctionalComplete": false,
+  "ReleaseGO": false,
+  "criteria": [
+    {
+      "evidence_level": "QUALIFIED_SCOPED",
+      "evidence_or_limit": "INT019 actual default API and PRODUCT010 installed artifact/API checks",
+      "id": 1,
+      "original_requirement": "API pubblica coerente"
+    },
+    {
+      "evidence_level": "QUALIFIED_SCOPED",
+      "evidence_or_limit": "INT018/019 LIVE;current loader/IO transfer qualified without new training",
+      "id": 2,
+      "original_requirement": "Tre task utilizzabili"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "INT019 same reference TRAIN/SEARCH;one parent",
+      "id": 3,
+      "original_requirement": "Boosting e bagging integrati"
+    },
+    {
+      "evidence_level": "QUALIFIED_COMBINED_EVIDENCE",
+      "evidence_or_limit": "INT019 LIVE plus PRODUCT010 actual current artifact retained IO/V3/standalone",
+      "id": 4,
+      "original_requirement": "Training,predizione,save/load,export"
+    },
+    {
+      "evidence_level": "QUALIFIED_CURRENT_INSTALLED",
+      "evidence_or_limit": "PRODUCT010 normal wheel/source installs and private/source read denial",
+      "id": 5,
+      "original_requirement": "Wheel autonomo dal checkout"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "Implemented qualified portfolio is boost/bag;not all future catalog families",
+      "id": 6,
+      "original_requirement": "Esplorazione nativa"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "INT019 actual depthwise FULL_RETRAIN;not in-place or numerical-only",
+      "id": 7,
+      "original_requirement": "Mutazione strutturale reale"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "INT0193ties correctly rejected;INT016 worse child rejected",
+      "id": 8,
+      "original_requirement": "Rollback"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_AND_SOFTWARE",
+      "evidence_or_limit": "INT019 receipts/search/weights reconciliation;unchanged coordinator",
+      "id": 9,
+      "original_requirement": "Ancora migliore ammissibile"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "INT019 actual structural freeze before6real startup trials",
+      "id": 10,
+      "original_requirement": "Freeze prima del tuning"
+    },
+    {
+      "evidence_level": "QUALIFIED_LIVE_REUSED",
+      "evidence_or_limit": "INT0196real COMPLETE startup trials;not adaptiveTPE/general superiority",
+      "id": 11,
+      "original_requirement": "Optuna numerico"
+    },
+    {
+      "evidence_level": "QUALIFIED_DECLARED_COOPERATIVE_SCOPE",
+      "evidence_or_limit": "INT019 actual39fit/70scalar/6trial within51/90/6;finite serial public caps;no absolute CPU/RSS/peak guarantee",
+      "id": 12,
+      "original_requirement": "Budget rispettati"
+    },
+    {
+      "evidence_level": "QUALIFIED_SCOPED",
+      "evidence_or_limit": "Fold-disjoint actualOOF/encoder;controlled-source refusal;GUARDnotused. RepeatedSEARCH/adaptive validation risks remain documented",
+      "id": 13,
+      "original_requirement": "Nessun leakage noto nel perimetro"
+    },
+    {
+      "evidence_level": "QUALIFIED_CURRENT_SOFTWARE",
+      "evidence_or_limit": "PRODUCT0104methods46cases/twoenvs and7publicmethods;PRODUCT011currentCIintegration/CLI checks",
+      "id": 14,
+      "original_requirement": "Regressioni"
+    },
+    {
+      "evidence_level": "QUALIFIED_ARTIFACT_AND_CONTRACT_SCOPE",
+      "evidence_or_limit": "Byte-identical builds/current exact source;seed/provenance retained. No new repeated fit or universal cross-host bitwise proof",
+      "id": 15,
+      "original_requirement": "Riproducibilità"
+    },
+    {
+      "evidence_level": "PREFIT_AND_REUSED_API_LIVE_ONLY",
+      "evidence_or_limit": "PRODUCT0113publicexamplefunctions reach firstnativeboundary;no new end-to-end example training or fabricated output",
+      "id": 16,
+      "original_requirement": "Esempi funzionanti"
+    },
+    {
+      "evidence_level": "QUALIFIED_SCOPED",
+      "evidence_or_limit": "Current RC5r2 docs distinguish defaultAPI,LIVE/replay/fixture,training fragment versus standalone inference",
+      "id": 17,
+      "original_requirement": "Documentazione reale"
+    },
+    {
+      "evidence_level": "QUALIFIED_SCOPED",
+      "evidence_or_limit": "Windowsx64/CP312 only;limited operators/full retraining/cooperative resources/utility limits explicit",
+      "id": 18,
+      "original_requirement": "Limiti dichiarati"
+    }
+  ],
+  "no_new_training_request": "Current loader/CI/transport fixes do not require retraining. Do not ask for repeated LIVE solely to improve an evidence label;any genuinely necessary new learning needs separate qualified design/consent.",
+  "not_remote_substitutes": [
+    "No new Git checkout performed;EOL policy check is local byte-transform evidence",
+    "No Linux/macOS/new Python execution",
+    "No upstream index installation or vulnerability database query",
+    "No hardCPU/RSS benchmark guarantee"
+  ],
+  "original_M2": {
+    "evidence": "Actualtrainedrollback qualified;positiveaccept/currentparentrediagnosis software-qualified,not beneficialACCEPTLIVE. No favorable mutation forced;no new operator or campaign proposed.",
+    "exact_requirement": "Deve esistere almeno un caso tecnico in cui una proposta venga accettata e un altro nel quale venga respinta.",
+    "not_inferred": "CI PASS will not by itself prove accepted-child LIVE continuation or independent diagnostic utility.",
+    "status": "PARTIAL_UNCHANGED"
+  },
+  "original_M3": {
+    "evidence": "Current installed default process has existing hostLIVE;ordinary unbound example entry now PREFIT3tasks only. No new outside-host public training executed.",
+    "status": "PARTIAL_BROADER_UNCHANGED"
+  },
+  "original_MASTER_sha256": "11cea72fde285786eeaed20ba0fd50330b3baecd642d04541e22949987022436",
+  "owner_1_0_scope_sha256": "d770fe04ed9cb5e8ef2b674724f43424d73f70a7d6a18ea072957205edcc28eb",
+  "release_scope": "Owner allows first1.0 limited native families/operators,valid rollback,no competitor victory. Do not retrofit original M2/M3 labels or treat all historical roadmap gaps as new mandatory1.0 features.",
+  "remaining_remote_or_owner_decisions": [
+    "Public provenance/availability metadata for Actionpins and declared dependencies",
+    "Actual hosted install/zero-fit evidence after owner selects/operates a target;no online repository exists now",
+    "Final1.0artifact promotion review and owner publication method/approval;agent publication forbidden"
+  ],
+  "schema": "product011-original-completion-criteria-audit-v1"
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires=["hatchling==1.27.0"]
+build-backend="hatchling.build"
+[project]
+name="morphtree"
+version="1.0.0"
+description="Native tree learning with bounded program evolution, diagnosis and final numerical tuning"
+readme="README_PYPI.md"
+requires-python=">=3.12,<3.13"
+license="MIT"
+dependencies=["optuna==5.0.0"]
+classifiers=["Development Status :: 5 - Production/Stable","Programming Language :: Python :: 3.12","Operating System :: Microsoft :: Windows","Topic :: Scientific/Engineering :: Artificial Intelligence"]
+[project.scripts]
+morphtree="morphtree.cli:main"
+[tool.hatch.build]
+reproducible=true
+ignore-vcs=true
+[tool.hatch.build.targets.wheel]
+packages=["morphtree"]
+[tool.hatch.build.targets.sdist]
+include=["/morphtree/","/README.md","/README_PYPI.md","/LICENSE","/pyproject.toml","/examples/"]
+
+[tool.pytest.ini_options]
+testpaths=["tests/product"]

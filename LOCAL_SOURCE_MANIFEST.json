@@ -1,0 +1,412 @@
+{
+  "bytes": 1000894,
+  "current_build_artifacts": "NONE_BUILT_FOR_VERSION_1_0_0_IN_THIS_ENVIRONMENT",
+  "current_local_handoff": "SLIM_USER_FACING_GITHUB_REPOSITORY",
+  "files": {
+    ".gitattributes": {
+      "bytes": 231,
+      "sha256": "725bc925e6ea53df3f31849b5f496670cedf4977f09606e37c9d7f3c802aeb4f"
+    },
+    ".github/workflows/test.yml": {
+      "bytes": 3559,
+      "sha256": "769e28cb3139db958a557f85f15661d128ac987532a5c763a84aff7e490e6c63"
+    },
+    ".gitignore": {
+      "bytes": 441,
+      "sha256": "29e8883c7e107765b4ebf6808c646b550ba3fde7a4b9b6edf9f7d4401a9ca545"
+    },
+    "BENCHMARKS.md": {
+      "bytes": 1228,
+      "sha256": "b0744dba8b85ce6a75983baa23800f45c3d159afa0f3b88e0461b7370972fafe"
+    },
+    "CHANGELOG.md": {
+      "bytes": 888,
+      "sha256": "813d643e1bfda3f9eb8de9c042eea76eea50118b30ac817845d90645e9fb24da"
+    },
+    "CONTRIBUTING.md": {
+      "bytes": 973,
+      "sha256": "23afb23bf21d8ecaf2f3eaf827e8fe5273f5a91eecc487b690ea8db941a822ab"
+    },
+    "DEPENDENCIES.md": {
+      "bytes": 1441,
+      "sha256": "9b8f8a8a348957b4cba5753cf3b03b0791e430f392e29ed182890837c9d189f7"
+    },
+    "LICENSE": {
+      "bytes": 1067,
+      "sha256": "263a6c2f014962a9dfe5c2c88d03ead74cb247527a663b1562d180f276446746"
+    },
+    "PUBLIC_CHECKS.json": {
+      "bytes": 349,
+      "sha256": "7c8b833d1ae010c86dfba0a1d5f07e6c5955d325002630ccb9a7b7c50876eb6a"
+    },
+    "README.md": {
+      "bytes": 7295,
+      "sha256": "5ffa91dac4b852724a21c0b0cd516aed02ff121cfb131c96587c84a4e4a64e79"
+    },
+    "README_PYPI.md": {
+      "bytes": 2140,
+      "sha256": "f1df018ab6bb38ba0ad349b60f2fc2714bf9ab68c91f4f7fce77da21d9ef23e4"
+    },
+    "RELEASE_MANIFEST.json": {
+      "bytes": 222,
+      "sha256": "42e29ca308c480858a0e90390d4a7a64b36e28fbf068de823849aed13f7569cd"
+    },
+    "ROADMAP.md": {
+      "bytes": 922,
+      "sha256": "955e1d447066f8eec0a66d0d040621d194eac76d2e24910f4224a9ff925fb647"
+    },
+    "SECURITY.md": {
+      "bytes": 1342,
+      "sha256": "f70e58efd459779f4cebd1cd27284b6a2d72cd2ab47d7fae18624cae95206463"
+    },
+    "docs/API_REFERENCE_1_0.md": {
+      "bytes": 1716,
+      "sha256": "f2c0c06f246892d3c4d2bb2174b969c5f122ccb785c5da05f6393cdfc1da8e9d"
+    },
+    "docs/ARCHITECTURE_1_0.md": {
+      "bytes": 1348,
+      "sha256": "7f3dc8ee7097399d4c7a7be5275e0e8475f1ed8fe6b60b2ce9714a4b39c62793"
+    },
+    "docs/CI_PREPARATION.md": {
+      "bytes": 1695,
+      "sha256": "c5e9a5ca50927008b053769531bd717291b744ed05d95763432f32a503c158b9"
+    },
+    "docs/INSTALLATION.md": {
+      "bytes": 1519,
+      "sha256": "319b7496ae7ddba9203914a01ee577227cc9cb0f79c5ed3dd07563636fbea6a2"
+    },
+    "docs/RELEASE_QUALIFICATION.md": {
+      "bytes": 1571,
+      "sha256": "9f968e227985cf4f67cbd00c6058cd7cecb2159f3892d61b61e0e88976f19a14"
+    },
+    "docs/Relazione_MorphTree.txt": {
+      "bytes": 48136,
+      "sha256": "d1096605c07219362c01b11dab5834a2087951dae341b7fc71dbb78df3a57352"
+    },
+    "docs/TESTED_DEPENDENCIES.json": {
+      "bytes": 8734,
+      "sha256": "0744fc3deed80ca0712de420fcbf4b13f864fbd492b27b70a7292827fd3e5d0f"
+    },
+    "examples/README.md": {
+      "bytes": 456,
+      "sha256": "a9956e2a271963440b425468b44c78e8f38bec64fdb5b4786b9d6d5047ffb17b"
+    },
+    "examples/binary.py": {
+      "bytes": 281,
+      "sha256": "a66598490897545a9040262e9023105427f02b0138323e05a8e688c716f4b7b9"
+    },
+    "examples/multiclass.py": {
+      "bytes": 285,
+      "sha256": "69ff0aaa74de203dc3b19c2d8ac854d66a8725fddd8794cbaae5345b22663ec6"
+    },
+    "examples/regression.py": {
+      "bytes": 285,
+      "sha256": "e7ca5cbbe2cffc70f3e260a062772bd2da98c35131176228a16518a67ede37f4"
+    },
+    "morphtree/__init__.py": {
+      "bytes": 843,
+      "sha256": "86fe209c0099b79741cca66c39debc28c127657741917fbc6f822c6c089595ad"
+    },
+    "morphtree/__main__.py": {
+      "bytes": 48,
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    "morphtree/_experimental/__init__.py": {
+      "bytes": 82,
+      "sha256": "af368cce8e8a71327fdf5a8b61c81d6d6fdef62f924800408d7f2b2ca1d82e52"
+    },
+    "morphtree/_experimental/admission.py": {
+      "bytes": 24988,
+      "sha256": "7afaad7937655739b9e6c4f469d337c9ecaeeecbfbe4f435f669d07e8af5022c"
+    },
+    "morphtree/_experimental/base.py": {
+      "bytes": 15190,
+      "sha256": "f5108ab6abe2abf0ff7f1ec2d078ace0b4998904aa000832a5a7a4b6f260d2f5"
+    },
+    "morphtree/_experimental/component_cache_v2.py": {
+      "bytes": 16456,
+      "sha256": "8bcdf575213ed71a68fbc79cc86e58d2007e1539dd0e5e22ca80273696c3b78f"
+    },
+    "morphtree/_experimental/evolution_report.py": {
+      "bytes": 21736,
+      "sha256": "0496feeb84cfdde473679713a9432caa581a017db3dfb114fd30da6296bab642"
+    },
+    "morphtree/_experimental/execution_v2.py": {
+      "bytes": 45186,
+      "sha256": "596318d9e55faf9b94ba8430fd78b6152750d299c9ac7778769efd7e4e838c58"
+    },
+    "morphtree/_experimental/facade.py": {
+      "bytes": 17990,
+      "sha256": "1a1a625dc5b49e0bb2ad6913e761eacc7fcd495c43d46a822446bf141753e28d"
+    },
+    "morphtree/_experimental/integrated.py": {
+      "bytes": 44227,
+      "sha256": "ccaa9ac5441897492d55ce94b47ead55338274ae1b9127ef9a78e23711311e37"
+    },
+    "morphtree/_experimental/learning.py": {
+      "bytes": 28936,
+      "sha256": "e7e62662ec87118a68d50e8109a76a2f1ffda387dd03849459293a6871d86bc5"
+    },
+    "morphtree/_experimental/manifest.json": {
+      "bytes": 10686,
+      "sha256": "86b146ec77722d0ff8a512c318b5561693e4b7a89b33bb2ebc858c39a8ad138b"
+    },
+    "morphtree/_experimental/numeric_fixture.py": {
+      "bytes": 951,
+      "sha256": "f05fb8cb1757ebb841863f3a32eb331999bd4c4fc2a51bc1f11cc8a52d6508d9"
+    },
+    "morphtree/_experimental/parameter_contract.py": {
+      "bytes": 2626,
+      "sha256": "261ee3edece961d78ec0bccc0c5c7edc77d0797620d93f916b8fb96bff81fea6"
+    },
+    "morphtree/_experimental/postfit.py": {
+      "bytes": 3378,
+      "sha256": "493ee24a0c8f5eb6374bf0afbf1f1c083de7d96e9750cad4c7fdc1c759d8d9f4"
+    },
+    "morphtree/_experimental/preprocessing.py": {
+      "bytes": 5824,
+      "sha256": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f"
+    },
+    "morphtree/_experimental/processes.py": {
+      "bytes": 11261,
+      "sha256": "577394affa54f66c0bf0bc55ce1619b0e10a7e4f3177c1af0256196f7347e6b7"
+    },
+    "morphtree/_experimental/producer.py": {
+      "bytes": 37103,
+      "sha256": "07d07410b8e85efbe9e38ed4761f4495f5e909b3f56f8ff1b52abb639e3afebf"
+    },
+    "morphtree/_experimental/product.py": {
+      "bytes": 8334,
+      "sha256": "568b02f61e5f772ab165b72ccf37217c6e48a9d5455480cd1ecbf236893002c4"
+    },
+    "morphtree/_experimental/product_cli.py": {
+      "bytes": 1964,
+      "sha256": "2fdfddfc573a5f5fee5ebd14bdd8aca3e5fbe7e746f169c47347fa9da0247509"
+    },
+    "morphtree/_experimental/roundtrip_v3.py": {
+      "bytes": 21229,
+      "sha256": "fb2999bee513f40e076543323da81385d1ceb7cf68850054f921b3c2c2a37d39"
+    },
+    "morphtree/_experimental/runtime_io.py": {
+      "bytes": 2463,
+      "sha256": "5e3e7713ac4039c44d4db88837c0ec303d5549bf5c27beb1c690531ae6cc1d1f"
+    },
+    "morphtree/_experimental/sampling.py": {
+      "bytes": 842,
+      "sha256": "02bdb1e39d015d7f762112559f1ff9d826c424cd4166ff83bc6f755a00d44f08"
+    },
+    "morphtree/_experimental/support.py": {
+      "bytes": 14535,
+      "sha256": "e6108af84a75a39813a3a665d266a913e104168c8a3cfc334cd6293e07101cfc"
+    },
+    "morphtree/_experimental/target.py": {
+      "bytes": 2336,
+      "sha256": "bdb40d011120687aca7a7860c0db1c3542bdc3a6ff21e3905a114290938e6bc4"
+    },
+    "morphtree/_experimental/training.py": {
+      "bytes": 2777,
+      "sha256": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2"
+    },
+    "morphtree/_experimental/worker.py": {
+      "bytes": 51171,
+      "sha256": "acb03be1dfaef5aac0ebfc5e050d90184d2154e74206fe0fb6c445e705608fc3"
+    },
+    "morphtree/_installed.py": {
+      "bytes": 1240,
+      "sha256": "1346e28b929f4103b2203192fcb9a6949320e232927bc312843390df8e9efcfd"
+    },
+    "morphtree/api.py": {
+      "bytes": 22757,
+      "sha256": "3f7e99e0abee8c72446188484193ad96e20590de6381d5d6627a513343484c27"
+    },
+    "morphtree/backend.py": {
+      "bytes": 6851,
+      "sha256": "881d6025e72cd5675cd6da7b5b2e950d6ade97d63a25735321e5a739c27ef26c"
+    },
+    "morphtree/booster.py": {
+      "bytes": 13589,
+      "sha256": "47ba8997353f81f97c5b7cc007b8defc4e7363e300b77df3cf221b30c94257cf"
+    },
+    "morphtree/cli.py": {
+      "bytes": 1661,
+      "sha256": "1d6ea702fdb17cb0e1294013dfb83aa1f1e20a28b8905717da6961e5c29ea4d9"
+    },
+    "morphtree/config.py": {
+      "bytes": 11664,
+      "sha256": "eab2288f853e9d943afcd28d9a983687120dbe1e7fae915105c8119fc12059d1"
+    },
+    "morphtree/control.py": {
+      "bytes": 769,
+      "sha256": "2f1c20f9fdaf426ed02500404874445895a022fa2a00fda65e3f195e651ee3cd"
+    },
+    "morphtree/data.py": {
+      "bytes": 12067,
+      "sha256": "93f2d65ce24293b2a5111136657d715c3eef89d8b8a156b6913651b2b162e55b"
+    },
+    "morphtree/diagnostics.py": {
+      "bytes": 10867,
+      "sha256": "4bef87e037d16e58cb03d4d129ebd42db9eac880342c520aef073daca687adbc"
+    },
+    "morphtree/examples.py": {
+      "bytes": 1030,
+      "sha256": "5b1deccceb772346e3fd5f6d2a9756477d99e458713fa015f125f4d7bef2a635"
+    },
+    "morphtree/exporting.py": {
+      "bytes": 14293,
+      "sha256": "f6820a028500cc5b138326923359351e55c037d4f4dbb517983e94e1a3fcbaa4"
+    },
+    "morphtree/metrics.py": {
+      "bytes": 6473,
+      "sha256": "785f2a7d2c0338aca950107699721adea15d61fa7a6b103e471c99b308b4d6c5"
+    },
+    "morphtree/model.py": {
+      "bytes": 59920,
+      "sha256": "389ad29547ddd5eaca0bfdc325627f91f9d4b4734ac44d9aa69296918678dd38"
+    },
+    "morphtree/mutations.py": {
+      "bytes": 12129,
+      "sha256": "4d98f5d9a9b4f786d8d640f478356a3a034a78740a286ea2a0b121cd7a647cb5"
+    },
+    "morphtree/numpy_backend.py": {
+      "bytes": 8941,
+      "sha256": "71669be1bf84a96dfcc63fc5b89ecc0f9cf03463313953e573c0d162ccd48152"
+    },
+    "morphtree/optuna_tuner.py": {
+      "bytes": 9059,
+      "sha256": "969ee92fed53955b12de903034caff324714cdcdc1347591dd8d0d1250aa9d90"
+    },
+    "morphtree/persistence.py": {
+      "bytes": 13154,
+      "sha256": "8e4d6a9e791d3fc8fa61cb7fd5bfeb2c041cf34cb2f9a6b03658b639a01ca6b8"
+    },
+    "morphtree/public.py": {
+      "bytes": 4761,
+      "sha256": "775ef54dd1576f4f0bba15162cd3547e086a9245be4d9cc50c0af0f4a1c3b9db"
+    },
+    "morphtree/species.py": {
+      "bytes": 1783,
+      "sha256": "2b8669426374cdee1eac5c14eac7f7c42b9438c70fc3b0a3af9e191bb40992bf"
+    },
+    "morphtree/tree.py": {
+      "bytes": 11869,
+      "sha256": "875f93a47b005ad362be77730af6bdb0cd82c39e369ffc525913aab2a2c1f4a5"
+    },
+    "morphtree/tuning.py": {
+      "bytes": 7869,
+      "sha256": "0765b39a34d5825028bb91c6c6af2b68a51164c622895d735722096597e60b66"
+    },
+    "pyproject.toml": {
+      "bytes": 873,
+      "sha256": "dc77246d8bf052782b203b78e6dd7e11f22646145bc652bfd88ea528d10f0751"
+    },
+    "research/EVIDENCE_INDEX.json": {
+      "bytes": 231538,
+      "sha256": "b50caffda9f935956cfb1b07c9105ac13bbcb81fa9221503db27177f9d0f40bd"
+    },
+    "research/EXPERIMENTS.md": {
+      "bytes": 23589,
+      "sha256": "52c531b455a604854dbe7d7a4e817d5042840515b76459fc7fd5585c120ac06a"
+    },
+    "research/FINDINGS.md": {
+      "bytes": 2166,
+      "sha256": "2fcf2485caaafd43b85ecaca14bb26fc8ffce0208ff9ccdf1fd833f9f9283046"
+    },
+    "research/HISTORY.md": {
+      "bytes": 3308,
+      "sha256": "0ef83447f1d910a5a6785af2be0c04cd5b7d0f4d65160756a56525599eebf22e"
+    },
+    "research/PRIVATE_EVIDENCE.md": {
+      "bytes": 696,
+      "sha256": "4abaedd67a46a747d1557b18428c2579a40a591e696773e555a641383817d6b9"
+    },
+    "research/README.md": {
+      "bytes": 1909,
+      "sha256": "40e8175e5dd922198bc11fb172afa124e8f7cb7af01733d03db4d8bf652b0c80"
+    },
+    "research/RELEASE_CRITERIA_STATUS.json": {
+      "bytes": 6671,
+      "sha256": "c9462b5f605f36361b1ebefd72aac247b521c963cd69447e45ec9294b5023e65"
+    },
+    "research/VALIDATION_LEVELS.md": {
+      "bytes": 1124,
+      "sha256": "05794840d66aee46fa77dff3a4724887d8745e1b953a7e40940903b4e3c31dd1"
+    },
+    "tests/product/test_public_contract.py": {
+      "bytes": 3250,
+      "sha256": "8c7f94aa69f4956f990927fe8ee30f2be0333ce8c9dac0574526ad453a43ecc0"
+    },
+    "tests/product/test_repository_transport.py": {
+      "bytes": 2962,
+      "sha256": "36179426e3549811970fca7a19ad71b673357a7ca0ec3ac5d78133c0b3cd0770"
+    },
+    "tools/check_repository.py": {
+      "bytes": 4884,
+      "sha256": "01e74a81ff37fe2d5b19ade4ec301484160219a8e286bc57d1b264c86640dc68"
+    },
+    "tools/installed_candidate_check.py": {
+      "bytes": 3892,
+      "sha256": "696deb38adcd8f8e6dc70649c62893051d423fd44287344afc53e79b42c3ac08"
+    }
+  },
+  "git_initialized": false,
+  "private_evidence": "Original reports and raw evidence kept outside public repository;210 indexed research metadata entries retained",
+  "product": {
+    "modules": {
+      "__init__.py": "86fe209c0099b79741cca66c39debc28c127657741917fbc6f822c6c089595ad",
+      "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "_experimental/__init__.py": "af368cce8e8a71327fdf5a8b61c81d6d6fdef62f924800408d7f2b2ca1d82e52",
+      "_experimental/admission.py": "7afaad7937655739b9e6c4f469d337c9ecaeeecbfbe4f435f669d07e8af5022c",
+      "_experimental/base.py": "f5108ab6abe2abf0ff7f1ec2d078ace0b4998904aa000832a5a7a4b6f260d2f5",
+      "_experimental/component_cache_v2.py": "8bcdf575213ed71a68fbc79cc86e58d2007e1539dd0e5e22ca80273696c3b78f",
+      "_experimental/evolution_report.py": "0496feeb84cfdde473679713a9432caa581a017db3dfb114fd30da6296bab642",
+      "_experimental/execution_v2.py": "596318d9e55faf9b94ba8430fd78b6152750d299c9ac7778769efd7e4e838c58",
+      "_experimental/facade.py": "1a1a625dc5b49e0bb2ad6913e761eacc7fcd495c43d46a822446bf141753e28d",
+      "_experimental/integrated.py": "ccaa9ac5441897492d55ce94b47ead55338274ae1b9127ef9a78e23711311e37",
+      "_experimental/learning.py": "e7e62662ec87118a68d50e8109a76a2f1ffda387dd03849459293a6871d86bc5",
+      "_experimental/numeric_fixture.py": "f05fb8cb1757ebb841863f3a32eb331999bd4c4fc2a51bc1f11cc8a52d6508d9",
+      "_experimental/parameter_contract.py": "261ee3edece961d78ec0bccc0c5c7edc77d0797620d93f916b8fb96bff81fea6",
+      "_experimental/postfit.py": "493ee24a0c8f5eb6374bf0afbf1f1c083de7d96e9750cad4c7fdc1c759d8d9f4",
+      "_experimental/preprocessing.py": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f",
+      "_experimental/processes.py": "577394affa54f66c0bf0bc55ce1619b0e10a7e4f3177c1af0256196f7347e6b7",
+      "_experimental/producer.py": "07d07410b8e85efbe9e38ed4761f4495f5e909b3f56f8ff1b52abb639e3afebf",
+      "_experimental/product.py": "568b02f61e5f772ab165b72ccf37217c6e48a9d5455480cd1ecbf236893002c4",
+      "_experimental/product_cli.py": "2fdfddfc573a5f5fee5ebd14bdd8aca3e5fbe7e746f169c47347fa9da0247509",
+      "_experimental/roundtrip_v3.py": "fb2999bee513f40e076543323da81385d1ceb7cf68850054f921b3c2c2a37d39",
+      "_experimental/runtime_io.py": "5e3e7713ac4039c44d4db88837c0ec303d5549bf5c27beb1c690531ae6cc1d1f",
+      "_experimental/sampling.py": "02bdb1e39d015d7f762112559f1ff9d826c424cd4166ff83bc6f755a00d44f08",
+      "_experimental/support.py": "e6108af84a75a39813a3a665d266a913e104168c8a3cfc334cd6293e07101cfc",
+      "_experimental/target.py": "bdb40d011120687aca7a7860c0db1c3542bdc3a6ff21e3905a114290938e6bc4",
+      "_experimental/training.py": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2",
+      "_experimental/worker.py": "acb03be1dfaef5aac0ebfc5e050d90184d2154e74206fe0fb6c445e705608fc3",
+      "_installed.py": "1346e28b929f4103b2203192fcb9a6949320e232927bc312843390df8e9efcfd",
+      "api.py": "3f7e99e0abee8c72446188484193ad96e20590de6381d5d6627a513343484c27",
+      "backend.py": "881d6025e72cd5675cd6da7b5b2e950d6ade97d63a25735321e5a739c27ef26c",
+      "booster.py": "47ba8997353f81f97c5b7cc007b8defc4e7363e300b77df3cf221b30c94257cf",
+      "cli.py": "1d6ea702fdb17cb0e1294013dfb83aa1f1e20a28b8905717da6961e5c29ea4d9",
+      "config.py": "eab2288f853e9d943afcd28d9a983687120dbe1e7fae915105c8119fc12059d1",
+      "control.py": "2f1c20f9fdaf426ed02500404874445895a022fa2a00fda65e3f195e651ee3cd",
+      "data.py": "93f2d65ce24293b2a5111136657d715c3eef89d8b8a156b6913651b2b162e55b",
+      "diagnostics.py": "4bef87e037d16e58cb03d4d129ebd42db9eac880342c520aef073daca687adbc",
+      "examples.py": "5b1deccceb772346e3fd5f6d2a9756477d99e458713fa015f125f4d7bef2a635",
+      "exporting.py": "f6820a028500cc5b138326923359351e55c037d4f4dbb517983e94e1a3fcbaa4",
+      "metrics.py": "785f2a7d2c0338aca950107699721adea15d61fa7a6b103e471c99b308b4d6c5",
+      "model.py": "389ad29547ddd5eaca0bfdc325627f91f9d4b4734ac44d9aa69296918678dd38",
+      "mutations.py": "4d98f5d9a9b4f786d8d640f478356a3a034a78740a286ea2a0b121cd7a647cb5",
+      "numpy_backend.py": "71669be1bf84a96dfcc63fc5b89ecc0f9cf03463313953e573c0d162ccd48152",
+      "optuna_tuner.py": "969ee92fed53955b12de903034caff324714cdcdc1347591dd8d0d1250aa9d90",
+      "persistence.py": "8e4d6a9e791d3fc8fa61cb7fd5bfeb2c041cf34cb2f9a6b03658b639a01ca6b8",
+      "public.py": "775ef54dd1576f4f0bba15162cd3547e086a9245be4d9cc50c0af0f4a1c3b9db",
+      "species.py": "2b8669426374cdee1eac5c14eac7f7c42b9438c70fc3b0a3af9e191bb40992bf",
+      "tree.py": "875f93a47b005ad362be77730af6bdb0cd82c39e369ffc525913aab2a2c1f4a5",
+      "tuning.py": "0765b39a34d5825028bb91c6c6af2b68a51164c622895d735722096597e60b66"
+    },
+    "qualification_revision": "FIRST_PUBLIC_RELEASE_SOURCE_METADATA_MIGRATION",
+    "version": "1.0.0"
+  },
+  "release": "NOT_PUBLISHED_CI_PENDING",
+  "remote_operations": 0,
+  "schema": "morphtree-local-github-source-v2",
+  "source": "CURATED_FIRST_PUBLIC_RELEASE_FROM_FULL_OWNER_ARCHIVE",
+  "status": "PREPARED_LOCAL_NEW_VERSION_PENDING_NEW_BUILD_AND_CI",
+  "status_sha256": "cafd5098f25f6fbff36113bd8c27d6e6de88d7b85c2a903666c6e8a0c52c9874"
+}

@@ -1,0 +1,1079 @@
+MORPHTREE
+RELAZIONE CANONICA ESAUSTIVA DEL PROGETTO
+Visione, famiglie algoritmiche native, selezione del genitore,
+mutazione del programma di apprendimento e ottimizzazione finale
+
+Versione del documento: 1.0 — 24 ottobre 2026
+Lingua: italiano | Formato: testo semplice UTF-8
+Destinazione: proprietario del progetto, Codex, documentazione di progetto
+
+======================================================================
+00. DICHIARAZIONE FONDAMENTALE: COS'È MORPHTREE
+======================================================================
+
+MORPHTREE È UN UNICO ALGORITMO DI MACHINE LEARNING PER DATI TABULARI
+CHE DISPONE DI UNA FAMIGLIA AMPIA DI ALGORITMI AD ALBERO NATIVI, TUTTI
+REALIZZATI CON CODICE PROPRIO.
+
+QUANDO RICEVE UN DATASET:
+
+1. PROVA TUTTI GLI ALGORITMI NATIVI APPLICABILI AL TASK, CON PROVE
+   INIZIALI RAPIDE, COMPARABILI E RIPRODUCIBILI.
+2. VALUTA QUAL È IL MIGLIORE PUNTO DI PARTENZA PER QUEL DATASET.
+3. SCEGLIE UN SOLO ALGORITMO VINCITORE COME GENITORE.
+4. SCARTA GLI ALTRI DAL PERCORSO EVOLUTIVO ATTIVO; NE CONSERVA SOLO
+   I RISULTATI COME EVIDENZA DEL CONFRONTO INIZIALE.
+5. PRENDE IL GENITORE E COMINCIA A MODIFICARNE IL PROGRAMMA DI
+   APPRENDIMENTO, NON SOLTANTO I NUMERI DEI PARAMETRI.
+6. ADDENTRA L'ANALISI NEGLI ERRORI, PROPONE MUTAZIONI, PROVA VERSIONI
+   NUOVE, CONSERVA LE MIGLIORI, ANNULLA QUELLE PEGGIORI.
+7. CONTINUA SEMPRE DALLA MIGLIORE VERSIONE ACCETTATA, FINCHÉ IL
+   MIGLIORAMENTO SI ARRESTA O IL BUDGET FINISCE.
+8. CONGELA IL PROGRAMMA ALGORITMICO RISULTANTE.
+9. SOLO ALLA FINE OTTIMIZZA I PARAMETRI NUMERICI CON OPTUNA,
+   SALVO DISATTIVAZIONE ESPLICITA DELL'UTENTE.
+10. RESTITUISCE UN MODELLO UTILIZZABILE, L'ALGORITMO CHE HA COSTRUITO,
+    LA RICETTA, I PARAMETRI, LA STORIA DELLE MUTAZIONI E IL REPORT.
+
+QUESTO È MORPHTREE. NON È UN SISTEMA CHE SI FERMA ALLA SCELTA DEL
+MIGLIORE FRA ALGORITMI PREFABBRICATI; QUELLA SCELTA È SOLO IL PRIMO
+PASSO DELL'EVOLUZIONE DEL VINCITORE.
+
+La parola “morph” riguarda la metamorfosi del programma di apprendimento
+basato su alberi, non un marchio per una ricerca di iperparametri.
+
+La direzione è UNA SOLA:
+
+    provare tutte le famiglie native applicabili
+                ↓
+        scegliere un genitore
+                ↓
+     migliorare QUEL genitore mutandone
+         le regole di apprendimento
+                ↓
+        ripetere finché si ferma
+                ↓
+          congelare la forma
+                ↓
+         OPTUNA, SOLO ALLA FINE
+                ↓
+    algoritmo MorphTree generato per X, y
+
+Questo contratto ha precedenza sulle interpretazioni che riducono
+MorphTree a puro boosting, bagging, AutoML, ensemble fisso,
+selettore di modelli o ottimizzatore di parametri.
+
+======================================================================
+01. PERCHÉ ESISTE MORPHTREE
+======================================================================
+
+I sistemi ad alberi possono avere prestazioni diverse sullo stesso
+dataset perché non apprendono tutti allo stesso modo. Cambiano la regola
+di scelta degli split, l'ordine di crescita, il campionamento, la gestione
+delle feature categoriche, la regolarizzazione, l'aggregazione degli
+alberi e soprattutto il modo di correggere gli errori.
+
+Per esempio, XGBoost espone crescita depthwise/lossguide e metodi exact,
+approx e hist; LightGBM enfatizza alberi histogram-based e crescita
+leaf-wise/best-first; CatBoost è noto per principi di ordered boosting,
+trattamento delle categoriche e alberi simmetrici come impostazione
+predefinita. Sono esempi di DIFFERENZE DI MECCANISMO, non tre nomi da
+importare nel cuore di MorphTree.
+
+L'osservazione di partenza è:
+
+    Nessun meccanismo di apprendimento ad alberi può essere presunto
+    il migliore per ogni problema e ogni vincolo computazionale.
+
+Da qui la decisione progettuale:
+
+    MorphTree deve possedere PIÙ algoritmi NATIVI SUOI, provarli,
+    individuarne uno da cui partire e POI modificarlo fino a
+    sviluppare un algoritmo adatto al dataset in esame.
+
+MorphTree non utilizza XGBoost, LightGBM, CatBoost o sklearn come motori
+interni nascosti. Tali strumenti possono comparire soltanto nei
+benchmark esterni e nella documentazione scientifica di riferimento.
+I principi matematici pubblici possono essere studiati; il codice
+originale di MorphTree deve essere implementato e verificato come codice
+proprio, senza copiare sorgenti altrui o contraffare identità di prodotto.
+
+======================================================================
+02. COSA SIGNIFICA «TUTTE LE FAMIGLIE DI ALGORITMI»
+======================================================================
+
+REQUISITO DEL PROGETTO:
+MorphTree deve disporre di un portfolio il più ampio possibile di famiglie
+NATIVE e, all'inizio di fit(), deve effettuare un test rapido di OGNI
+FAMIGLIA IMPLEMENTATA E APPLICABILE al task e al tipo di dato, senza
+scartarne arbitrariamente qualcuna prima del primo confronto.
+
+Precisazione di onestà tecnica:
+non esiste un elenco matematicamente chiuso di “tutti gli algoritmi che
+esistono”: la ricerca inventa continuamente varianti, alcune tecniche
+sono complementari e altre non riguardano classificazione/regressione
+tabulare. Quindi il catalogo qui sotto è una tassonomia ESTESA DELLE
+PRINCIPALI FAMIGLIE E PRINCIPI ad albero conosciuti, da coprire con
+implementazioni NATIVE proprie quando pertinenti. Non significa che
+ognuna sia già stata implementata e validata nel codice attuale.
+
+REGOLA NON NEGOZIABILE:
+- Se una famiglia è qualificata e applicabile, va inclusa nella prova
+  iniziale, anche con un budget preliminare economico.
+- Se una famiglia non è implementata, non va simulata, rinominata o
+  spacciata come presente.
+- Se una famiglia non supporta quel task, va segnalata NON APPLICABILE.
+- Se non è fattibile eseguirla entro il budget, va segnalata come
+  NON VALUTATA PER BUDGET: non si dichiara di averle provate tutte.
+- Dopo il primo confronto il percorso evolutivo segue il vincitore
+  scelto; gli altri NON continuano a competere nel ciclo principale.
+
+Famiglie, tipologie di alberi, criteri di split, strategie di ricerca,
+ottimizzatori e procedure di calibrazione sono categorie concettuali
+differenti: non vanno gonfiate per dichiarare “50 algoritmi” quando
+sono in realtà 50 valori parametrici dello stesso learner.
+
+======================================================================
+03. CATALOGO ESTESO DELLE FAMIGLIE E DEI PRINCIPI AD ALBERO
+======================================================================
+
+IL CATALOGO È UNA SPECIFICA DI COPERTURA NEL TEMPO, NON UN ELENCO DI
+FUNZIONALITÀ GIÀ DISPONIBILI. Ogni riga richiede una realizzazione
+MorphTree proprietaria e un test di ammissione prima di essere dichiarata
+presente nel portfolio.
+
+[A] ALBERI SINGOLI — INDUZIONE E CRITERI DI PARTIZIONE
+
+A01. Alberi CART-like di classificazione e regressione:
+     split binari, impurità/Gini/entropia/varianza, potatura,
+     predizioni dalle foglie.
+A02. Alberi ID3/C4.5/C5-like:
+     split guidati dall'informazione, gain ratio, possibili
+     partizioni categoriche e gestione dei valori mancanti.
+A03. Alberi CHAID-like:
+     selezione e combinazione di categorie con criteri statistici;
+     possibilità di partizioni multi-way appropriate.
+A04. Alberi conditional-inference-like:
+     test statistico di associazione prima della scelta di split,
+     finalizzato a ridurre alcuni bias nella selezione.
+A05. Alberi GUIDE/QUEST-like:
+     criteri che separano scelta della variabile da quella della
+     soglia e affrontano possibili bias di selezione.
+A06. Alberi che crescono fino al limite e vengono potati:
+     cost-complexity pruning e regole strutturali controllate.
+A07. Alberi di regressione robusta:
+     criteri adatti a outlier, perdite assolute, Huber o quantili.
+A08. Alberi a foglie modellistiche (model trees):
+     foglie con predittori lineari o altri modelli semplici nativi,
+     anziché sole costanti, con controllo di complessità.
+
+[B] MODALITÀ DI CRESCITA E FORME DEGLI ALBERI
+
+B01. Crescita depth-wise / level-wise:
+     priorità ai livelli o ai nodi prossimi alla radice.
+B02. Crescita leaf-wise / best-first:
+     espansione della foglia con miglior gain ammissibile.
+B03. Alberi simmetrici / oblivious:
+     condizione di split comune alle foglie di un livello.
+B04. Alberi non simmetrici e asimmetrici con crescita localizzata.
+B05. Alberi con ricerca lookahead, beam o split congiunti:
+     ricerca strutturale più profonda quando il greedy è miope.
+B06. Alberi obliqui:
+     split su combinazioni lineari di feature, non solo assi.
+B07. Alberi soft/probabilistic-routing:
+     routing continuo o probabilistico ai rami, quando gestibile.
+B08. Alberi con split sulle categorie e raggruppamento nativo delle
+     modalità, controllando il leakage.
+B09. Alberi con vincoli monotoni/interazioni consentite e regole
+     strutturali alternative.
+B10. Alberi con split esatti, quantizzati, histogram-based o
+     candidati randomizzati.
+
+NOTA: B01-B10 SONO SPESSO “GENI” O COMPONENTI DI PROGRAMMA, NON
+DIECI FAMIGLIE COMPLETE INDIPENDENTI. Possono essere la materia prima
+con cui MorphTree autoscrive le mutazioni.
+
+[C] BAGGING E INSIEMI PARALLELI DI ALBERI
+
+C01. Bagging standard nativo con bootstrap delle osservazioni.
+C02. Random-forest-like: bagging + sottoinsiemi casuali di feature
+     negli split, con implementazione propria.
+C03. Extra-trees-like: soglie e split più fortemente randomizzati.
+C04. Random-subspace ensembles: sottoinsiemi di feature per albero.
+C05. Random-patches: campioni di righe e colonne per membro.
+C06. Rotation-based forest principles: trasformazioni controllate delle
+     feature per diversificare i membri, senza importare implementazioni.
+C07. Bagging con campionamento stratificato, bilanciato, pesato o
+     basato su supporto delle osservazioni, ove validato.
+C08. Bagging con aggregazione voti, probabilità, quantili o distribuzioni
+     previste, secondo task e contratto.
+
+[D] BOOSTING SEQUENZIALE E CORREZIONE DEGLI ERRORI
+
+D01. AdaBoost-like e boosting a pesi di esempio.
+D02. Boosting multiclasse di tipo SAMME-like, con criteri propri.
+D03. Gradient boosting di alberi su residui/gradienti.
+D04. Newton / second-order tree boosting, gradienti e Hessiane.
+D05. Histogram gradient boosting nativo e sua ricerca di split.
+D06. Boosting stocastico per righe e colonne.
+D07. Boosting con crescita depth-wise, leaf-wise o simmetrica.
+D08. Boosting con sampling dei gradienti come ipotesi da qualificare.
+D09. Boosting ordered/permutation-aware come principio generale per
+     contrastare leakage o prediction shift, con codice autonomo.
+D10. Dropout-of-trees / DART-like: modifica del contributo degli alberi
+     durante apprendimento, quando giustificata.
+D11. LogitBoost/GentleBoost-like: alternative al calcolo dei pesi e
+     della loss, con controllo della stabilità numerica.
+D12. Boosting robusto e cost-sensitive: perdite o aggiornamenti
+     specializzati.
+D13. Boosting con foglie non costanti o specializzate.
+D14. Boosting con controlli differenti di shrinkage, aggiornamento,
+     potatura e crescita.
+
+[E] MODELLI PROBABILISTICI E DISTRIBUZIONALI AD ALBERO
+
+E01. Foreste per quantili e stima condizionale di distribuzioni.
+E02. Alberi/ensemble per predizione di intervalli e incertezza
+     empirica, con validazione della copertura.
+E03. Bayesian-additive-tree-like: somma di piccoli alberi sotto
+     prior e inferenza bayesiana (famiglia distinta da boosting).
+E04. Alberi con foglie probabilistiche/distribuzionali.
+E05. Boosting distribuzionale o di parametri di distribuzione,
+     senza attribuire automaticamente le garanzie di modelli noti.
+E06. Alberi con routing probabilistico differenziabile,
+     quando tecnicamente appropriato.
+
+[F] ALBERI ONLINE, INCREMENTALI E DATI IN EVOLUZIONE
+
+F01. Hoeffding/VFDT-like: split su flussi di esempi usando
+     criteri statistici incrementali.
+F02. Adaptive Hoeffding-like con adattamento al concept drift.
+F03. Online bagging e online ensembles.
+F04. Adaptive random-forest-like per flussi.
+F05. Mondrian-tree-like e foreste incrementali con partizioni
+     stocastiche.
+F06. Aggiornamento/riscrittura locale degli alberi con nuovi dati.
+
+[G] SPECIALIZZAZIONI DI TASK, NON TUTTE PRIORITARIE NELLA V1
+
+G01. Alberi/foreste per ranking e apprendimento per ordinamento.
+G02. Alberi/foreste per survival analysis e dati censurati.
+G03. Alberi/foreste causali e heterogeneous-treatment-effect.
+G04. Isolation-forest-like e alberi per anomaly detection senza label.
+G05. Alberi semi-supervisionati e unsupervised.
+G06. Alberi per dati sequenziali o gerarchici con vincoli appropriati.
+G07. Multi-output/multi-label trees, quando richiesti.
+
+Queste specializzazioni NON sono algoritmi comparabili per default con
+la classificazione binaria, multiclasse e regressione: se il task non è
+quello specifico, il relativo algoritmo non è applicabile al test.
+
+[H] STRATEGIE DI RICERCA E DI MUTAZIONE DEL PROGRAMMA
+
+H01. Greedy local search.
+H02. Lookahead e ricerca con più mosse.
+H03. Beam search.
+H04. Coordinate descent sul programma strutturale.
+H05. Evolutionary search su primitive e programmi.
+H06. Bandit/multi-fidelity search.
+H07. Randomized structured exploration.
+H08. Diagnosi mirata di errori e generazione di mutazioni.
+H09. Accettazione, rollback, geneaologia e early stopping.
+H10. Ricombinazione controllata di primitive compatibili.
+
+ATTENZIONE: H01-H10 SONO STRATEGIE DI RICERCA; NON SONO DIECI MODELLI
+PREDITTIVI DA CONTARE ARTIFICIALMENTE NELLA GARA INIZIALE.
+
+[T] TUNING NUMERICO E CALIBRAZIONE — NON FAMIGLIE DELLA GARA
+
+T01. Optuna/TPE e altre ottimizzazioni numeriche.
+T02. Calibrazione delle probabilità (temperatura, sigmoidale ecc.).
+T03. Regolarizzazione numerica.
+T04. Selezione soglie di decisione / costi asimmetrici.
+
+Queste tecniche NON sostituiscono la mutazione di AlgorithmProgram.
+Optuna interviene DOPO che MorphTree ha completato e congelato la sua
+evoluzione strutturale, salvo esperimenti di ricerca chiaramente separati.
+
+======================================================================
+04. DIFFERENZE CONCETTUALI FRA XGBOOST, LIGHTGBM E CATBOOST
+======================================================================
+
+Scopo della comparazione: mostrare perché è importante avere diversi
+modi di apprendere alberi. NON importare o replicare alla lettera i loro
+motori nel runtime MorphTree.
+
+XGBOOST:
+- famiglia di gradient boosting regolarizzato;
+- offre metodi exact, approx e hist per la ricerca degli split;
+- supporta politiche di crescita depthwise e lossguide;
+- diverse regolarizzazioni, campionamenti e vincoli.
+
+LIGHTGBM:
+- gradient boosting basato su istogrammi;
+- forte enfasi sulla crescita leaf-wise / best-first;
+- tecniche note per efficienza in campionamento e feature engineering,
+  fra cui GOSS/EFB nelle rispettive implementazioni;
+- comportamento diverso, per esempio nella gestione di capacità e
+  della crescita sbilanciata.
+
+CATBOOST:
+- boosting con particolare attenzione a feature categoriche;
+- ordered boosting e statistiche delle categorie progettate per
+  controllare specifiche forme di prediction shift/leakage;
+- alberi simmetrici come forma predefinita;
+- altre politiche di crescita disponibili secondo la versione.
+
+CONCLUSIONE:
+nessuno dei tre è un blocco monolitico che si riduce a un nome.
+Le prestazioni derivano dalla COMBINAZIONE di principi, implementazioni,
+regolarizzazioni e dati. MorphTree deve sviluppare PROPRI ALGORITMI
+NATIVI basati sui differenti principi utili e confrontarli sul dataset.
+
+MorphTree non deve creare semplici copie etichettate “MorphXGB”,
+“MorphLGBM” o “MorphCatBoost” con lo stesso codice di altre librerie.
+Deve creare proprie famiglie con scelte di implementazione indipendenti,
+identificabili e testabili.
+
+======================================================================
+05. COME ORGANIZZARE IL PORTFOLIO NATIVO
+======================================================================
+
+Per ogni famiglia registrare obbligatoriamente:
+
+- family_id e nome MorphTree proprio, non un marchio concorrente;
+- tipologia: learner completo / variante strutturale / operatore;
+- task supportati: binary, multiclass, regression e altri se pertinenti;
+- algoritmo matematico e pseudocodice propri;
+- primitive native e codice effettivamente eseguito;
+- gestione input, missing, categoriche e pesi;
+- training, predict, predict_proba dove appropriato;
+- parametri NUMERICI vs componenti STRUTTURALI;
+- compatibilità con mutazioni e stato ereditabile;
+- costi stimati e limiti operativi;
+- test unitari e test LIVE;
+- stato: PLANNED / IMPLEMENTED / ZERO-FIT-QUALIFIED /
+  LIVE-QUALIFIED / SCIENTIFICALLY-VALIDATED / PRODUCT-READY;
+- fonti teoriche e ragione della specificità nativa MorphTree.
+
+Non promuovere a “famiglia presente” una riga di roadmap, un wrapper,
+una fixture, una ricetta JSON o un learner non ancora eseguibile.
+
+Il catalogo va ampliato nel tempo senza alterare la sequenza fondamentale
+del progetto: PROVA TUTTI GLI ALGORITMI NATIVI APPLICABILI, SCEGLI
+IL MIGLIORE GENITORE, MUTA QUEL GENITORE.
+
+======================================================================
+06. FASE UNO DEL FIT: PROVA INIZIALE DI TUTTE LE FAMIGLIE
+======================================================================
+
+INPUT: X, y, task (automatico se non ambiguo), random_state, budget.
+
+A. Costruire una lista delle famiglie native realmente eseguibili e
+   applicabili al task. Non sostituirle con learner esterni.
+B. Preparare uno stesso riferimento TRAIN e uno stesso protocollo di
+   confronto interno per TUTTE le famiglie, con split coerenti.
+C. Assegnare a OGNI famiglia ammissibile almeno un budget preliminare
+   minimo serio e tracciabile, salvo impossibilità esplicita di risorse.
+D. Sui dataset piccoli provare tutte le famiglie con test rapidi e,
+   quando conviene, parallelismo.
+E. Sui dataset grandi provare comunque tutte le famiglie applicabili,
+   ma inizialmente con campioni TRAIN rappresentativi e budget piccoli;
+   usare poi progressioni di fedeltà per distinguere quelle promettenti.
+F. La ricerca iniziale deve valutare la metrica rilevante, ma anche costo,
+   stabilità, comportamento di apprendimento e potenziale progresso.
+G. Evitare che una famiglia lenta a partire sia scartata sulla base di
+   pochissime iterazioni non comparabili: prevedere un minimo ragionevole
+   per famiglie “late bloomer” quando consentito dal budget.
+H. Ordinare i candidati con una REGOLA DI SELEZIONE dichiarata.
+I. Selezionare UN SOLO GENITORE vincitore per il percorso evolutivo.
+J. SCARTARE le altre famiglie dalla linea di mutazione corrente. Salvare
+   i risultati solo per storico, comparazioni e riproducibilità.
+
+Non tenere tutti gli algoritmi in allenamento per tutto il fit.
+Non continuare a saltare da una famiglia all'altra a ogni nuova diagnosi.
+Non costruire automaticamente un ensemble dei perdenti.
+
+Le prove devono essere genuine: è vietato dichiarare di aver valutato
+“tutte le famiglie” quando solo due erano implementate, qualcuna è stata
+saltata o il budget è terminato. Il report esplicita i numeri reali.
+
+Condizioni realistiche:
+se una famiglia non raggiunge neppure un trial iniziale entro il budget,
+il fit può terminare con copertura parziale oppure un messaggio di
+budget insufficiente. Non può dichiarare una selezione globale completa.
+
+======================================================================
+07. FASE DUE: IL VINCITORE DIVENTA GENITORE DELL'EVOLUZIONE
+======================================================================
+
+Chiamiamo P0 il PROGRAMMA di apprendimento della famiglia vincente.
+
+MorphTree NON si ferma alla scelta di P0.
+P0 è il punto di partenza della nuova ricerca.
+
+Distingui rigorosamente:
+
+PROGRAMMA ALGORITMICO = regole eseguibili che decidono COME apprendere.
+RICETTA             = configurazione strutturale dichiarata.
+PARAMETRI NUMERICI  = valori numerici da perfezionare alla fine.
+STATO APPRESO       = alberi, foglie, pesi, gradienti e altri stati.
+MODELLO             = risultato predittivo del programma addestrato.
+
+Una variazione del learning_rate, max_depth o min_samples_leaf è di per
+sé una MODIFICA PARAMETRICA; non è prova che MorphTree abbia
+“autoprogrammato” una logica nuova. Una trasformazione della politica di
+crescita, di selezione split o di aggiornamento, invece, può essere una
+mutazione del PROGRAMMA se cambia le operazioni realmente eseguite.
+
+======================================================================
+08. FASE TRE: DIAGNOSI E MUTAZIONE DEL GENITORE
+======================================================================
+
+P0 apprende il dataset. MorphTree analizza errori e limiti verificabili:
+- errori e residui;
+- probabilità e margini;
+- errori nei sottogruppi;
+- interazioni mancate;
+- overfitting e underfitting;
+- insufficienza di capacità;
+- split inadeguati;
+- strategie di aggiornamento non efficaci;
+- rumore e sensibilità al campionamento;
+- costo computazionale e stabilità.
+
+La diagnosi deve utilizzare dati ammessi, senza leakage. Le OOF, quando
+necessarie, devono derivare da fit che non hanno visto le osservazioni
+predette. Le OOF hanno un costo; non sono gratuite.
+
+Sulla base della diagnosi, MorphTree GENERA UNA MUTAZIONE DEL PROGRAMMA
+P0. Alcuni esempi di mutazioni sostanziali:
+
+- sostituire level-wise con leaf-wise o viceversa;
+- modificare la procedura di candidatura e selezione degli split;
+- introdurre lookahead locale dove il greedy fallisce;
+- introdurre foglie con aggiornamenti differenti;
+- cambiare la strategia di campionamento durante l'apprendimento;
+- trasformare la regola di aggiornamento dei residui;
+- sostituire il criterio di crescita o potatura;
+- riorganizzare primitive native compatibili.
+
+Una mutazione deve modificare COME il programma costruisce il modello.
+Non basta produrre una ricetta con nome diverso. Non serve generare
+sorgente Python arbitrario e lanciarlo con exec: un programma interno
+strutturato, tipizzato, compilabile o interpretabile con un executor
+nativo, è vera programmazione algoritmica purché le operazioni cambino.
+
+Sicurezza: niente esecuzione arbitraria di codice generato da dati;
+soltanto primitive native autorizzate, tipizzate, validate e testabili.
+
+======================================================================
+09. FASE QUATTRO: LA MUTAZIONE DEVE ESSERE PROVATA
+======================================================================
+
+Per ogni proposta:
+
+P0 (genitore attuale)
+     ↓ genera mutazione strutturale
+P1 (programma figlio)
+     ↓ prova rapida su dati ammessi
+     ↓ confronto con P0 a condizioni corrette
+     ├── MIGLIORA, con costo giustificato → ACCETTA P1
+     └── NON MIGLIORA / PEGGIORA           → ROLLBACK A P0
+
+Se P1 è accettato, diventa il NUOVO GENITORE:
+
+P1 → analisi degli errori DI P1 → genera P2 → prova.
+
+Se P2 migliora, prosegue da P2.
+Se P2 peggiora, torna a P1.
+
+NON deve ripartire automaticamente da P0 a ogni iterazione.
+NON deve scegliere ogni volta tra le famiglie originarie.
+NON deve continuare una decina di algoritmi separati in parallelo
+quando il genitore è già stato scelto.
+
+Usare quando possibile il lavoro già appreso; se alcune trasformazioni
+non permettono warm-start coerente, contabilizzare il training necessario
+a ricostruire il discendente. Non dichiarare mutazione in-place una
+ricostruzione completa.
+
+Il criterio di “migliora” deve essere preregistrato: per esempio
+riduzione credibile della loss su dati di confronto ammessi, evitando
+regressioni eccessive e contabilizzando costi di ricerca/inferenza.
+Una differenza nel solo TRAIN non basta.
+
+Il sistema deve poter dire: “Questa mutazione non è servita, conservo
+il genitore”. Questo è corretto, non è il fallimento del motore.
+
+======================================================================
+10. FASE CINQUE: PERFEZIONARE FINCHÉ SI ARRESTA
+======================================================================
+
+Ripetere:
+
+DIAGNOSI DEL GENITORE CORRENTE
+→ MODIFICA DEL SUO PROGRAMMA
+→ PROVA RAPIDA
+→ ACCETTA O ANNULLA
+→ NUOVA DIAGNOSI
+
+Fino a una CONDIZIONE DI STALLO OPERATIVA:
+- mutazioni ammissibili esaurite;
+- tentativi consecutivi senza miglioramenti sufficienti;
+- miglioramento marginale troppo piccolo rispetto al costo;
+- ricerca esaurita secondo il budget;
+- limite massimo temporale o di iterazioni;
+- errore/interruzione che impone STOP.
+
+Stallo NON significa ottimo globale matematico garantito.
+Il motore cerca la migliore forma ammissibile che riesce a trovare
+per quel dataset e quel budget.
+
+Il budget complessivo deve essere FINITO e l'utente deve poterlo
+personalizzare; il default non deve bloccare indefinitamente il fit.
+
+======================================================================
+11. FASE SEI: CONGELARE L'ALGORITMO, POI OPTUNA
+======================================================================
+
+Quando MorphTree termina le mutazioni:
+
+1. Ottiene il programma algoritmico risultante P*.
+2. Congela la forma del programma e i suoi operatori.
+3. Congela le decisioni STRUTTURALI.
+4. SOLO ORA avvia Optuna sui parametri NUMERICI di P*.
+5. Mantiene la migliore ancora ammissibile; se Optuna peggiora, non
+   sacrifica il modello già valido.
+6. Finalizza il fit nel rispetto della separazione dei dati.
+7. Consegna modello, programma, ricetta, numeri e genealogia.
+
+PER DEFAULT: use_optuna=True.
+OPZIONE UTENTE: use_optuna=False; in tal caso tutto il morphing avviene
+comunque, viene saltato SOLTANTO Optuna.
+
+La disponibilità della dipendenza deve essere coerente con
+l'installazione. Se Optuna non è presente e use_optuna=True, non
+fingere che il tuning sia avvenuto; prevedere un'installazione adatta
+o un errore esplicito e comprensibile.
+
+======================================================================
+12. UNA SOLA CHIAMATA PUBBLICA
+======================================================================
+
+Utilizzo fondamentale:
+
+    from morphtree import MorphTree
+
+    model = MorphTree(random_state=42, verbosity=0)
+    model.fit(X_train, y_train)
+
+    predictions = model.predict(X_test)
+    probabilities = model.predict_proba(X_test)  # classificazione
+
+La modalità standard DEVE essere il vero MorphTree evolutivo.
+NON richiedere mode="adaptive" per far funzionare il progetto.
+
+Al termine, API proposte da realizzare e qualificare:
+
+    print(model.describe_algorithm())
+    print(model.get_algorithm_program())
+    print(model.get_recipe())
+    print(model.get_mutation_history())
+    print(model.get_search_report())
+
+    model.save("model.json")
+    model.export_algorithm("algorithm.py")
+    model.export_standalone("predictor.py")
+
+Non dichiarare disponibili questi metodi finché non sono implementati,
+verificati ed esposti dal wheel installato.
+
+L'algoritmo di training esportato e il predittore standalone sono cose
+DIVERSE. Il primo descrive/esegue come apprendere; il secondo predice
+con il modello già appreso. Se il training generato dipende dal runtime
+MorphTree, dichiararlo chiaramente.
+
+Task richiesti:
+- classificazione binaria;
+- classificazione multiclasse;
+- regressione.
+
+Il riconoscimento automatico del task non deve interpretare
+silenziosamente come regressione un target di classi codificate con
+numeri, o viceversa, quando la semantica è ambigua.
+
+======================================================================
+13. PARAMETRI UTILI, TUTTI FACOLTATIVI
+======================================================================
+
+REQUISITO: la configurazione base deve essere sufficiente.
+
+    MorphTree(random_state=42, verbosity=0)
+
+Possibili opzioni pubbliche, da sviluppare con nomi canonici e test:
+
+ task="auto"             : task automatico o esplicito;
+ random_state=42         : riproducibilità del campionamento;
+ verbosity=0             : livello di log visibile;
+ search_budget="balanced": investimento iniziale/evolutivo;
+ max_time=...            : limite temporale globale;
+ n_jobs=...              : parallelismo controllato;
+ max_mutations=...       : tentativi di evoluzione;
+ max_search_rounds=...   : round evolutivi;
+ min_improvement=...     : soglia giustificata di miglioramento;
+ use_optuna=True        : tuning NUMERICO FINALE;
+ optuna_trials=...       : budget di trial finale;
+ early_stopping=True    : arresto a stallo;
+ metric="auto"           : metrica coerente con task;
+ report_level=...       : dettaglio del report;
+ keep_search_history=...: conservazione della genealogia.
+
+Non inventare un catalogo infinito di parametri decorativi.
+Non consentire che max_mutations=0 sia implicitamente il default
+mentre il progetto viene presentato come evolutivo.
+
+Esempio di disattivazione del solo Optuna:
+
+    MorphTree(random_state=42, verbosity=0, use_optuna=False)
+
+NON deve significare “niente morphing”.
+
+======================================================================
+14. ALGORITMO GENERATO: COSA DEVE VEDERE L'UTENTE
+======================================================================
+
+MorphTree deve restituire, oltre alle predizioni, UNA SPIEGAZIONE
+VERIFICABILE DI QUALE ALGORITMO È DIVENTATO PER IL DATASET:
+
+- elenco delle famiglie native iniziali realmente provate;
+- metriche, budget e motivi dell'ammissione/esclusione;
+- algoritmo/famiglia genitore vincente;
+- PROGRAMMA di apprendimento di quel genitore;
+- diagnosi successive e loro fonti;
+- programma P1, P2, ..., P*;
+- diff del programma fra generazioni;
+- mutazioni accettate e respinte;
+- parte di stato ereditata e parte ricalcolata;
+- motivo dello stallo;
+- programma P* congelato;
+- esito del tuning Optuna;
+- parametri numerici finali;
+- fit finali e costi completi;
+- versione del runtime e formato del modello;
+- artefatti export e relative dipendenze.
+
+Un JSON che cambia solo un numero non è un algoritmo autoscritto.
+Un'illustrazione non eseguibile non è un programma qualificato.
+Un ensemble dei perdenti non è l'evoluzione del vincitore.
+
+======================================================================
+15. ESEMPIO CONCRETO, DIDATTICO, NON RISULTATO SCIENTIFICO
+======================================================================
+
+Dataset ipotetico D per classificazione binaria.
+
+Portfolio nativo applicabile: A, B, C, D, E.
+
+TEST RAPIDI:
+ A → metrica 0,61
+ B → metrica 0,57
+ C → metrica 0,54
+ D → metrica 0,59
+ E → metrica 0,56
+
+(Sono NUMERI INVENTATI A SCOPO ILLUSTRATIVO, non risultati MorphTree.)
+Supponiamo che la metrica sia una loss: minore è meglio.
+
+GENITORE = C. A, B, D, E sono scartati dalla linea evolutiva.
+
+ C/P0 → diagnosi: la crescita degli alberi non gestisce bene un certo
+        tipo di interazione nel TRAIN-OOF.
+
+ C/P1 → mutazione della regola di crescita → perdita 0,52 → ACCETTA.
+
+ C/P2 → mutazione del criterio split → perdita 0,50 → ACCETTA.
+
+ C/P3 → modifica ulteriore → perdita 0,53 → RESPINGI; TORNA A P2.
+
+ C/P4 → altra modifica → perdita 0,50 senza beneficio sufficiente;
+        RESPINGI.
+
+ STALLO → congelare il programma P2.
+
+ OPTUNA → prova i parametri numerici di P2 e conserva i migliori.
+
+ OUTPUT → MorphTree specifico del dataset D con programma P2,
+          parametri e pesi finali.
+
+ATTENZIONE: nella realtà le decisioni non si prendono confrontando
+numeri osservati in modo ingenuo sullo stesso holdout riutilizzato
+indefinitamente. Servono protocolli validi, comparazioni appaiate e
+budget riconosciuti. L'esempio serve a illustrare la DIREZIONE
+DELL'ALGORITMO, non il protocollo statistico completo.
+
+======================================================================
+16. ARCHITETTURA MINIMA DEL CODICE, SENZA INFRASTRUTTURE INUTILI
+======================================================================
+
+Il progetto non necessita di mille coordinatori. Necessita di un
+motore che realizzi esattamente questa sequenza.
+
+COMPONENTI LOGICI:
+
+1. NativeFamilyRegistry
+   Famiglie native realmente eseguibili, applicabilità e stato.
+2. TrialRunner
+   Primo test economico di TUTTE le famiglie applicabili.
+3. ParentSelector
+   Sceglie UN algoritmo genitore con criteri fissati.
+4. AlgorithmProgram
+   Rappresenta la logica eseguibile del genitore e dei discendenti.
+5. NativeProgramExecutor
+   Esegue le primitive e i programmi con logica nativa.
+6. ErrorDiagnosis
+   Identifica limiti reali sul programma corrente.
+7. MutationGenerator
+   Produce modifiche reali al programma genitore.
+8. MutationEvaluator
+   Prova cambiamenti in modo rapido ma affidabile.
+9. EvolutionLoop
+   Accetta/respinge, continua dal genitore accettato, arresta.
+10. NumericFinalizer
+    Congela programma e avvia Optuna numerico finale, se abilitato.
+11. ModelResult
+    Predizioni, modello, programma, ricetta, storia e report.
+
+Questi sono RUOLI, non l'obbligo di creare 11 nuove classi o file.
+Riutilizzare sempre i moduli e le strutture esistenti quando validi.
+
+PSEUDOCODICE CANONICO:
+
+    def fit(X, y):
+        task = resolve_task_safely(X, y)
+        families = all_implemented_eligible_native_families(task, X)
+        trials = evaluate_each_family_quickly_and_fairly(families, X, y)
+        parent = choose_one_best_parent(trials)
+        discard_other_families_from_active_evolution()
+
+        current = parent
+        best = parent
+        while within_budget() and further_progress_plausible():
+            diagnosis = diagnose_current_program(current)
+            mutations = propose_structural_program_changes(current, diagnosis)
+            if not mutations:
+                break
+            candidate = test_promising_mutation_of(current, mutations, X, y)
+            if is_better_and_cost_justified(candidate, current):
+                current = candidate
+                best = current
+            else:
+                rollback_to(current)
+            if stagnating():
+                break
+
+        frozen_program = freeze(best.algorithm_program)
+        if self.use_optuna:
+            tuned = optuna_tune_numeric_params_only(frozen_program, X, y)
+            best = retain_verified_anchor_if_tuning_worse(best, tuned)
+        self.model_ = finalize_model(best, frozen_program)
+        self.algorithm_program_ = frozen_program
+        self.report_ = verified_execution_report()
+        return self
+
+Pseudocodice: NON pronto da eseguire; serve a bloccare la direzione.
+
+======================================================================
+17. PROVE VELOCI SENZA TRADIRE LA DIREZIONE
+======================================================================
+
+L'utente richiede che le prove siano RAPIDE, anche su pezzi del dataset.
+Questo è uno strumento per accelerare, non per cambiare il progetto.
+
+Principi:
+- stessa base di confronto per tutte le famiglie iniziali;
+- subset TRAIN rappresentativi e, quando serve, stratificati/gruppati;
+- budget fisici per fit, tempo e memoria;
+- multi-fidelity a costo finito;
+- rinnovo di fedeltà solo per chiarire candidati promettenti o incerti;
+- nessun training completo di tutto il portfolio per default;
+- una sola famiglia vincente prosegue in evoluzione;
+- quando una mutazione richiede molti dati, prova in piccolo, poi
+  verifica a fedeltà sufficiente prima di accettare;
+- rollback e conservazione del genitore sempre disponibili.
+
+Non accelerare con valutazioni in-sample che falsano il confronto.
+Non scartare una famiglia senza nessuna prova solo perché è costosa.
+Non imporre un dataset minuscolo che renda le strategie incomparabili.
+Non provare ogni configurazione di ogni famiglia: PROVARE OGNI FAMIGLIA
+significa almeno un test adeguato iniziale, NON ricerca esaustiva di
+ogni combinazione di parametri.
+
+======================================================================
+18. QUALITÀ SCIENTIFICA E COMPARAZIONI
+======================================================================
+
+Senza un protocollo corretto il motore può scegliere mutazioni
+che migliorano soltanto il campione già osservato.
+
+- Separare TRAIN (fit), informazioni OOF, SEARCH (decisioni interne),
+  ed eventuale GUARD finale sigillato.
+- Non usare SEARCH per training e non usare GUARD per mutare.
+- Ricontrollare l'effetto di riutilizzi ripetuti di SEARCH durante
+  l'evoluzione: evitare overfitting del processo di selezione.
+- Congelare programma e regole prima della conferma indipendente.
+- Confrontare su nuove sorgenti indipendenti per dimostrare valore.
+- Non trattare fold correlati come dataset indipendenti.
+- Confronti esterni appropriate con XGBoost, LightGBM, CatBoost, Strong
+  Base e Strong Base+TPE: SOLO COMPETITOR, NON COMPONENTI INTERNI.
+- Misurare loss, accuracy/macro-F1 quando pertinenti, Brier,
+  calibrazione, regressioni, wall totale, CPU, peak RAM, inferenza.
+- Contabilizzare prove iniziali delle famiglie, OOF, mutazioni, Optuna
+  e fit finale: il vero costo MorphTree è TUTTO il fit.
+- Qualità comparabile a costo inferiore può essere un vero beneficio;
+  non richiedere superiorità universale.
+
+La singola chiamata .fit() deve avere limiti finiti e documentati.
+Il motore non garantisce di raggiungere l'ottimo matematico globale.
+
+======================================================================
+19. DIFFERENZA TRA PRODOTTO DESIDERATO E STATO VERIFICATO OGGI
+======================================================================
+
+Questa sezione impedisce di presentare la visione come software già
+scientificamente completato.
+
+STATO DICHIARATO NEI CHECKPOINT CONDIVISI AL 24/10/2026:
+
+- Esistono e sono state verificate tecnicamente componenti native di
+  boosting e bagging, con tre task e più percorsi di persistenza/export.
+- Un wheel sperimentale e una API pubblica hanno superato controlli e
+  alcuni fit LIVE autorizzati; non equivale a distribuzione finale.
+- Sono state realizzate mutazioni di programma e genealogy/rollback.
+- Nel pilot INT-016 è stata eseguita una variante depthwise LIVE;
+  il discendente ha PEGGIORATO (NLL 0,70161 → 0,70562) ed è stato
+  respinto correttamente, conservando il genitore.
+- Il journal INT-016 è stato riconciliato, ma una successiva
+  integrazione era bloccata da identità mista wheel/sorgente.
+- Alcuni flussi OOF sono verificati in ricerca, mentre il nuovo
+  produttore autenticato per il programma evolutivo richiede qualifica.
+- Non è stata dimostrata superiorità indipendente dell'evoluzione
+  automatica rispetto ai controlli forti.
+- Prestazioni, CPU, memoria RAM e qualificazione multipiattaforma
+  rimangono in parte sconosciute.
+- Ultimo stato riportato: Functional Complete=false; RELEASE NO-GO;
+  sei blocchi HIGH aperti.
+
+NON È DIMOSTRATO, NÉ VA DICHIARATO IMPLEMENTATO:
+
+- “MorphTree possiede già tutte le famiglie del catalogo”;
+- “MorphTree prova già tutte le famiglie in ogni fit”;
+- “MorphTree muta con beneficio su ogni dataset”;
+- “MorphTree genera senza vincoli qualsiasi algoritmo possibile”;
+- “MorphTree è più veloce o migliore dei competitor”;
+- “MorphTree è già pronto per PyPI”.
+
+QUESTI SONO OBIETTIVI DA IMPLEMENTARE E VERIFICARE, NON CLAIM PRESENTI.
+
+======================================================================
+20. TEST DI ACCETTAZIONE DEL VERO MORPHTREE
+======================================================================
+
+Un test end-to-end deve poter verificare, con log autentici e non con
+semplici fixture, questi criteri:
+
+[ ] Import normale del pacchetto senza checkout.
+[ ] MorphTree(random_state=42, verbosity=0) funzionante.
+[ ] fit() chiama il motore evolutivo PREDEFINITO.
+[ ] Sono elencate tutte le famiglie applicabili e implementate.
+[ ] Ciascuna riceve almeno un test iniziale o un motivo verificato
+    per cui non è stata effettivamente valutata.
+[ ] Tutti i test iniziali sono confrontabili.
+[ ] Viene scelto UN genitore vincitore.
+[ ] Gli altri non sono più mantenuti nel ciclo principale.
+[ ] Il genitore viene realmente addestrato/recuperato.
+[ ] Viene eseguita la diagnosi sugli errori del genitore.
+[ ] Viene prodotta una mutazione del PROGRAMMA ESEGUIBILE.
+[ ] Il discendente è diverso nell'effettiva logica di apprendimento.
+[ ] Viene eseguito e misurato su dati consentiti.
+[ ] Mutazione peggiorativa → rollback al genitore.
+[ ] Mutazione migliorativa → nuovo genitore accettato.
+[ ] Tentativo successivo parte dal genitore accettato.
+[ ] Il loop termina allo stallo/budget finito.
+[ ] Il programma finale è congelato.
+[ ] Optuna usa SOLTANTO parametri numerici del programma congelato.
+[ ] use_optuna=False non disattiva la mutazione algoritmica.
+[ ] predict/predict_proba funzionano nei task pertinenti.
+[ ] Save, reload, comparatore, standalone export sono coerenti.
+[ ] L'algoritmo di TRAINING è descrivibile/esportabile con verità.
+[ ] Report riporta esattamente famiglie provate, mutazioni e costi.
+[ ] I tre task dichiarati hanno ciascuno test LIVE appropriati.
+[ ] Zero code path di dati di ricerca / GUARD aggirabili dall'API.
+[ ] Tempi e RAM sono qualificati e non inventati.
+[ ] Nessuna dipendenza nascosta dalla workspace di sviluppo.
+
+Anche tutti questi PASS dimostrano COMPLETENESS TECNICA, non ancora
+SUPERIORITÀ SCIENTIFICA. Quest'ultima richiede benchmark prospettici,
+budget e sorgenti indipendenti.
+
+======================================================================
+21. ORDINE DEL LAVORO PER FINIRE IL PROGETTO, SENZA MILLE PROMPT
+======================================================================
+
+0. Leggere e conservare questa specifica; niente reinterpretazioni.
+1. Inventariare le famiglie NATIVAMENTE IMPLEMENTATE, per task.
+2. Completare progressivamente il portfolio proprio, includendo le
+   PRINCIPALI FAMIGLIE differenti di cui al catalogo, non solo varianti
+   numeriche del medesimo algoritmo. Testare e documentare ogni nuovo
+   learner; non fingere che tutti siano già presenti.
+3. Realizzare e testare un unico TrialRunner che provi OGNI famiglia
+   compatibile con condizioni iniziali comparabili.
+4. Realizzare e testare la scelta di UN solo genitore vincente.
+5. Far girare il ProgramExecutor sul programma nativo del genitore.
+6. Collegare diagnosi autentica e generazione di mutazioni reali.
+7. Provare i discendenti, accettare/rollback e proseguire dal genitore
+   migliorato fino allo stallo, senza riaprire la gara fra famiglie.
+8. Congelare il programma e SOLO POI eseguire Optuna numerico.
+9. Esporre tutto attraverso UNA SEMPLICE MorphTree().fit().
+10. Qualificare i tre task, predizioni, salvataggio, caricamento,
+    report, esportazione training e predictor standalone.
+11. Verificare wheel autonomo, prestazioni, RAM, piattaforme e CI.
+12. Confrontare prospetticamente con baseline statiche forti ed esterni
+    pertinenti, a budget totale comparabile e su sorgenti indipendenti.
+13. Preparare candidata locale, poi chiedere consenso per la release.
+
+Non avviare lavoro irreversibile o remoto senza consenso.
+Non consumare budget scientifici esauriti. Non toccare i GUARD sigillati.
+Non aggiornare versioni remote, GitHub o PyPI durante la ricerca.
+
+======================================================================
+22. REGOLE PER CODEX: COSA NON FARE MAI
+======================================================================
+
+- NON rispondere sostituendo questa sequenza con AutoML.
+- NON fermarti a selezionare XGBoost/LightGBM/CatBoost.
+- NON usare XGBoost, LightGBM, CatBoost, sklearn come learner interni.
+- NON chiamare “tutte le famiglie” un portfolio che ne prova solo due.
+- NON saltare le famiglie implementate nella prova iniziale senza
+  dichiarare la ragione e la copertura effettiva.
+- NON continuare tutti i learner dopo la selezione del genitore.
+- NON sostituire la mutazione con tuning di numeri.
+- NON produrre un nuovo nome di ricetta senza differenza di programma.
+- NON ricominciare sempre la mutazione dal genitore originario.
+- NON eseguire Optuna prima dello stallo come fase principale.
+- NON dichiarare migliore una mutazione per il solo miglioramento TRAIN.
+- NON usare GUARD o EVAL sigillato per costruire le mutazioni.
+- NON falsificare SUCCESSO quando il discendente peggiora.
+- NON complicare il progetto con framework amministrativi ridondanti.
+- NON scrivere altri 20 prompt per ridefinire ciò che è già definito.
+- NON promettere “tutti gli algoritmi esistenti già implementati” se
+  tecnicamente non è vero.
+- NON pubblicare release o fare operazioni remote senza consenso.
+
+======================================================================
+23. GLOSSARIO
+======================================================================
+
+FAMIGLIA NATIVA:
+  un algoritmo MorphTree implementato dal progetto e dotato di una
+  propria modalità di apprendimento, non un import di libreria altrui.
+
+PORTFOLIO:
+  insieme di tutte le famiglie native implementate e qualificate.
+
+GARA INIZIALE:
+  prove rapide e comparabili di tutte le famiglie applicabili.
+
+GENITORE:
+  l'UNICO algoritmo vincente da cui parte il ciclo di evoluzione.
+
+PROGRAMMA ALGORITMICO:
+  logica eseguibile che determina come apprendere alberi.
+
+MUTAZIONE:
+  trasformazione verificabile delle regole eseguibili del programma.
+
+DISCENDENTE:
+  nuovo programma generato da una mutazione del genitore corrente.
+
+ACCETTAZIONE:
+  discendente diventa il nuovo genitore dopo verifica valida.
+
+ROLLBACK:
+  discendente scartato; genitore precedente conservato.
+
+STALLO:
+  arresto operativo, per mancanza di miglioramenti o budget.
+
+FREEZE:
+  programmazione algoritmica strutturale fissata prima di Optuna.
+
+OPTUNA:
+  ottimizzatore numerico FINALE della forma già scelta e mutata.
+
+MODELLO:
+  predittore risultante dall'esecuzione e finalizzazione del programma.
+
+AUTOSCRITTURA:
+  sintesi e modifica di una rappresentazione algoritmica
+  eseguibile con primitive native validate; non necessariamente
+  scrittura arbitraria del sorgente della libreria.
+
+======================================================================
+24. RIFERIMENTI SCIENTIFICI E TECNICI (ISPIRAZIONE, NON DIPENDENZE)
+======================================================================
+
+Fonte e documentazione ufficiale di XGBoost, metodi e crescita:
+https://xgboost.readthedocs.io/en/latest/parameter.html
+https://xgboost.readthedocs.io/en/release_3.3.0/treemethod.html
+
+Fonte e documentazione ufficiale LightGBM, istogrammi e leaf-wise:
+https://lightgbm.readthedocs.io/en/latest/Features.html
+
+Fonte e documentazione ufficiale CatBoost, alberi simmetrici e categorie:
+https://catboost.ai/docs/en/concepts/parameter-tuning
+https://catboost.ai/docs/en/features/categorical-features
+https://catboost.ai/docs/en/concepts/faq
+
+Panoramica di famiglie ensemble ad albero (solo riferimento):
+https://scikit-learn.org/stable/api/sklearn.ensemble.html
+
+BART — Chipman, George & McCulloch, 2010:
+https://arxiv.org/abs/0806.3286
+
+La presenza di questi URL NON autorizza alcun import di learner esterni
+nel cuore di MorphTree e NON equivale a riconoscimento di novità.
+Le implementazioni devono essere native, sottoposte ai necessari
+controlli di licenza e scientificamente verificate.
+
+======================================================================
+25. DEFINIZIONE FINALE: DA NON REINTERPRETARE
+======================================================================
+
+MORPHTREE È UN ALGORITMO CHE POSSIEDE UNA FAMIGLIA DI ALGORITMI
+NATIVI PROPRI DI APPRENDIMENTO AD ALBERI.
+
+QUANDO RICEVE UN DATASET, LI PROVA TUTTI NEL PERIMETRO EFFETTIVAMENTE
+IMPLEMENTATO E APPLICABILE, SCEGLIE IL MIGLIORE COME GENITORE,
+SCARTA GLI ALTRI DALL'EVOLUZIONE ATTIVA E COMINCIA A MIGLIORARE
+PROGRESSIVAMENTE PROPRIO QUEL GENITORE.
+
+LO MIGLIORA RISCRIVENDO IL SUO PROGRAMMA DI APPRENDIMENTO:
+OSSERVA GLI ERRORI, MUTA LA LOGICA, PROVA IL NUOVO PROGRAMMA,
+ACCETTA O ANNULLA, E CONTINUA DALLA MIGLIORE VERSIONE RAGGIUNTA.
+
+QUANDO SI FERMA, CONGELA L'ALGORITMO COSTRUITO E SOLO ALLA FINE
+OTTIMIZZA I PARAMETRI NUMERICI CON OPTUNA.
+
+TUTTO DEVE AVVENIRE CON:
+
+    MorphTree(random_state=42, verbosity=0).fit(X, y)
+
+L'UTENTE NON DEVE COSTRUIRE MANUALMENTE IL PROCESSO.
+L'UTENTE PUÒ SOLTANTO PERSONALIZZARLO, OSSERVARLO ED ESPORTARLO.
+
+MORPHTREE NON SI LIMITA A TROVARE UN ALGORITMO DA UTILIZZARE.
+MORPHTREE TROVA IL PROPRIO PUNTO DI PARTENZA E POI COSTRUISCE,
+MUTANDOLO, IL SUO ALGORITMO PER QUEL DATASET.
+
+========================= FINE DEL DOCUMENTO =========================

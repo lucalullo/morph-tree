@@ -1,0 +1,73 @@
+name: MorphTree 1.0.0 - zero-fit qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_zero_fit_scope:
+        description: 'I authorize one Windows/Python 3.12 zero-fit CI run (no model training or publication)'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: morphtree-1-0-0-qualification
+  cancel-in-progress: false
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUTF8: '1'
+  SOURCE_DATE_EPOCH: '1792022400'
+  PIP_NO_INPUT: '1'
+
+jobs:
+  windows-cp312-zero-fit:
+    if: ${{ inputs.confirm_zero_fit_scope }}
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify committed source inventory
+        run: python -I -B tools/check_repository.py --git-head --expected-commit '${{ github.sha }}'
+      - name: Install local build tools
+        run: python -m pip --isolated --disable-pip-version-check install --no-cache-dir build==1.3.0 hatchling==1.27.0
+      - name: Build release distributions
+        run: python -I -B -m build
+      - name: Validate wheel and sdist in clean installations
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $wheels = @(Get-ChildItem -LiteralPath dist -Filter '*.whl')
+          $sources = @(Get-ChildItem -LiteralPath dist -Filter '*.tar.gz')
+          if ($wheels.Count -ne 1 -or $sources.Count -ne 1) { throw 'Expected one wheel and one sdist' }
+          $wheel = $wheels[0].FullName
+          $source = $sources[0].FullName
+          if ($wheels[0].Name -ne 'morphtree-1.0.0-py3-none-any.whl' -or $sources[0].Name -ne 'morphtree-1.0.0.tar.gz') { throw 'Not MorphTree 1.0.0' }
+          $wheelSha = (Get-FileHash -LiteralPath $wheel -Algorithm SHA256).Hash.ToLowerInvariant()
+          $sourceSha = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
+          Write-Output "Built artifacts from checked commit: wheel=$wheelSha sdist=$sourceSha"
+          foreach ($kind in @('wheel', 'sdist')) {
+            $environment = Join-Path $env:RUNNER_TEMP ('morphtree-' + $kind)
+            if (Test-Path -LiteralPath $environment) { throw 'Existing test environment' }
+            python -I -B -m venv $environment
+            if ($LASTEXITCODE -ne 0) { throw 'Environment creation failed' }
+            $interpreter = Join-Path $environment 'Scripts/python.exe'
+            $artifact = if ($kind -eq 'wheel') { $wheel } else { $source }
+            & $interpreter -I -B -m pip --isolated --disable-pip-version-check install --no-cache-dir $artifact
+            if ($LASTEXITCODE -ne 0) { throw 'Package install failed' }
+            & $interpreter -I -B -m pip --isolated --disable-pip-version-check check
+            if ($LASTEXITCODE -ne 0) { throw 'Dependency check failed' }
+            $receipt = Join-Path $env:RUNNER_TEMP ('morphtree-installed-' + $kind + '.json')
+            & $interpreter -I -B tools/installed_candidate_check.py --wheel $wheel --sha256 $wheelSha --version 1.0.0 --out $receipt
+            if ($LASTEXITCODE -ne 0) { throw 'Installed distribution identity failed' }
+            & $interpreter -I -B -m unittest discover -s tests/product -v
+            if ($LASTEXITCODE -ne 0) { throw 'Zero-fit product suite failed' }
+            Get-Content -LiteralPath $receipt
+          }

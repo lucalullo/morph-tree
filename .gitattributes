@@ -1,0 +1,4 @@
+# Preserve the exact qualified snapshot,including historical research hashes.
+# No automatic LF/CRLF conversion during a future Git add/checkout.
+# New source should use LF deliberately;review/update manifests after edits.
+* -text
