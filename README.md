@@ -1,12 +1,12 @@
-# MorphTree 1.0.0
+# MorphTree
 
-**MorphTree explores an experimental approach to tabular machine learning: autonomous, validation-guided evolution of native tree-learning algorithms.**
+**Native tree learning with introspection and structural evolution.**
 
-It is an original Python project by Luca Lullo for **binary classification, multiclass classification and regression**. During `fit()`, MorphTree compares its qualified native tree learners, selects **one parent**, diagnoses its errors and evaluates executable changes to its learning rules, rather than only tuning hyperparameters. Improvements may be accepted; non-improving descendants are rolled back. The process stops within a finite budget, freezes the chosen program and optionally uses Optuna for final numerical tuning.
+MorphTree is an experimental Python library for **binary classification, multiclass classification and regression** on tabular data. Instead of stopping at the selection of a fixed learner, it compares its qualified native tree-learning families, selects a single parent and examines where that parent makes errors. It then evaluates executable changes to the parent's learning rules, retains improvements that meet its validation criteria and rolls back changes that do not.
 
-The goal of this first implementation is a working, traceable evolutionary learning method. **Independent predictive gains from autonomous mutations have not yet been established.**
+The evolutionary search runs within a finite budget. Once it stops, MorphTree freezes the selected learning program and, by default, uses **Optuna for final numerical tuning**. The result is a trained model ready for prediction, accompanied by its program, recipe, mutation history and search report.
 
-> **Release status:** Prepared first-public-release source, **not yet approved for official release**. Retained LIVE evidence covers Windows x64 / CPython 3.12 and earlier qualified candidates. The new 1.0.0 build, installation and hosted GitHub CI still require verification. No universal performance, optimality or hard peak-RAM guarantee is claimed.
+The proprietary learning engine is written entirely in **Python**, without compiled extensions of its own. Third-party dependencies may contain compiled components. Structural evolution is implemented and tested, but independent predictive gains from mutation have not yet been established.
 
 ## Highlights
 
@@ -116,11 +116,8 @@ The public research section is **curated**. The extensive original experiment re
 
 ## License
 
-MorphTree is created by Luca Lullo and released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE).
 
 ## Author
 
 Created by [Luca Lullo](https://github.com/lucalullo).
-
-
-For the manual **GitHub → TestPyPI** publication procedure, see [TestPyPI publishing](docs/TESTPYPI_PUBLISHING.md). No registry upload or official PyPI release is implied by this source repository.
