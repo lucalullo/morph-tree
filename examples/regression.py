@@ -1,6 +1,6 @@
 """User-supplied data only;running this example performs real training."""
-from morphtree import MorphTree
+from morphtree import MorphTreeRegressor
 def train(X_train,y_train,X_test):
-    model=MorphTree(task='regression',random_state=42,verbosity=0)
+    model=MorphTreeRegressor(random_state=42)
     model.fit(X_train,y_train)
     return model,model.predict(X_test)

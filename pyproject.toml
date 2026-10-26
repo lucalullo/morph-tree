@@ -3,13 +3,13 @@ requires=["hatchling==1.27.0"]
 build-backend="hatchling.build"
 [project]
 name="morphtree"
-version="1.0.0"
+version="2.0.0"
 description="Native tree learning with bounded program evolution, diagnosis and final numerical tuning"
 readme="README_PYPI.md"
-requires-python=">=3.12,<3.13"
+requires-python=">=3.12,<3.15"
 license="MIT"
 dependencies=["optuna==5.0.0"]
-classifiers=["Development Status :: 5 - Production/Stable","Programming Language :: Python :: 3.12","Operating System :: Microsoft :: Windows","Topic :: Scientific/Engineering :: Artificial Intelligence"]
+classifiers=["Development Status :: 4 - Beta","Programming Language :: Python :: 3.12","Programming Language :: Python :: 3.13","Programming Language :: Python :: 3.14","Operating System :: Microsoft :: Windows","Operating System :: POSIX :: Linux","Topic :: Scientific/Engineering :: Artificial Intelligence"]
 [project.scripts]
 morphtree="morphtree.cli:main"
 [tool.hatch.build]

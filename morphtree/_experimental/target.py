@@ -13,6 +13,10 @@ def detect_target(y, task):
     if not (strings or numeric):
         raise ValueError('Target must be consistently string or numeric')
     classes = sorted(set(values))
+    if task == 'classification':
+        # Explicit classifier intent: continuous-valued labels remain classes.
+        # Only the binary/multiclass distinction is inferred here.
+        task = 'binary' if len(classes) == 2 else 'multiclass'
     if task == 'auto':
         if strings:
             task = 'binary' if len(classes) == 2 else 'multiclass'

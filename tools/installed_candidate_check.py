@@ -44,6 +44,10 @@ def check(wheel,expected,version):
   for task in ('binary','multiclass','regression'):
    m=morphtree.MorphTree(task=task,random_state=42,verbosity=0)
    if not m._evolving_program or m.tuning!='optuna':raise ValueError('Default evolution/tuning missing')
+  for name,task in (('MorphTreeClassifier','classification'),('MorphTreeRegressor','regression')):
+   facade=getattr(morphtree,name)(random_state=42)
+   if facade._engine.task!=task or not facade._engine._evolving_program or facade._engine.tuning!='optuna':raise ValueError('Public task estimator contract missing')
+   if 'task' in facade.get_params():raise ValueError('Task-specific API exposed a task control')
  if attempts:raise ValueError('Unexpected learning attempt')
  if any(n=='tools' or n.startswith('tools.') for n in sys.modules):raise ValueError('Checkout namespace imported')
  return {'status':'PASS_ZERO_FIT_INSTALLED_ARTIFACT','version':version,'wheel_sha256':actual,'manifest_files':len(manifest['files']),'native_fits':0,'trials':0,'scope':'Import/metadata/RECORD/native defaults only;not LIVE,OS matrix or performance proof.'}

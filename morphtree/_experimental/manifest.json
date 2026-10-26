@@ -26,12 +26,25 @@
     "optuna_trials": 2,
     "time_budget_seconds": 150
   },
+  "development_revision": {
+    "after_sha256": "1136e69d814124a90e999a9f5701fdbda716ab623998529ea042c8fb35c1e682",
+    "before_sha256": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f",
+    "changes": [
+      "Normalize already-loaded pandas.NA to None",
+      "Preserve last valid encoder on failed schema refit"
+    ],
+    "file": "_experimental/preprocessing.py",
+    "id": "PYTHON_COMPAT_2026_10_25_PREPROCESSING",
+    "learning_rules_unchanged": true,
+    "new_LIVE": false,
+    "status": "LOCAL_ZERO_FIT_CANDIDATE_NOT_A_RELEASE"
+  },
   "files": {
-    "__init__.py": "86fe209c0099b79741cca66c39debc28c127657741917fbc6f822c6c089595ad",
+    "__init__.py": "3b446bdb52bd4eaf002446ef4b850e91742530cf305f978115071a25ca95f259",
     "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
     "_experimental/__init__.py": "af368cce8e8a71327fdf5a8b61c81d6d6fdef62f924800408d7f2b2ca1d82e52",
     "_experimental/admission.py": "7afaad7937655739b9e6c4f469d337c9ecaeeecbfbe4f435f669d07e8af5022c",
-    "_experimental/base.py": "f5108ab6abe2abf0ff7f1ec2d078ace0b4998904aa000832a5a7a4b6f260d2f5",
+    "_experimental/base.py": "bd7bbf63350188face8ebf5c9b0c270fd1677760676af665de0123aa7e5221d9",
     "_experimental/component_cache_v2.py": "8bcdf575213ed71a68fbc79cc86e58d2007e1539dd0e5e22ca80273696c3b78f",
     "_experimental/evolution_report.py": "0496feeb84cfdde473679713a9432caa581a017db3dfb114fd30da6296bab642",
     "_experimental/execution_v2.py": "596318d9e55faf9b94ba8430fd78b6152750d299c9ac7778769efd7e4e838c58",
@@ -41,7 +54,7 @@
     "_experimental/numeric_fixture.py": "f05fb8cb1757ebb841863f3a32eb331999bd4c4fc2a51bc1f11cc8a52d6508d9",
     "_experimental/parameter_contract.py": "261ee3edece961d78ec0bccc0c5c7edc77d0797620d93f916b8fb96bff81fea6",
     "_experimental/postfit.py": "493ee24a0c8f5eb6374bf0afbf1f1c083de7d96e9750cad4c7fdc1c759d8d9f4",
-    "_experimental/preprocessing.py": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f",
+    "_experimental/preprocessing.py": "1136e69d814124a90e999a9f5701fdbda716ab623998529ea042c8fb35c1e682",
     "_experimental/processes.py": "577394affa54f66c0bf0bc55ce1619b0e10a7e4f3177c1af0256196f7347e6b7",
     "_experimental/producer.py": "07d07410b8e85efbe9e38ed4761f4495f5e909b3f56f8ff1b52abb639e3afebf",
     "_experimental/product.py": "568b02f61e5f772ab165b72ccf37217c6e48a9d5455480cd1ecbf236893002c4",
@@ -50,11 +63,11 @@
     "_experimental/runtime_io.py": "5e3e7713ac4039c44d4db88837c0ec303d5549bf5c27beb1c690531ae6cc1d1f",
     "_experimental/sampling.py": "02bdb1e39d015d7f762112559f1ff9d826c424cd4166ff83bc6f755a00d44f08",
     "_experimental/support.py": "e6108af84a75a39813a3a665d266a913e104168c8a3cfc334cd6293e07101cfc",
-    "_experimental/target.py": "bdb40d011120687aca7a7860c0db1c3542bdc3a6ff21e3905a114290938e6bc4",
-    "_experimental/training.py": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2",
+    "_experimental/target.py": "57f10718c18ffb8756593d0eae368ef75ed828d472a56f0fc6325ac66b100ef8",
+    "_experimental/training.py": "af9e2cc7ebfc7418cad90c3133993990b196fe94be1670f988f0cd8e3cfb70d3",
     "_experimental/worker.py": "acb03be1dfaef5aac0ebfc5e050d90184d2154e74206fe0fb6c445e705608fc3",
     "_installed.py": "1346e28b929f4103b2203192fcb9a6949320e232927bc312843390df8e9efcfd",
-    "api.py": "3f7e99e0abee8c72446188484193ad96e20590de6381d5d6627a513343484c27",
+    "api.py": "f698f81efa26767bb6faa43536875c9b868c8cedbc886714db383ec699a96a33",
     "backend.py": "881d6025e72cd5675cd6da7b5b2e950d6ade97d63a25735321e5a739c27ef26c",
     "booster.py": "47ba8997353f81f97c5b7cc007b8defc4e7363e300b77df3cf221b30c94257cf",
     "cli.py": "1d6ea702fdb17cb0e1294013dfb83aa1f1e20a28b8905717da6961e5c29ea4d9",
@@ -62,6 +75,7 @@
     "control.py": "2f1c20f9fdaf426ed02500404874445895a022fa2a00fda65e3f195e651ee3cd",
     "data.py": "93f2d65ce24293b2a5111136657d715c3eef89d8b8a156b6913651b2b162e55b",
     "diagnostics.py": "4bef87e037d16e58cb03d4d129ebd42db9eac880342c520aef073daca687adbc",
+    "estimators.py": "3d0bc62c101715e3e7c87df104ef01b562a33304aeb54810bd8a2079a1e298d0",
     "examples.py": "5b1deccceb772346e3fd5f6d2a9756477d99e458713fa015f125f4d7bef2a635",
     "exporting.py": "f6820a028500cc5b138326923359351e55c037d4f4dbb517983e94e1a3fcbaa4",
     "metrics.py": "785f2a7d2c0338aca950107699721adea15d61fa7a6b103e471c99b308b4d6c5",
@@ -127,6 +141,26 @@
     },
     "parent_wheel_sha256": "5e246ce18a38b1aed33a54b5552fde19164ad5c0235ae1d2bf10b41a8e8e8b6f"
   },
+  "post_live002_api_preparation": {
+    "after_sha256": "af9e2cc7ebfc7418cad90c3133993990b196fe94be1670f988f0cd8e3cfb70d3",
+    "before_sha256": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2",
+    "change": "Import the same native classes directly from model, independent of future public facade names",
+    "file": "_experimental/training.py",
+    "learning_rules_unchanged": true,
+    "status": "LOCAL_SOURCE_ZERO_FIT_ONLY_NOT_THE_CAMPAIGN_ARTIFACT"
+  },
+  "release200_preparation": {
+    "public_api": "Shared-engine MorphTreeClassifier and MorphTreeRegressor",
+    "qualification": "Pending; metadata range is not widened by source preparation",
+    "remote_operations": 0,
+    "required_python": [
+      "3.12",
+      "3.13",
+      "3.14",
+      "3.15"
+    ],
+    "status": "UNQUALIFIED_LOCAL_RELEASE_TARGET_NO_TRAINING_AUTHORITY"
+  },
   "schema": "morph030-installed-payload-v1",
   "scientific_training_authority": 0,
   "scope": "FIRST_PUBLIC_RELEASE_SOURCE_CI_PENDING",
@@ -140,6 +174,6 @@
     "new_LIVE": false,
     "parent_wheel_sha256": "14c0f3b5a598bff065fd70688418703d421af38d1453a6605a47088291b5e792"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "workspace_sources_required": false
 }

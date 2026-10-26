@@ -1,23 +1,31 @@
 """Strict checks for MorphTree's manual TestPyPI -> PyPI artifact promotion.
-No publishing or network access occurs unless --require-ci or --verify-origin is explicitly passed.
+Never publishes. Network reads require --require-ci or --require-origin-success.
 """
 import argparse
+from email import policy
+from email.parser import BytesParser
 import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
+import tarfile
+import tomllib
 import urllib.request
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.0.0'
-TAG = 'v1.0.0'
-WHEEL = 'morphtree-1.0.0-py3-none-any.whl'
-SDIST = 'morphtree-1.0.0.tar.gz'
+VERSION = '2.0.0'
+TAG = 'v2.0.0'
+WHEEL = 'morphtree-2.0.0-py3-none-any.whl'
+SDIST = 'morphtree-2.0.0.tar.gz'
 WORKFLOW = 'publish.yml'
-ARTIFACT_NAME = 'morphtree-1.0.0-testpypi-approved'
+ARTIFACT_NAME = 'morphtree-2.0.0-testpypi-approved'
+REQUIRED_PYTHON_SPEC = '>=3.12,<3.15'
+SUPPORTED_PLATFORMS = {'Windows AMD64': ['3.12', '3.13', '3.14'],
+                       'Ubuntu24.04 WSL2 x86_64': ['3.12']}
 
 
 def check_hash(path):
@@ -44,7 +52,33 @@ def git(args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args], text=True, timeout=20).strip()
 
 
+def qualification_gate():
+    """Offline fail-closed check of the separately maintained release decision."""
+    value = json.loads((ROOT / 'docs/QUALIFICATION_2_0.json').read_text('utf8'))
+    required = ['3.12', '3.13', '3.14']
+    if (value.get('schema') != 'morphtree-release-qualification-v1'
+            or value.get('version') != VERSION or value.get('required_windows_python') != required
+            or value.get('release_ready') is not True):
+        raise ValueError('MorphTree 2.0.0 release qualification is incomplete; publication blocked')
+    for version in required:
+        entry = value.get('windows', {}).get(version, {})
+        if any(entry.get(key) != 'PASS' for key in ('wheel','sdist','LIVE_three_tasks','integrity','normal_fresh_pip_install')):
+            raise ValueError('Missing required Windows/Python qualification: ' + version)
+    if value.get('critical_open_issues') != []:
+        raise ValueError('Critical release issues remain open')
+    if value.get('supported_platforms') != SUPPORTED_PLATFORMS or value.get('experimental_python') != ['3.15']:
+        raise ValueError('Declared platform scope differs from owner-approved qualification')
+    linux = value.get('Linux_3_12_3', {})
+    if any(linux.get(key) != 'PASS' for key in ('wheel','sdist','LIVE_three_tasks','integrity','normal_fresh_pip_install')):
+        raise ValueError('Missing required Linux/Python3.12 qualification')
+    project = tomllib.loads((ROOT / 'pyproject.toml').read_text('utf8')).get('project', {})
+    if project.get('version') != VERSION or project.get('requires-python') != REQUIRED_PYTHON_SPEC:
+        raise ValueError('Release metadata must match version2.0.0 and qualified Python3.12-3.14')
+    return value
+
+
 def preflight(require_ci=False):
+    qualification_gate()
     from importlib import metadata
     sha = os.environ.get('GITHUB_SHA', '')
     if not re.fullmatch(r'[0-9a-f]{40}', sha):
@@ -53,12 +87,12 @@ def preflight(require_ci=False):
         raise ValueError('Workflow checkout not at approved SHA')
     if git(['rev-parse', f'refs/tags/{TAG}^{{commit}}']) != sha:
         raise ValueError('Tag does not point to the workflow commit')
-    if not (ROOT / 'pyproject.toml').read_text('utf8').count('version="1.0.0"') == 1:
-        raise ValueError('Release metadata differs from 1.0.0')
+    if not (ROOT / 'pyproject.toml').read_text('utf8').count('version="2.0.0"') == 1:
+        raise ValueError('Release metadata differs from 2.0.0')
     if os.environ.get('GITHUB_EVENT_NAME') != 'workflow_dispatch':
         raise ValueError('Manual workflow required')
     if os.environ.get('GITHUB_REF_NAME') not in ('main', TAG):
-        raise ValueError('Unexpected ref; select main or the v1.0.0 tag')
+        raise ValueError('Unexpected ref; select main or the v2.0.0 tag')
     subprocess.run([sys.executable, '-I', '-B', str(ROOT / 'tools/check_repository.py'),
                     '--git-head', '--expected-commit', sha], check=True, timeout=50)
     if require_ci:
@@ -75,11 +109,73 @@ def list_artifacts(base):
     names = sorted(x.name for x in dist.iterdir() if x.is_file()) if dist.is_dir() else []
     if names != sorted((WHEEL, SDIST)):
         raise ValueError('Distribution directory must contain only the expected wheel and sdist: ' + repr(names))
+    check_artifact_metadata(dist)
     return {name: {'sha256': check_hash(dist / name), 'bytes': (dist / name).stat().st_size}
             for name in (WHEEL, SDIST)}
 
 
+def check_artifact_metadata(dist):
+    """Read metadata without extracting archives, importing or fitting a model."""
+    project = tomllib.loads((ROOT / 'pyproject.toml').read_text('utf8'))['project']
+    expected_dependencies = sorted(project.get('dependencies', []))
+    limit = 256 * 1024
+    wheel_metadata = 'morphtree-2.0.0.dist-info/METADATA'
+    source_metadata = 'morphtree-2.0.0/PKG-INFO'
+    native_suffixes = ('.c','.cc','.cpp','.cxx','.h','.hpp','.rs','.pyx','.pxd','.pyd','.so','.dll','.dylib','.a','.o','.obj','.lib','.exe','.wasm')
+    try:
+        if any((dist / name).stat().st_size > 32 * 1024**2 for name in (WHEEL, SDIST)):
+            raise ValueError('archive size limit')
+        with zipfile.ZipFile(dist / WHEEL) as archive:
+            entries = archive.infolist()
+            if len(entries) > 200 or len({x.filename for x in entries}) != len(entries):
+                raise ValueError('duplicate or excessive wheel members')
+            if any(x.filename.startswith('morphtree/') and x.filename.lower().endswith(native_suffixes) for x in entries):
+                raise ValueError('non-Python proprietary wheel member')
+            wheel_info=archive.getinfo('morphtree-2.0.0.dist-info/WHEEL')
+            if wheel_info.file_size > limit:
+                raise ValueError('oversized WHEEL metadata')
+            wheel_headers=BytesParser(policy=policy.default).parsebytes(archive.read(wheel_info),headersonly=True)
+            if wheel_headers.get_all('Root-Is-Purelib',[])!=['true'] or wheel_headers.get_all('Tag',[])!=['py3-none-any']:
+                raise ValueError('wheel must be Pure Python py3-none-any')
+            entry = archive.getinfo(wheel_metadata)
+            if entry.file_size > limit:
+                raise ValueError('oversized wheel metadata')
+            wheel_raw = archive.read(entry)
+        source_raw = None
+        total = 0
+        with tarfile.open(dist / SDIST, 'r|gz') as archive:
+            for count, entry in enumerate(archive, 1):
+                total += entry.size
+                if count > 500 or entry.size < 0 or entry.size > 16 * 1024**2 or total > 32 * 1024**2:
+                    raise ValueError('source inventory limit')
+                if entry.name.startswith('morphtree-2.0.0/morphtree/') and entry.name.lower().endswith(native_suffixes):
+                    raise ValueError('non-Python proprietary sdist member')
+                if entry.name == source_metadata:
+                    if source_raw is not None or not entry.isfile() or entry.size > limit:
+                        raise ValueError('invalid or duplicate source metadata')
+                    with archive.extractfile(entry) as stream:
+                        source_raw = stream.read(limit + 1)
+        if source_raw is None:
+            raise ValueError('missing source metadata')
+        normalize_spec = lambda value: sorted(x.strip() for x in value.split(','))
+        for raw in (wheel_raw, source_raw):
+            message = BytesParser(policy=policy.default).parsebytes(raw, headersonly=True)
+            for key, expected in (('Name', 'morphtree'), ('Version', VERSION)):
+                if message.get_all(key, []) != [expected]:
+                    raise ValueError('incorrect or duplicate ' + key)
+            specs = message.get_all('Requires-Python', [])
+            if len(specs) != 1 or normalize_spec(specs[0]) != normalize_spec(REQUIRED_PYTHON_SPEC):
+                raise ValueError('unqualified Requires-Python')
+            if sorted(message.get_all('Requires-Dist', [])) != expected_dependencies:
+                raise ValueError('dependencies differ from qualified source')
+            if message.defects:
+                raise ValueError('malformed metadata')
+    except (ValueError, KeyError, OSError, EOFError, tarfile.TarError, zipfile.BadZipFile) as error:
+        raise ValueError('Invalid release artifact metadata: ' + str(error)) from error
+
+
 def make_manifest(base):
+    qualification_gate()
     base = Path(base)
     artifacts = list_artifacts(base)
     run_id = os.environ.get('GITHUB_RUN_ID', '')
@@ -96,6 +192,7 @@ def make_manifest(base):
 
 
 def verify(base, expected_run_id=None, remote=False):
+    qualification_gate()
     base = Path(base)
     meta = json.loads((base / 'release-meta' / 'provenance.json').read_text('utf8'))
     if meta.get('schema') != 'morphtree-artifact-provenance-v1' or meta.get('version') != VERSION:
@@ -124,11 +221,15 @@ def verify(base, expected_run_id=None, remote=False):
 def main():
     p = argparse.ArgumentParser()
     sub = p.add_subparsers(dest='cmd', required=True)
+    sub.add_parser('check-qualification')
     q = sub.add_parser('preflight'); q.add_argument('--require-ci', action='store_true')
     q = sub.add_parser('make-manifest'); q.add_argument('folder')
     q = sub.add_parser('verify'); q.add_argument('folder'); q.add_argument('--origin-run-id'); q.add_argument('--require-origin-success', action='store_true')
     args = p.parse_args()
-    if args.cmd == 'preflight':
+    if args.cmd == 'check-qualification':
+        qualification_gate()
+        print('PASS_RELEASE_QUALIFICATION')
+    elif args.cmd == 'preflight':
         preflight(args.require_ci)
     elif args.cmd == 'make-manifest':
         make_manifest(args.folder)

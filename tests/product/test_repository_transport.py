@@ -1,5 +1,5 @@
 """Zero-fit source-transport contracts. No Git repository or remote is created."""
-import hashlib,importlib.util,io,tarfile,unittest
+import hashlib,importlib.util,io,tarfile,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 
@@ -44,5 +44,24 @@ class RepositoryTransportTests(unittest.TestCase):
    with patch.object(checker,'ROOT',missing):
     with self.assertRaises(ValueError):checker.verify_git_head()
     self.assertFalse(missing.exists())
+
+ def test_pure_python_policy_rejects_native_sources_and_disguised_binary(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=Path(directory);package=root/'morphtree';package.mkdir()
+   (package/'engine.py').write_text('def identity(x): return x\n',encoding='utf8')
+   self.assertEqual(checker.verify_python_engine(root),1)
+   for name,body in (('split.c',b'int x;'),('split.pyd',b'binary fixture'),('hidden.dat',b'\x7fELFfixture')):
+    path=package/name;path.write_bytes(body)
+    with self.subTest(name=name),self.assertRaisesRegex(ValueError,'Pure Python'):
+     checker.verify_python_engine(root)
+    path.unlink()
+
+ def test_pure_python_policy_rejects_jit_and_custom_library_loaders(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=Path(directory);package=root/'morphtree';package.mkdir();path=package/'engine.py'
+   for code in ('import numba\n','import importlib\nimportlib.import_module("numba")\n','import ctypes\nctypes.CDLL("proprietary.dll")\n'):
+    path.write_text(code,encoding='utf8')
+    with self.subTest(code=code),self.assertRaisesRegex(ValueError,'Pure Python'):
+     checker.verify_python_engine(root)
 
 if __name__=='__main__':unittest.main(verbosity=2)

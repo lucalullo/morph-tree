@@ -1,4 +1,4 @@
-name: MorphTree 1.0.0 - manually publish validated artifacts
+name: MorphTree 2.0.0 - manually publish validated artifacts
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: morphtree-1-0-0-publication
+  group: morphtree-2-0-0-publication
   cancel-in-progress: false
 
 env:
@@ -79,7 +79,7 @@ jobs:
       - name: Retain immutable files for identical-file PyPI promotion
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: morphtree-1.0.0-testpypi-approved
+          name: morphtree-2.0.0-testpypi-approved
           path: |
             dist/*.whl
             dist/*.tar.gz
@@ -94,7 +94,7 @@ jobs:
     timeout-minutes: 10
     environment:
       name: testpypi
-      url: https://test.pypi.org/project/morphtree/1.0.0/
+      url: https://test.pypi.org/project/morphtree/2.0.0/
     permissions:
       contents: read
       id-token: write
@@ -104,7 +104,7 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: morphtree-1.0.0-testpypi-approved
+          name: morphtree-2.0.0-testpypi-approved
           path: release
       - name: Verify the exact wheel and sdist before upload
         run: python -I -B tools/release_gate.py verify release --origin-run-id '${{ github.run_id }}'
@@ -122,7 +122,7 @@ jobs:
     timeout-minutes: 10
     environment:
       name: pypi
-      url: https://pypi.org/project/morphtree/1.0.0/
+      url: https://pypi.org/project/morphtree/2.0.0/
     permissions:
       actions: read
       contents: read
@@ -133,7 +133,7 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: morphtree-1.0.0-testpypi-approved
+          name: morphtree-2.0.0-testpypi-approved
           repository: ${{ github.repository }}
           run-id: ${{ inputs.testpypi_run_id }}
           github-token: ${{ github.token }}

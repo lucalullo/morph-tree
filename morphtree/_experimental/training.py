@@ -5,7 +5,9 @@ and supply execute_native before any physical training. No admission is issued
 by constructing the estimator, by a deadline or by this module's existence.
 """
 from dataclasses import replace, asdict
-from morphtree import MorphTreeClassifier, MorphTreeMulticlassClassifier, MorphTreeRegressor
+# Resolve native learners at their implementation module. Public task facades
+# may later use the same names without redirecting native work into themselves.
+from ..model import MorphTreeClassifier, MorphTreeMulticlassClassifier, MorphTreeRegressor
 from morphtree.config import AlgorithmGenome, HyperParams, MorphTreeConfig
 from .support import FamilyModel
 from .sampling import bootstrap

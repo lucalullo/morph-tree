@@ -1,16 +1,24 @@
-"""Research-only, bounded TRAIN-local input schema. No target statistics or fitting.
+"""Bounded TRAIN-local schema shared by the public runtime and standalone export.
 
 String categoricals use sorted one-hot columns plus separate missing/unseen
 channels. Numeric missing values stay None for the native missing split rule.
-No optional dependency is imported. Each validation fold needs its own instance.
+No optional dependency is imported. pandas.NA is recognized only when pandas is
+already loaded by the caller. Each validation fold needs its own instance.
 """
 import copy
 import math
+import sys
 from numbers import Real
 
 
 def _m26_missing(v):
-    return v is None or isinstance(v, Real) and math.isnan(float(v))
+    if v is None:
+        return True
+    if isinstance(v, Real):
+        return math.isnan(float(v))
+    # Never evaluate NA's truth value or import pandas in a standalone runtime.
+    pandas = sys.modules.get('pandas')
+    return pandas is not None and v is getattr(pandas, 'NA', None)
 
 
 def _m26_scalar(v):
@@ -24,7 +32,7 @@ def _m26_scalar(v):
         z = float(v)
         if math.isfinite(z):
             return z
-    raise ValueError('Expected finite numeric, string category, None or numeric NaN; infinity/objects are unsupported')
+    raise ValueError('Expected finite numeric, string category, None, numeric NaN or pandas.NA; infinity/objects are unsupported')
 
 
 def _m26_rows(X):
@@ -61,8 +69,9 @@ class TrainEncoder:
                 columns.append({'kind': 'categorical', 'vocabulary': vocab})
             else:
                 columns.append({'kind': 'numeric'})
-        self.state_ = {'schema': 'morph026-train-encoder-v1', 'names': names, 'columns': columns}
-        self.width_=self.from_dict(self.state_).width_  # Same bounds as durable load.
+        state = {'schema': 'morph026-train-encoder-v1', 'names': names, 'columns': columns}
+        checked = self.from_dict(state)  # Validate before replacing a fitted schema.
+        self.state_, self.width_ = checked.state_, checked.width_
         return self
 
     def to_dict(self):

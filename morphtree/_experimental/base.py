@@ -40,7 +40,7 @@ class Base:
         self._validate()
 
     def _validate(self):
-        if self.task not in ('auto', 'binary', 'multiclass', 'regression') or self.morphing not in ('auto', 'none') or self.tuning not in ('auto', 'none', 'optuna') or (self.preset != 'balanced'):
+        if self.task not in ('auto', 'classification', 'binary', 'multiclass', 'regression') or self.morphing not in ('auto', 'none') or self.tuning not in ('auto', 'none', 'optuna') or (self.preset != 'balanced'):
             raise ValueError('Unsupported task/morphing/tuning/preset')
         if self.families not in ('auto', 'boost', 'bag'):
             raise ValueError('families must be auto, boost or bag')

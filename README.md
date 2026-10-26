@@ -10,109 +10,154 @@ The proprietary learning engine is written entirely in **Python**, without compi
 
 ## Highlights
 
-- One public `MorphTree` API for binary, multiclass and single-target regression.
-- Native boosting and bootstrap bagging tested as applicable initial families; **one selected parent** proceeds.
-- Error diagnosis, a typed **depthwise structural mutation**, child evaluation, acceptance/rollback and a finite evolutionary loop.
-- Freeze before optional **numerical-only Optuna** finalization (`use_optuna=False` disables only tuning).
-- Prediction, bounded JSON save/load, algorithm/recipe/history/report inspection and standalone **inference** export.
-- Reproducible recorded decisions, conservative default budget and published limitations.
-- No XGBoost, LightGBM, CatBoost or scikit-learn learners as internal training engines.
+- **Two explicit estimators:** `MorphTreeClassifier` for binary and multiclass classification, and `MorphTreeRegressor` for regression.
+- **Automatic workflow:** `fit(X, y)` handles supported input data, initial family screening, parent selection, diagnosis, structural search and model finalization.
+- **Introspection-guided evolution:** candidate mutations change executable learning rules, not just numerical hyperparameters.
+- **Verified rollback:** non-improving descendants are rejected and the current parent is preserved.
+- **Optuna by default:** numerical tuning runs after the structural program is frozen; `use_optuna=False` disables only that final tuning.
+- **Native tabular preprocessing:** numeric and categorical features, missing values and supported pandas nullable types.
+- **Portable model artifacts:** bounded JSON save/load, algorithm inspection and standalone inference export.
 
 ## Installation
 
-Use **Windows x64 with Python 3.12** for the environment covered by retained qualification. From this repository's root:
+MorphTree requires **Python 3.12–3.14**. The qualified release environments are Windows AMD64 with Python 3.12–3.14 and Ubuntu 24.04 WSL2 x86_64 with Python 3.12. Other platform/version combinations have not been fully qualified. Python 3.15 remains experimental and is excluded from the supported installation range.
 
-```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\python -m pip install .
-.venv\Scripts\python -m pip check
-.venv\Scripts\python -c "import morphtree; print(morphtree.__version__)"
+Install the published package with:
+
+```bash
+python -m pip install morphtree
 ```
 
-Optuna `5.0.0` is a declared dependency. The command `pip install morphtree==1.0.0` is only appropriate **after** this exact distribution is released to an index. See [installation](docs/INSTALLATION.md) and [dependencies](DEPENDENCIES.md).
+Or install from the repository root:
+
+```bash
+python -m pip install .
+```
+
+Optuna is installed as a required dependency. See [installation details](docs/INSTALLATION.md) and [dependency information](DEPENDENCIES.md).
 
 ## Quick start
 
+### Classification
+
+Use the same estimator for binary and multiclass targets:
+
 ```python
-from morphtree import MorphTree
+from morphtree import MorphTreeClassifier
 
-model = MorphTree(random_state=42, verbosity=0)
+model = MorphTreeClassifier(random_state=42, verbosity=0)
 model.fit(X_train, y_train)
-predictions = model.predict(X_test)
 
-# Classification only:
+predictions = model.predict(X_test)
 probabilities = model.predict_proba(X_test)
 ```
 
-If automatic task detection is ambiguous, supply `task="binary"`, `task="multiclass"` or `task="regression"` explicitly. The same evolutionary pipeline applies to each task; regression does not offer `predict_proba()`.
+### Regression
 
-- [Binary classification example](examples/binary.py)
-- [Multiclass classification example](examples/multiclass.py)
-- [Regression example](examples/regression.py)
-- [API reference](docs/API_REFERENCE_1_0.md)
+```python
+from morphtree import MorphTreeRegressor
+
+model = MorphTreeRegressor(random_state=42, verbosity=0)
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+```
+
+The estimator determines the task. No `task` parameter or manual learner selection is needed. Binary versus multiclass classification is handled inside `MorphTreeClassifier`.
+
+See the [binary](examples/binary.py), [multiclass](examples/multiclass.py) and [regression](examples/regression.py) examples.
 
 ## How MorphTree works
 
 ```text
-Tabular data X, y
-       |
-       v
-Test qualified applicable native families
-       |
-       v
-Select ONE parent -> diagnose errors
-       |
-       v
-Mutate executable learning rules -> train and evaluate child
-       |
-       +-- justified improvement --> accept as new parent --+
-       |                                                     |
-       +-- otherwise -------------> rollback                 |
-       |                                                     |
-       +<---------- repeat within finite budget <------------+
-       |
-       v
-Freeze learning program -> optional numerical Optuna -> model + history
+Tabular dataset (X, y)
+          |
+          v
+Screen qualified, applicable native tree learners
+          |
+          v
+Choose one parent and diagnose its errors
+          |
+          v
+Propose an executable structural mutation
+          |
+          v
+Train and evaluate the descendant
+          |
+          +-- Verified improvement --> Accept as new parent --+
+          |                                                   |
+          +-- Otherwise -----------> Roll back ---------------+
+          |                                                   |
+          +<------------- Repeat within budget <--------------+
+          |
+          v
+Freeze the selected learning program
+          |
+          v
+Final numerical Optuna tuning (enabled by default)
+          |
+          v
+Trained model + program + recipe + mutation history
 ```
 
-A mutation changes the executed growth rule, not merely a parameter. The present operator set is **deliberately limited**; descendants require retraining. A valid run may accept **no** mutation and retain its parent. [Canonical definition](docs/Relazione_MorphTree.txt) · [Architecture](docs/ARCHITECTURE_1_0.md).
+MorphTree currently qualifies a limited set of native learning families and a **depthwise structural mutation**. A run can correctly reject every proposed descendant and return the original parent. This is not a failure of the evolutionary process. The implementation does not claim that all envisioned mutation operators or native tree families are already available.
 
-## Parameters and model inspection
+For more detail, see the [architecture](docs/ARCHITECTURE_1_0.md) and [algorithm specification](docs/Relazione_MorphTree.txt).
 
-Defaults include a **150-second cooperative time budget**, one worker, two initial stages/members, up to two structural attempts and two final numeric trials. Controls include `task`, `random_state`, `verbosity`, `time_budget`, `max_mutations`, `n_trials` and `use_optuna`. See the API reference for the exact accepted arguments and bounds.
+## Inspecting and saving models
+
+After fitting, you can inspect what MorphTree actually did and save the trained result:
 
 ```python
-model = MorphTree(task="regression", random_state=42, use_optuna=False)
-model.fit(X_train, y_train)
-model.save("model.json")
-restored = MorphTree.load("model.json")
-print(restored.describe_algorithm())
-program = restored.get_algorithm_program()
-recipe = restored.get_recipe()
-history = restored.get_mutation_history()
-report = restored.get_search_report()
+from hashlib import sha256
+from pathlib import Path
+from morphtree import MorphTreeClassifier
+
+# model is an already fitted MorphTreeClassifier.
+program = model.get_algorithm_program()
+recipe = model.get_recipe()
+history = model.get_mutation_history()
+report = model.get_search_report()
+
+path = Path("model.json")
+model.save(path)
+checksum = sha256(path.read_bytes()).hexdigest()
+restored = MorphTreeClassifier.load(path, sha256=checksum)
+predictions = restored.predict(X_test)
+
 restored.export_standalone("predictor.py")
 ```
 
-`export_standalone()` exports inference only. `export_algorithm()` exports a bounded training-program fragment requiring a matching MorphTree runtime, **not** the autonomous search as a standalone trainer.
+The JSON model retains learned state and preprocessing and can be loaded without retraining. For a transferred model, obtain the expected SHA-256 digest from a trusted source; calculating a digest from an untrusted file alone does not authenticate it. `export_standalone()` exports **inference**, not a standalone implementation of the evolutionary training process.
 
-## Evidence and limitations
+You can inspect the numeric-tuning outcome through `model.report()`. Optuna is enabled by default but may stop or be skipped when a documented budget condition applies. Set `use_optuna=False` to disable final numeric tuning while keeping structural evolution enabled.
 
-Authorized earlier LIVE campaigns exercised real training, out-of-fold components, mutation proposals, **correct rollback**, freeze, Optuna and model I/O for all three tasks on small synthetic inputs. Observed descendants in those campaigns did **not** qualify as improvements. Accepted-child continuation has software-test evidence, **not** independent LIVE proof of better generalization.
+## Data handling and limits
 
-The current product scope is conservative: dense tabular inputs, single-label classification / single-target regression, bounded feature and payload sizes, a limited native portfolio and a single qualified depthwise mutation operator. Training cost includes **every** initial family trial, diagnosis, OOF component, mutation and Optuna trial. Timeout/memory controls are partly cooperative and **do not guarantee** an absolute peak RSS cap. Neither predictive competitiveness nor independent adaptive benefit has been established.
+MorphTree accepts supported dense NumPy arrays, pandas DataFrames and rectangular Python sequences. It handles numerical values, booleans, string categories, `None`, `NaN` and `pandas.NA`, including supported nullable pandas dtypes. Categorical vocabularies are learned from training data, and unseen categories are handled through dedicated encoding paths.
 
-See [benchmarks and disclosure](BENCHMARKS.md), [research](research/README.md), [release qualification](docs/RELEASE_QUALIFICATION.md) and [roadmap](ROADMAP.md).
+Current limits include **64 observed categories per categorical column**, **128 encoded features**, an approximately **2 MiB public input-payload limit** and **65,536 training rows**. Sparse data, raw datetime features and multioutput targets are not supported. Time and memory safeguards are bounded or cooperative and do not guarantee an absolute peak memory limit.
+
+See the [API reference](docs/API_2_0.md) for input contracts, parameters, budget settings and error handling.
+
+## Validation and performance
+
+The native evolutionary pipeline has been exercised through real training for binary classification, multiclass classification and regression in the documented Windows and Ubuntu WSL2 profiles. These tests cover diagnosis, executed structural descendants, rollback, frozen programs, Optuna, persistence and inference. Accepted-child continuation has software-test coverage, but beneficial mutation acceptance has not yet been demonstrated in independent LIVE evaluations.
+
+MorphTree does **not** claim universal predictive superiority, proven gains from autonomous evolution or performance leadership over established tree-learning libraries. Fit cost includes screening, out-of-fold diagnosis, descendants and final numerical tuning.
+
+See [benchmark disclosures](BENCHMARKS.md), [qualification](docs/RELEASE_QUALIFICATION.md) and the [roadmap](ROADMAP.md).
 
 ## Documentation
 
-- [Installation](docs/INSTALLATION.md) · [Public API](docs/API_REFERENCE_1_0.md)
-- [Architecture](docs/ARCHITECTURE_1_0.md) · [Canonical project specification](docs/Relazione_MorphTree.txt)
-- [Research summary and experiment registry](research/README.md)
-- [Release qualification](docs/RELEASE_QUALIFICATION.md) · [Manual CI instructions](docs/CI_PREPARATION.md)
-- [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
-
-The public research section is **curated**. The extensive original experiment reports, internal tools and private evidence remain in the separate full development archive for Codex. Research records include negative and inconclusive outcomes; their IDs are retained without claiming new independent studies or earlier official releases.
+- [API reference](docs/API_2_0.md)
+- [Installation and dependencies](docs/INSTALLATION.md)
+- [Architecture](docs/ARCHITECTURE_1_0.md)
+- [Algorithm specification](docs/Relazione_MorphTree.txt)
+- [Research overview](research/README.md)
+- [Release qualification](docs/RELEASE_QUALIFICATION.md)
+- [Contributing](CONTRIBUTING.md) and [security](SECURITY.md)
+- [Changelog](CHANGELOG.md)
 
 ## License
 

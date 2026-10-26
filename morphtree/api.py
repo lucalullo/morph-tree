@@ -20,7 +20,7 @@ from ._experimental.execution_v2 import require_session, ACTIVE, Session, PUBLIC
 
 _USER_RUN_LOCK=threading.Lock()
 PUBLIC_USER_ENABLED=True  # Enabled only by the explicitly versioned product build.
-PUBLIC_USER_RUNTIME='1.0.0'
+PUBLIC_USER_RUNTIME='2.0.0'
 
 
 def _user_identity(package, q):

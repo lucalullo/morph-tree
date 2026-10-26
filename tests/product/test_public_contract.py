@@ -22,8 +22,8 @@ class PublicContract(unittest.TestCase):
  def test_disable_only_numerical_tuning(self):
   m=MorphTree(use_optuna=False);self.assertTrue(m._evolving_program);self.assertEqual(m.tuning,'none')
  def test_distribution_and_native_format_are_distinct(self):
-  self.assertEqual(morphtree.__version__,'1.0.0')
-  self.assertEqual(importlib.metadata.version('morphtree'),'1.0.0')
+  self.assertEqual(morphtree.__version__,'2.0.0')
+  self.assertEqual(importlib.metadata.version('morphtree'),'2.0.0')
   self.assertEqual(morphtree.__native_core_version__,'0.6.0.dev0')
  def test_invalid_controls_are_rejected(self):
   for kwargs in ({'max_mutations':-1},{'use_optuna':'yes'},{'verbosity':7},{'n_jobs':2}):
