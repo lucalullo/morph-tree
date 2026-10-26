@@ -161,7 +161,7 @@ See [benchmark disclosures](BENCHMARKS.md), [qualification](docs/RELEASE_QUALIFI
 
 ## License
 
-Released under the [MIT License](LICENSE).
+MorphTree is created by Luca Lullo and released under the [MIT License](LICENSE).
 
 ## Author
 
