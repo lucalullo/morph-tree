@@ -1,0 +1,31 @@
+name: Feature request
+description: Suggest an API, usability, or research improvement.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not share private datasets, credentials, paths, or unpublished
+        research evidence. Structural learning changes require a separate,
+        preregistered experimental protocol and maintainer approval.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and use case
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested change
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Public API, persistence and evolution impact
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reproduction or proposed evaluation
+      description: Comparisons should include the static-parent control where relevant; do not claim unmeasured improvements.

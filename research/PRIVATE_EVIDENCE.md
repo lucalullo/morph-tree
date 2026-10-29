@@ -7,5 +7,4 @@ Use research/EVIDENCE_INDEX.json for IDs and available SHA-256 handles. The owne
 retains the private evidence map and original bytes. Missing material is neither
 a fixture nor an independently reproduced result. No access or replay permission
 follows from a published reference. Full original research hash audits require
-the original workspace;public navigation projections are explicitly recorded
-in PUBLIC_PROJECTIONS.json.
+the original workspace;public navigation references do not substitute for the retained original evidence.

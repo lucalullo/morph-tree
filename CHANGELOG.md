@@ -1,6 +1,37 @@
+# 2.1.0 — native candidate, owner-approved version, not yet published
+
+Ordered C histograms and cached traversal integrated; Python API and mathematics
+retained. Windows/Ubuntu WSL2 Python 3.12–3.14 equivalence is verified within the
+documented scales. Source builds require a C toolchain; compatible wheels do not.
+The final corrective review removes a persistent test artifact, separates current
+runtime qualification from historical metadata, and pins buffers before callbacks
+can resize them. No learning rules, capacity defaults or Optuna policy change.
+The earlier 3.0.0 proposal is superseded by the owner's 2.1.0 decision.
+The Python-only reference and its release notes below remain historical evidence.
+
 # Changelog
 
-## 2.0.0 — local development target, not release-ready
+## 2.1.0 â€” local release candidate
+
+- Scale dense tabular input through compact columns,index views,resource admission
+  and automatic inference batches;retain all eligible input for final refit.
+- Preserve native family screening,one parent,TRAIN-only OOF diagnosis,structural
+  descendants,acceptance/rollback,lineage continuation,freeze and default Optuna.
+- Retain genuine pure/tuned/selected weights,atomic checkpoints,validated JSON,
+  future-refit settings and safe failed-refit rollback.
+- Restore2.0None/auto controls,workdir,stop_reason_,typed historical model loading
+  and frozen native training export;preserve standalone inference separately.
+- Restore the console entry point;CLI reads both model generations with resource
+  admission instead of the historical2MiB input cap.
+- Qualify Windows/Linux Python3.12â€“3.14 within the documented profiles. Ordinary
+  Python3.15,macOS and authenticated hosted notebook execution remain unqualified.
+- Preserve negative scientific evidence;no universal baseline-superiority claim.
+
+## Historical release notes retained unchanged below
+
+# Changelog
+
+## 2.0.0 â€” local development target, not release-ready
 
 - Add public task-specific Classifier/Regressor facades sharing the existing
   native evolutionary engine; classification resolves binary/multiclass only.
@@ -13,7 +44,7 @@
   3.12.10/3.13.17/3.14.9 and the prepared 3.15.1 Pure-PyYAML laboratory profile.
   Preserve exact numerical comparisons and correct structural rollback.
 - Apply the explicit owner-approved first-release scope: Windows AMD64/Python
-  3.12–3.14 and Ubuntu24.04 WSL2 x86_64/Python3.12. Retain ordinary3.15 installation
+  3.12â€“3.14 and Ubuntu24.04 WSL2 x86_64/Python3.12. Retain ordinary3.15 installation
   as an experimental future-support blocker, preserving all laboratory evidence.
 - Reject positive release decisions with narrow or inconsistent package metadata;
   verify the public task constructors during installed-artifact identity checks.
@@ -47,4 +78,4 @@
 - Supply a documented research archive retaining negative, failed and inconclusive experiments and the canonical product specification.
 - Target Windows x64 and CPython 3.12 initially; document limits and the manual hosted-CI verification gate.
 
-This is the **first public release**. Earlier experimental labels were local research and packaging checkpoints, not previous public releases. For their preserved details see [historical development changelog](research/history/DEVELOPMENT_CHANGELOG_ORIGINAL.md).
+This is the **first public release**. Earlier experimental labels were local research and packaging checkpoints, not previous public releases. For their preserved details see [historical development changelog](research/HISTORY.md).

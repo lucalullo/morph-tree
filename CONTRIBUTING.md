@@ -1,7 +1,9 @@
-# Contributing to MorphTree
+# Contributing
 
-MorphTree is an experimental native tree-learning project. Please report bugs with a minimal reproducer, task, Python/OS versions, expected/observed behavior and available logs **without** personal data, private research or credentials.
-
-The default GitHub Actions job is **zero-fit only**: it checks packaging, source integrity and public contracts, not predictive quality. Do not run or publish full research experiments without a specified data protocol, budget, applicable permissions and independent validation. See [documentation](docs/RELEASE_QUALIFICATION.md) and [security](SECURITY.md).
-
-Source changes must update the [local source manifest](LOCAL_SOURCE_MANIFEST.json) and pass `python -I -B tools/check_repository.py`. The first release is scoped to Windows x64/Python 3.12; other platforms should not be described as qualified without evidence. No package index or GitHub release publication is authorized by a code contribution.
+Preserve historical models, public Python APIs and diagnostic evolution.
+Test native ordering, NaN/signed-zero behavior, buffer safety and failures.
+Run tools/check_repository.py and tools/build_artifacts.py; install wheel and
+sdist in separate venvs and run tools/check_installed.py with each interpreter.
+Tests forbid learner fits. Change inventories only after reviewed source changes.
+Never weaken correctness gates to hide drift. New LIVE work needs a finite
+approved protocol. Only the owner handles Git, hosted CI and publication.

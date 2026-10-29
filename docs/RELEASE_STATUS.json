@@ -1,0 +1,15 @@
+{
+  "local_technical_status": "GO_QUALIFIED_SCOPE",
+  "previous_version_proposal": "3.0.0 superseded by owner",
+  "proposed_version": null,
+  "publication_approved": false,
+  "remaining": [
+    "Owner final transfer approval",
+    "Hosted CI on definitive transferred commit",
+    "Owner TestPyPI validation before PyPI approval"
+  ],
+  "schema": "MORPHTREE_DELIVERY_GATE_1",
+  "status": "NO_GO_PUBLICATION",
+  "version": "2.1.0",
+  "version_approved": true
+}

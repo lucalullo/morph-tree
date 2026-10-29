@@ -1,63 +1,35 @@
-name: MorphTree 2.0.0 - manually publish validated artifacts
-
+name: MorphTree publication - owner approval required
 on:
   workflow_dispatch:
     inputs:
-      destination:
-        description: 'testpypi first; pypi only after verified TestPyPI release'
+      expected_version:
+        description: Final approved version; internal lab versions are refused
+        required: true
+        type: string
+      target:
         required: true
         type: choice
-        options:
-          - testpypi
-          - pypi
-      confirm_release:
-        description: 'I explicitly authorize publication to the selected public package index'
+        options: [testpypi, pypi]
+      reviewed_build_run:
+        description: Successful build run from the reviewed final commit
         required: true
-        type: boolean
-        default: false
-      testpypi_run_id:
-        description: 'Required only for pypi: successful TestPyPI workflow run ID'
-        required: false
         type: string
-
+      windows_artifact:
+        required: true
+        type: string
+        default: morphtree-windows-latest-3.12
+      linux_artifact:
+        required: true
+        type: string
+        default: morphtree-ubuntu-24.04-3.12
 permissions:
   contents: read
-
-concurrency:
-  group: morphtree-2-0-0-publication
-  cancel-in-progress: false
-
-env:
-  PYTHONUTF8: '1'
-  PYTHONDONTWRITEBYTECODE: '1'
-  SOURCE_DATE_EPOCH: '1792022400'
-  PIP_NO_INPUT: '1'
-
+  actions: read
 jobs:
-  release-preflight:
-    if: ${{ inputs.confirm_release }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      actions: read
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - name: Require exact tagged commit and successful hosted CI
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python -I -B tools/release_gate.py preflight --require-ci
-
-  build-once-for-testpypi:
-    if: ${{ inputs.destination == 'testpypi' }}
-    needs: release-preflight
-    runs-on: windows-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: ${{ inputs.target }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -65,85 +37,30 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Reconfirm source and distribution version
-        shell: pwsh
-        run: |
-          python -I -B tools/check_repository.py --git-head --expected-commit '${{ github.sha }}'
-          if ($LASTEXITCODE -ne 0) { throw 'Source gate failed' }
-      - name: Build exactly one wheel and one sdist
-        run: |
-          python -m pip --isolated --disable-pip-version-check install --no-cache-dir build==1.3.0 hatchling==1.27.0
-          python -m build
-          python -I -B tools/release_gate.py make-manifest .
-          python -I -B tools/release_gate.py verify .
-      - name: Retain immutable files for identical-file PyPI promotion
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - run: python -I -B tools/check_repository.py
+      - uses: actions/download-artifact@v4
         with:
-          name: morphtree-2.0.0-testpypi-approved
-          path: |
-            dist/*.whl
-            dist/*.tar.gz
-            release-meta/provenance.json
-          if-no-files-found: error
-          retention-days: 1
-
-  publish-testpypi:
-    if: ${{ inputs.destination == 'testpypi' }}
-    needs: build-once-for-testpypi
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/project/morphtree/2.0.0/
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          persist-credentials: false
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: morphtree-2.0.0-testpypi-approved
-          path: release
-      - name: Verify the exact wheel and sdist before upload
-        run: python -I -B tools/release_gate.py verify release --origin-run-id '${{ github.run_id }}'
-      - name: Upload only to TestPyPI via Trusted Publishing
-        uses: pypa/gh-action-pypi-publish@v1.14.2
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: release/dist/
-          skip-existing: false
-
-  publish-pypi:
-    if: ${{ inputs.destination == 'pypi' && inputs.testpypi_run_id != '' }}
-    needs: release-preflight
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: pypi
-      url: https://pypi.org/project/morphtree/2.0.0/
-    permissions:
-      actions: read
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
-          persist-credentials: false
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: morphtree-2.0.0-testpypi-approved
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.testpypi_run_id }}
+          name: ${{ inputs.windows_artifact }}
+          run-id: ${{ inputs.reviewed_build_run }}
           github-token: ${{ github.token }}
-          path: release
-      - name: Fail closed unless TestPyPI run and artifact hashes match
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python -I -B tools/release_gate.py verify release --origin-run-id '${{ inputs.testpypi_run_id }}' --require-origin-success
-      - name: Publish the SAME files to official PyPI only after separate approval
-        uses: pypa/gh-action-pypi-publish@v1.14.2
+          path: dist/windows
+      - uses: actions/download-artifact@v4
         with:
-          packages-dir: release/dist/
-          skip-existing: false
+          name: ${{ inputs.linux_artifact }}
+          run-id: ${{ inputs.reviewed_build_run }}
+          github-token: ${{ github.token }}
+          path: dist/linux
+      - name: Install upload frontend
+        run: python -m pip --isolated install twine
+      - name: Enforce version, qualification and reviewed artifact hashes
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.MORPHTREE_PUBLICATION_TOKEN }}
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+          TARGET_REPOSITORY: ${{ inputs.target }}
+        shell: python
+        run: |
+          import os,subprocess,sys
+          subprocess.run([sys.executable,'-I','-B','tools/publish_reviewed.py',
+                          '--target',os.environ['TARGET_REPOSITORY'],
+                          '--expected-version',os.environ['EXPECTED_VERSION']],check=True)

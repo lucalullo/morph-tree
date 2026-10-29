@@ -1,25 +1,22 @@
-name: MorphTree 2.0.0 - zero-fit qualification
-
+name: MorphTree native candidate - manual zero-fit build
 on:
   workflow_dispatch:
     inputs:
       confirm_zero_fit_scope:
-        description: 'Authorize four serial scoped zero-fit jobs; no model training or publication'
+        description: Build and test six installed profiles without training or publication
         required: true
         type: boolean
         default: false
-
 permissions:
   contents: read
 concurrency:
-  group: morphtree-2-0-0-qualification
+  group: morphtree-native-qualification
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUTF8: '1'
   SOURCE_DATE_EPOCH: '1792022400'
   PIP_NO_INPUT: '1'
-
 jobs:
   scoped-zero-fit:
     if: ${{ inputs.confirm_zero_fit_scope }}
@@ -27,15 +24,8 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        include:
-          - os: windows-latest
-            python: '3.12'
-          - os: windows-latest
-            python: '3.13'
-          - os: windows-latest
-            python: '3.14'
-          - os: ubuntu-24.04
-            python: '3.12'
+        os: [windows-latest, ubuntu-24.04]
+        python: ['3.12', '3.13', '3.14']
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -45,32 +35,31 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: ${{ matrix.python }}
-      - name: Verify committed source inventory
-        run: python -I -B tools/check_repository.py --git-head --expected-commit '${{ github.sha }}'
-      - name: Install local build tools
-        run: python -m pip --isolated --disable-pip-version-check install --no-cache-dir build==1.3.0 hatchling==1.27.0
-      - name: Build release distributions
-        run: python -I -B -m build
-      - name: Validate wheel and sdist in clean installations
+      - name: Verify reviewed sources
+        run: python -I -B tools/check_repository.py
+      - name: Install isolated build tools
+        run: python -m pip --isolated install build==1.3.0 hatchling==1.27.0
+      - name: Build in separate source copy
+        run: python -I -B tools/build_artifacts.py
+      - name: Check wheel and sdist installations
         shell: python
         run: |
-          import hashlib, os, pathlib, subprocess, sys
-          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve()
-          dist = root / 'dist'
-          wheel = dist / 'morphtree-2.0.0-py3-none-any.whl'
-          source = dist / 'morphtree-2.0.0.tar.gz'
-          assert sorted(p.name for p in dist.iterdir()) == sorted([wheel.name, source.name])
-          digest = hashlib.sha256(wheel.read_bytes()).hexdigest()
-          def run(*args):
-              subprocess.run(list(map(str, args)), check=True, timeout=300, cwd=os.environ['RUNNER_TEMP'])
-          for kind, artifact in [('wheel', wheel), ('sdist', source)]:
-              environment = pathlib.Path(os.environ['RUNNER_TEMP']) / ('morphtree-' + kind)
-              assert not environment.exists()
-              run(sys.executable, '-I', '-B', '-m', 'venv', environment)
-              interpreter = environment / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
-              run(interpreter, '-I', '-B', '-m', 'pip', '--isolated', '--disable-pip-version-check', 'install', '--no-cache-dir', artifact)
-              run(interpreter, '-I', '-B', '-m', 'pip', '--isolated', '--disable-pip-version-check', 'check')
-              receipt = environment.parent / ('morphtree-installed-' + kind + '.json')
-              run(interpreter, '-I', '-B', root / 'tools/installed_candidate_check.py', '--wheel', wheel, '--sha256', digest, '--version', '2.0.0', '--out', receipt)
-              run(interpreter, '-I', '-B', '-m', 'unittest', 'discover', '-s', root / 'tests/product', '-v')
-              print(receipt.read_text('utf8'))
+          import os,pathlib,subprocess,sys
+          root=pathlib.Path.cwd()
+          for artifact in sorted((root/'dist').iterdir()):
+              kind='wheel' if artifact.suffix=='.whl' else 'sdist'
+              prefix=pathlib.Path(os.environ['RUNNER_TEMP'])/('morphtree-'+kind)
+              assert not prefix.exists()
+              def run(args):
+                  subprocess.run(list(map(str,args)),check=True,timeout=240,cwd=os.environ['RUNNER_TEMP'])
+              run([sys.executable,'-I','-B','-m','venv',prefix])
+              py=prefix/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
+              run([py,'-I','-B','-m','pip','--isolated','install',artifact])
+              run([py,'-I','-B','-m','pip','check'])
+              run([py,'-I','-B',root/'tools/check_installed.py'])
+      - name: Preserve verified build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: morphtree-${{ matrix.os }}-${{ matrix.python }}
+          path: dist/*
+          if-no-files-found: error

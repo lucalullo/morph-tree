@@ -1,0 +1,298 @@
+{
+  "backend": "automatic-native",
+  "files": {
+    "__init__.py": "a3d4e3364b56f0a2f952a81113f8bc3159f7b5a44d285300ccb6a2dcccd53cb7",
+    "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "_experimental/__init__.py": "af368cce8e8a71327fdf5a8b61c81d6d6fdef62f924800408d7f2b2ca1d82e52",
+    "_experimental/admission.py": "7afaad7937655739b9e6c4f469d337c9ecaeeecbfbe4f435f669d07e8af5022c",
+    "_experimental/base.py": "3b24242af5bdde79eeba086354f23446cbf911f570c0b63246d491abd74316e5",
+    "_experimental/component_cache_v2.py": "8bcdf575213ed71a68fbc79cc86e58d2007e1539dd0e5e22ca80273696c3b78f",
+    "_experimental/evolution_report.py": "0496feeb84cfdde473679713a9432caa581a017db3dfb114fd30da6296bab642",
+    "_experimental/execution_v2.py": "596318d9e55faf9b94ba8430fd78b6152750d299c9ac7778769efd7e4e838c58",
+    "_experimental/facade.py": "0408181efdb8139470a8356a48231bdf357c06c0358c835c89729e8f2833e884",
+    "_experimental/integrated.py": "ccaa9ac5441897492d55ce94b47ead55338274ae1b9127ef9a78e23711311e37",
+    "_experimental/learning.py": "e2e7b68cc27a94451bcc4efa57f9c78d0b8dc3104088a26007a112c255e505c6",
+    "_experimental/numeric_fixture.py": "f05fb8cb1757ebb841863f3a32eb331999bd4c4fc2a51bc1f11cc8a52d6508d9",
+    "_experimental/parameter_contract.py": "261ee3edece961d78ec0bccc0c5c7edc77d0797620d93f916b8fb96bff81fea6",
+    "_experimental/postfit.py": "493ee24a0c8f5eb6374bf0afbf1f1c083de7d96e9750cad4c7fdc1c759d8d9f4",
+    "_experimental/preprocessing.py": "1136e69d814124a90e999a9f5701fdbda716ab623998529ea042c8fb35c1e682",
+    "_experimental/processes.py": "577394affa54f66c0bf0bc55ce1619b0e10a7e4f3177c1af0256196f7347e6b7",
+    "_experimental/producer.py": "07d07410b8e85efbe9e38ed4761f4495f5e909b3f56f8ff1b52abb639e3afebf",
+    "_experimental/product.py": "568b02f61e5f772ab165b72ccf37217c6e48a9d5455480cd1ecbf236893002c4",
+    "_experimental/product_cli.py": "2fdfddfc573a5f5fee5ebd14bdd8aca3e5fbe7e746f169c47347fa9da0247509",
+    "_experimental/roundtrip_v3.py": "fb2999bee513f40e076543323da81385d1ceb7cf68850054f921b3c2c2a37d39",
+    "_experimental/runtime_io.py": "605c37ccf425d48de4ed52456b58414c4577b2018d2932e1aa7e7d30fa06e29c",
+    "_experimental/sampling.py": "a4aeb4536f5cf8280f4166ba7051ca2fb76aad8619958114a799b89afa773975",
+    "_experimental/support.py": "e6108af84a75a39813a3a665d266a913e104168c8a3cfc334cd6293e07101cfc",
+    "_experimental/target.py": "d2da94f69f7a4cf59b8d62bec69cd82f6a8f300827553900e6cba587ce7f1f9c",
+    "_experimental/training.py": "af9e2cc7ebfc7418cad90c3133993990b196fe94be1670f988f0cd8e3cfb70d3",
+    "_experimental/worker.py": "acb03be1dfaef5aac0ebfc5e050d90184d2154e74206fe0fb6c445e705608fc3",
+    "_installed.py": "1346e28b929f4103b2203192fcb9a6949320e232927bc312843390df8e9efcfd",
+    "_native/__init__.py": "f7f1f59f08aba5c94c66779ff4ebeca960675e3350a7fe9613f64dc65c6cea67",
+    "_native/buffers.py": "f51313cf910123eb1729e9f73270f15548691d2be7f9dae5479572828d3541c5",
+    "_native/loader.py": "a099872a1e7341075f9526cc75840bd38aa2908d8999310e885d1859a17068cb",
+    "_native/manifest.json": "0e5ba02d5a565b1fa424b1c1c5fac891bb7082e535d2dceeae65c36df2eec4f3",
+    "_native/runtime.py": "304c82cd811c769a74148580ffcbe4b15e5ffd28ae6fbef1e74af4f2aee8123e",
+    "_native/src/histogram.c": "4b05c05dab1de35c2b8c7cee69cf743b51f746e1d0a14b782df73d3ce959bf39",
+    "_native/src/traversal.c": "487d8ca46c96faded18d99dcda0abcb3c8a0fa783070a7da23dd5692a7a69406",
+    "api.py": "3c333b859bc43bedd8067ae9e6ad297d755a43dc289890c14f876a175301abb9",
+    "api_compat.py": "ba72b57232bda81e0f6392119f662e2e6d1fec9e7fc3571bb0e9ef10e4d89a8b",
+    "backend.py": "881d6025e72cd5675cd6da7b5b2e950d6ade97d63a25735321e5a739c27ef26c",
+    "booster.py": "92040ddb5ec9dec32dc14c3dbb160398ac764f440e3018bff5e99cf374ad066e",
+    "cli.py": "e9113f213f66c2c0ee775279c0d2a305d0c0d2fb09c73c512cd71c9b898f06a0",
+    "config.py": "d47be3b353ebcd619fb2844beb1e9e5f0b6dea5ff642c579a10c127d57af7ac1",
+    "control.py": "2f1c20f9fdaf426ed02500404874445895a022fa2a00fda65e3f195e651ee3cd",
+    "data.py": "3123850c2f2b8bfa1c7d599697c8cf5f02c162f30f2691d018600d6231cc0451",
+    "diagnostics.py": "4bef87e037d16e58cb03d4d129ebd42db9eac880342c520aef073daca687adbc",
+    "estimators.py": "3d0bc62c101715e3e7c87df104ef01b562a33304aeb54810bd8a2079a1e298d0",
+    "examples.py": "5b1deccceb772346e3fd5f6d2a9756477d99e458713fa015f125f4d7bef2a635",
+    "exporting.py": "161bebaee9728da105446e937b14ff50dcbefcd6a3ef63b197f357dcf24917f8",
+    "legacy_artifacts.py": "cd70250ffacb20085e32c31f29e4b728caa06ea1cf8ec060b4e455b889e5b309",
+    "metrics.py": "785f2a7d2c0338aca950107699721adea15d61fa7a6b103e471c99b308b4d6c5",
+    "model.py": "389ad29547ddd5eaca0bfdc325627f91f9d4b4734ac44d9aa69296918678dd38",
+    "mutations.py": "4d98f5d9a9b4f786d8d640f478356a3a034a78740a286ea2a0b121cd7a647cb5",
+    "native_lab_backend.py": "871774e0fc08ae448b60725f122df437ba6cf188eb8a3f7681a12bae972c52b5",
+    "numpy_backend.py": "71669be1bf84a96dfcc63fc5b89ecc0f9cf03463313953e573c0d162ccd48152",
+    "optuna_tuner.py": "969ee92fed53955b12de903034caff324714cdcdc1347591dd8d0d1250aa9d90",
+    "persistence.py": "e4c52f6c4dbc227adfa39e362ce5274306d7f320eb4b68f3a3f41a92d1446436",
+    "prepared_bins.py": "178f9c73744dcaeb6e91943deb23e8f410ef85ec97743f8802f4c3317622abbf",
+    "public.py": "775ef54dd1576f4f0bba15162cd3547e086a9245be4d9cc50c0af0f4a1c3b9db",
+    "resource_plan.py": "bebb6a781627cc1a3494a35747df7f4ffe1350480cf3ec0eb752b92e3558c5b2",
+    "scalable.py": "f89898db4ce657dd00214c8459ede87934467dd5c957f1a27cf637aaf9df286c",
+    "scalable_backend.py": "04221e17b552cc30ce600857be62785f55c4e7958b5b90728ceeb20c075effcc",
+    "scalable_checkpoint.py": "24fd03a2f41e5b157b7e1cbd53f2fa0a94977f3d3ee0affd63a3ff9af07212af",
+    "scalable_data.py": "ee356b6e5230aa2c736e1bcdd5f56a85bd12c0e671cd9d9d0fb49fdf00eec7a0",
+    "scalable_receipts.py": "15090c5d9019f21b2f04dbec9a5266a8bf7eb26d4f34320b47ed79cd05530f0d",
+    "scalable_target.py": "7ac25a34f753109756fda9a0e7d80ec57f4dd0186761c1c2ea16fe6760c4de06",
+    "scalable_variants.py": "c35cf11448f3c9f0d58a3fb1c0188c22ba83ccc4e1f0fb4c1527f9488acd75ff",
+    "sklearn_view.py": "9581e9ea525f04b961922a628832e05bc1df290e84f517e14b0e931872139275",
+    "source_markers.py": "0d44fe9364cb4902c16ee0d480dc2a5b843ddaa0ce179791b2d746e158ae6ddd",
+    "species.py": "2b8669426374cdee1eac5c14eac7f7c42b9438c70fc3b0a3af9e191bb40992bf",
+    "temporary.py": "29fc30a9644508d8d5f1f5254eb48e590b48f585947655952424f984edeead15",
+    "training_fragment.py": "3fbe4f25ca3fc3c23a781b2c1a955bb2e05b84f29c422ff92512b003e573848e",
+    "tree.py": "875f93a47b005ad362be77730af6bdb0cd82c39e369ffc525913aab2a2c1f4a5",
+    "tuning.py": "0765b39a34d5825028bb91c6c6af2b68a51164c622895d735722096597e60b66"
+  },
+  "historical_provenance": {
+    "inherited_metadata": {
+      "candidate_revision": {
+        "base063_manifest_sha256": "28b2d0d791c063ee4a4fe05097b5f635fe3b882acf32b353f9ffcf8f10867da0",
+        "changes": "Original arithmetic/thresholds/order,streamed columns,byte masks,one OOF mean;no055residualcriterion or060shrinkage",
+        "id": "PRIVATE_EXACT_STREAMING_DIAGNOSTICS064"
+      },
+      "compatibility122": {
+        "base117_manifest_sha256": "8dc2e162a3e34e10d0ec82e33383c19599032a3ee22298be6a0e82b6795b3cbf",
+        "scope": "Owner mandated API restoration; zero-fit qualification then new finite LIVE proposal; not promoted"
+      },
+      "compatibility124": {
+        "base122_manifest_sha256": "3d5c5a41592dff47c2f5c679a50080b746ff64b4deac8f803447345dfb083c15",
+        "changes": "Accept native I/Q classification target buffers in frozen trainer;safe general PathLike workdir;CLI unified model loader/resource-bounded JSON input. Native training,controller and prediction unchanged122."
+      },
+      "defaults": {
+        "n_estimators": 2,
+        "n_jobs": 1,
+        "optuna_trials": 2,
+        "time_budget_seconds": 150
+      },
+      "development_revision": {
+        "after_sha256": "1136e69d814124a90e999a9f5701fdbda716ab623998529ea042c8fb35c1e682",
+        "before_sha256": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f",
+        "changes": [
+          "Normalize already-loaded pandas.NA to None",
+          "Preserve last valid encoder on failed schema refit"
+        ],
+        "file": "_experimental/preprocessing.py",
+        "id": "PYTHON_COMPAT_2026_10_25_PREPROCESSING",
+        "learning_rules_unchanged": true,
+        "new_LIVE": false,
+        "status": "LOCAL_ZERO_FIT_CANDIDATE_NOT_A_RELEASE"
+      },
+      "lineage": {
+        "parent_files": {
+          "__init__.py": "a5d51d755b40c5e6b5618744758baf0c8c51fa8e0df00099621416e2b743019c",
+          "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+          "_experimental/__init__.py": "719008c8adf7544de9016bfb9f7b606a12cf5a49524791723787f0e9a6adaf56",
+          "_experimental/admission.py": "aabcd7c520ca9c00ad229a88ab7e28fe41b6b491a35998e189cb3ab09de4506d",
+          "_experimental/base.py": "e8aa5d0cf93b618397e4547481061c11f11495c077a9e2bb736999c787af12fc",
+          "_experimental/component_cache_v2.py": "8bcdf575213ed71a68fbc79cc86e58d2007e1539dd0e5e22ca80273696c3b78f",
+          "_experimental/evolution_report.py": "0496feeb84cfdde473679713a9432caa581a017db3dfb114fd30da6296bab642",
+          "_experimental/execution_v2.py": "e17725816a428f5cedd22dcf32aebcb59ed9e343092a9bcafbf9fbb228929bcd",
+          "_experimental/facade.py": "867699da8db4bded13b90bf0d72eacc64d26f3a03856a720750fe651b537da01",
+          "_experimental/integrated.py": "ccaa9ac5441897492d55ce94b47ead55338274ae1b9127ef9a78e23711311e37",
+          "_experimental/learning.py": "107be7fe0c4379185914cd50060d6b5dc6f299b3abc885318ca6f84872ca2145",
+          "_experimental/numeric_fixture.py": "f05fb8cb1757ebb841863f3a32eb331999bd4c4fc2a51bc1f11cc8a52d6508d9",
+          "_experimental/parameter_contract.py": "261ee3edece961d78ec0bccc0c5c7edc77d0797620d93f916b8fb96bff81fea6",
+          "_experimental/postfit.py": "493ee24a0c8f5eb6374bf0afbf1f1c083de7d96e9750cad4c7fdc1c759d8d9f4",
+          "_experimental/preprocessing.py": "9cfb3fdacd359a68897a6857ef1fd66bf30aa1669e2ba1bbc6ce654a161de39f",
+          "_experimental/processes.py": "577394affa54f66c0bf0bc55ce1619b0e10a7e4f3177c1af0256196f7347e6b7",
+          "_experimental/producer.py": "07d07410b8e85efbe9e38ed4761f4495f5e909b3f56f8ff1b52abb639e3afebf",
+          "_experimental/product.py": "69c77dc3f16e25a936359fefb24ac1f96aaa4a74f3a077d68c236c68c5542681",
+          "_experimental/product_cli.py": "2fdfddfc573a5f5fee5ebd14bdd8aca3e5fbe7e746f169c47347fa9da0247509",
+          "_experimental/roundtrip_v3.py": "fb2999bee513f40e076543323da81385d1ceb7cf68850054f921b3c2c2a37d39",
+          "_experimental/runtime_io.py": "5e3e7713ac4039c44d4db88837c0ec303d5549bf5c27beb1c690531ae6cc1d1f",
+          "_experimental/sampling.py": "02bdb1e39d015d7f762112559f1ff9d826c424cd4166ff83bc6f755a00d44f08",
+          "_experimental/support.py": "e6108af84a75a39813a3a665d266a913e104168c8a3cfc334cd6293e07101cfc",
+          "_experimental/target.py": "bdb40d011120687aca7a7860c0db1c3542bdc3a6ff21e3905a114290938e6bc4",
+          "_experimental/training.py": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2",
+          "_experimental/worker.py": "d471049c2d66ca9434004a5cff15136908ef5f42a9500265008b031862e8771f",
+          "_installed.py": "1346e28b929f4103b2203192fcb9a6949320e232927bc312843390df8e9efcfd",
+          "api.py": "6ddc58242148587cba41291c540486561d911849df1c1f1546578d420b8203fe",
+          "backend.py": "881d6025e72cd5675cd6da7b5b2e950d6ade97d63a25735321e5a739c27ef26c",
+          "booster.py": "47ba8997353f81f97c5b7cc007b8defc4e7363e300b77df3cf221b30c94257cf",
+          "cli.py": "68d62e7d0cbcbb068aa6352197f422a4dd287c39f4ce70caf90a8aad6a29a668",
+          "config.py": "eab2288f853e9d943afcd28d9a983687120dbe1e7fae915105c8119fc12059d1",
+          "control.py": "2f1c20f9fdaf426ed02500404874445895a022fa2a00fda65e3f195e651ee3cd",
+          "data.py": "93f2d65ce24293b2a5111136657d715c3eef89d8b8a156b6913651b2b162e55b",
+          "diagnostics.py": "4bef87e037d16e58cb03d4d129ebd42db9eac880342c520aef073daca687adbc",
+          "examples.py": "5b1deccceb772346e3fd5f6d2a9756477d99e458713fa015f125f4d7bef2a635",
+          "exporting.py": "f6820a028500cc5b138326923359351e55c037d4f4dbb517983e94e1a3fcbaa4",
+          "metrics.py": "785f2a7d2c0338aca950107699721adea15d61fa7a6b103e471c99b308b4d6c5",
+          "model.py": "389ad29547ddd5eaca0bfdc325627f91f9d4b4734ac44d9aa69296918678dd38",
+          "mutations.py": "4d98f5d9a9b4f786d8d640f478356a3a034a78740a286ea2a0b121cd7a647cb5",
+          "numpy_backend.py": "71669be1bf84a96dfcc63fc5b89ecc0f9cf03463313953e573c0d162ccd48152",
+          "optuna_tuner.py": "969ee92fed53955b12de903034caff324714cdcdc1347591dd8d0d1250aa9d90",
+          "persistence.py": "8e4d6a9e791d3fc8fa61cb7fd5bfeb2c041cf34cb2f9a6b03658b639a01ca6b8",
+          "public.py": "775ef54dd1576f4f0bba15162cd3547e086a9245be4d9cc50c0af0f4a1c3b9db",
+          "species.py": "2b8669426374cdee1eac5c14eac7f7c42b9438c70fc3b0a3af9e191bb40992bf",
+          "tree.py": "875f93a47b005ad362be77730af6bdb0cd82c39e369ffc525913aab2a2c1f4a5",
+          "tuning.py": "0765b39a34d5825028bb91c6c6af2b68a51164c622895d735722096597e60b66"
+        },
+        "parent_wheel_sha256": "5e246ce18a38b1aed33a54b5552fde19164ad5c0235ae1d2bf10b41a8e8e8b6f"
+      },
+      "local_release_candidate": {
+        "changes_from_qualified_runtime": "Package version and ordinary-user identity labels only;all learning,preprocessing,CLI,inference,mutation and serialization code unchanged.",
+        "qualified_native_runtime": "API_COMPATIBILITY_RESTORED",
+        "version": "2.1.0"
+      },
+      "native_lab": {
+        "default_backend": "verified native with measured smallbatch Python traversal",
+        "public_release": false,
+        "revision": "integrated014",
+        "whole_pipeline_native_qualified": false
+      },
+      "optional_sklearn112": {
+        "scope": "Optional array view;all109 function bodies unchanged;new adapter no native learner"
+      },
+      "post_live002_api_preparation": {
+        "after_sha256": "af9e2cc7ebfc7418cad90c3133993990b196fe94be1670f988f0cd8e3cfb70d3",
+        "before_sha256": "7ae8e7b781b20e4f5d01026398323a30937a2dc7769ee070fd97e35d64e193c2",
+        "change": "Import the same native classes directly from model, independent of future public facade names",
+        "file": "_experimental/training.py",
+        "learning_rules_unchanged": true,
+        "status": "LOCAL_SOURCE_ZERO_FIT_ONLY_NOT_THE_CAMPAIGN_ARTIFACT"
+      },
+      "private_research": true,
+      "private_research_revision": {
+        "id": "QUALITY019",
+        "origin": "SCALABLE016",
+        "public_release": false,
+        "scope": "DefaultguidanceTrue/ordersemanticsunchanged;privatefactorcontrolcanfixoperatororderwithoutdisablingOOF. Explicitrequestedstagesmetadata;existingAPIuse_optuna/max_mutations serveauthorizedablations,neverresourcefallback. Nativearithmeticunchanged."
+      },
+      "professional109": {
+        "base105_manifest_sha256": "7e282ca43fc90ef349f5099cf8f92351c76496775d1a43edbb5ad39445d73275",
+        "scope": "API controls/schema2/clone; new explicit trial and operator controls require separate LIVE; default learning arithmetic unchanged"
+      },
+      "release200_preparation": {
+        "public_api": "Shared-engine MorphTreeClassifier and MorphTreeRegressor",
+        "qualification": "Pending; metadata range is not widened by source preparation",
+        "remote_operations": 0,
+        "required_python": [
+          "3.12",
+          "3.13",
+          "3.14",
+          "3.15"
+        ],
+        "status": "UNQUALIFIED_LOCAL_RELEASE_TARGET_NO_TRAINING_AUTHORITY"
+      },
+      "research_revision": "051_PANDAS_TARGET_INDEX_DATA_AND_FAIL_CLOSED_CUSTOM_ATTRIBUTE_INTERCEPTORS",
+      "scope": "QUALITY019_PRIVATE_CONTROLLED_STAGE_ABLATIONS",
+      "security_successor": "027regularartifactguardretained;028onlyreadbufferforecastfix",
+      "variants117": {
+        "scope": "Retained genuine phases only;controller arithmetic/native modules unchanged112;zero implicit fits"
+      }
+    },
+    "original_python_reference_version": "2.1.0",
+    "original_reference_archive_sha256": "4446fc598850ca02c288d3e3af77661fcf174ae1b0ab65252d66af7fb98c6cfd",
+    "predecessor_version": "2.1.0+native.lab",
+    "predecessor_windows_manifest_sha256": "7340c2f787b5356d594174405225df2766df4caabcbc208a72ec98277dd3bb8b"
+  },
+  "native_lab": {
+    "default_backend": "Verified C histograms and cached traversal; equivalent Python traversal below 128 rows",
+    "evidence_campaigns": [
+      "INSTALLED047",
+      "LINUX056",
+      "SCALE063",
+      "SCALE068"
+    ],
+    "evidence_transfer": "Learning rules and C kernels unchanged; version/metadata and early buffer pinning rechecked without training",
+    "public_release": false,
+    "publication_approved": false,
+    "qualification_scope": "Only the profiles, tasks and scales listed here; zero-fit rebuild checks are not new LIVE evidence",
+    "qualified_algorithm_revision": "integrated025",
+    "qualified_profiles": [
+      {
+        "features": 7,
+        "os": "Windows 11 build 26300 x64",
+        "python": [
+          "3.12.10",
+          "3.13.17",
+          "3.14.9"
+        ],
+        "rows": 25003,
+        "tasks": [
+          "binary",
+          "multiclass",
+          "regression"
+        ]
+      },
+      {
+        "features": 7,
+        "os": "Ubuntu 24.04.4 WSL2 x86_64 glibc 2.39",
+        "python": [
+          "3.12.3",
+          "3.13.17",
+          "3.14.9"
+        ],
+        "rows": 25003,
+        "tasks": [
+          "binary",
+          "multiclass",
+          "regression"
+        ]
+      },
+      {
+        "features": 15,
+        "os": "Windows 11 build 26300 x64",
+        "python": [
+          "3.12.10"
+        ],
+        "rows": [
+          10003,
+          200003
+        ],
+        "tasks": [
+          "binary",
+          "multiclass",
+          "regression"
+        ]
+      }
+    ],
+    "revision": "review080",
+    "unqualified": [
+      "Linux small/large training",
+      "million-row training",
+      "Python 3.15 ordinary install",
+      "authentic macOS",
+      "other Linux/manylinux",
+      "hosted Kaggle"
+    ],
+    "version_approved": true,
+    "whole_pipeline_native_qualified": true
+  },
+  "private_research": false,
+  "schema": "morph030-installed-payload-v1",
+  "scientific_training_authority": 0,
+  "scope": "ORDINARY_PYTHON_API_WITH_DOCUMENTED_NATIVE_QUALIFICATION",
+  "version": "2.1.0",
+  "workspace_sources_required": false
+}

@@ -1,8 +1,0 @@
-{
-  "version": "1.0.0",
-  "first_public_release": true,
-  "status": "PREPARED_NOT_PUBLISHED",
-  "canonical_document": "docs/Relazione_MorphTree.txt",
-  "retained_evidence": "research/README.md",
-  "hosted_ci": "PENDING"
-}

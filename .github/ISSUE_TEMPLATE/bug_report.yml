@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible MorphTree issue.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Use invented or public data only. Remove credentials, usernames and
+        private file paths from tracebacks. Report security issues privately
+        using the guidance in SECURITY.md rather than a public issue.
+  - type: input
+    id: version
+    attributes:
+      label: MorphTree version
+      placeholder: "2.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, Windows/Linux variant, architecture, and installation type (wheel or sdist). No local identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal synthetic reproduction
+      description: Include imports, sample rows, labels, random_state and estimator settings. Keep it small; do not upload private models.
+    validations:
+      required: true
+  - type: textarea
+    id: traceback
+    attributes:
+      label: Error or diagnostic output (redacted)
+      description: Include a traceback if there is one, or write "No exception".
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

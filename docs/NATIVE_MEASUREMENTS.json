@@ -1,0 +1,692 @@
+{
+  "comparisons": [
+    {
+      "actual": {
+        "OOF_fits": 12,
+        "Optuna_trials": 12,
+        "native_fits": 60,
+        "public_calls": 6,
+        "scalar_trees": 530
+      },
+      "pairs": [
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 10,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "accuracy",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.5645097838556571,
+              "decision": "ROLLBACK",
+              "generation": 0,
+              "parent_SEARCH": 0.5612849107768838
+            },
+            {
+              "child_SEARCH": 0.5665884658596857,
+              "decision": "ROLLBACK",
+              "generation": 1,
+              "parent_SEARCH": 0.5612849107768838
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 0.1676117000024533,
+              "NUMERIC": 2.771075999997265,
+              "OOF": 0.12204710000514751,
+              "REFIT_FULL": 0.22347820000140928,
+              "SCREEN": 0.25151020000339486
+            },
+            "external_score": 0.7009485771342986,
+            "fit_CPU_seconds": 5.171875,
+            "fit_seconds": 5.159084599996277,
+            "job_CPU_seconds": 7.90625,
+            "job_private_commit_peak_bytes": 69955584,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 122974,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5003317999944557,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 7.46875,
+            "worker_OS_peak_working_set_bytes": 72687616,
+            "worker_sampled_RSS_bytes": 72687616,
+            "worker_seconds": 7.625
+          },
+          "native_case": "native312-binary",
+          "observed_fit_speed_ratio": 2.262499242599248,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 0.8301370999979554,
+              "NUMERIC": 7.574688699991384,
+              "OOF": 0.2298062999980175,
+              "REFIT_FULL": 0.5870015999971656,
+              "SCREEN": 0.48620200001460034
+            },
+            "external_score": 0.7009485771342986,
+            "fit_CPU_seconds": 11.578125,
+            "fit_seconds": 11.67242499999702,
+            "job_CPU_seconds": 14.59375,
+            "job_private_commit_peak_bytes": 70127616,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 122967,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5302921999973478,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 14.109375,
+            "worker_OS_peak_working_set_bytes": 67854336,
+            "worker_sampled_RSS_bytes": 67854336,
+            "worker_seconds": 14.546000000002095
+          },
+          "original_case": "python312-binary",
+          "task": "binary"
+        },
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 10,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "accuracy",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.8494872847005613,
+              "decision": "ROLLBACK",
+              "generation": 0,
+              "parent_SEARCH": 0.845985898495284
+            },
+            {
+              "child_SEARCH": 0.8499713967389855,
+              "decision": "ROLLBACK",
+              "generation": 1,
+              "parent_SEARCH": 0.845985898495284
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 1.053650400004699,
+              "NUMERIC": 3.9867414999898756,
+              "OOF": 0.32673390000127256,
+              "REFIT_FULL": 2.08447359999991,
+              "SCREEN": 0.5711836000118637
+            },
+            "external_score": 0.6455317024463305,
+            "fit_CPU_seconds": 10.09375,
+            "fit_seconds": 10.168588699998509,
+            "job_CPU_seconds": 13.296875,
+            "job_private_commit_peak_bytes": 79151104,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 223127,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5498221000016201,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 12.859375,
+            "worker_OS_peak_working_set_bytes": 78434304,
+            "worker_sampled_RSS_bytes": 78434304,
+            "worker_seconds": 13.139999999999418
+          },
+          "native_case": "native312-multiclass",
+          "observed_fit_speed_ratio": 2.016433637442764,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 2.3661167999962345,
+              "NUMERIC": 8.54740970000421,
+              "OOF": 1.2743666999958805,
+              "REFIT_FULL": 4.736965600000985,
+              "SCREEN": 1.2059486999933142
+            },
+            "external_score": 0.6455317024463305,
+            "fit_CPU_seconds": 20.40625,
+            "fit_seconds": 20.50428429999738,
+            "job_CPU_seconds": 23.84375,
+            "job_private_commit_peak_bytes": 75800576,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 223119,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5965501000027871,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 23.375,
+            "worker_OS_peak_working_set_bytes": 72814592,
+            "worker_sampled_RSS_bytes": 72814592,
+            "worker_seconds": 23.656000000002678
+          },
+          "original_case": "python312-multiclass",
+          "task": "multiclass"
+        },
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 10,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "R2",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.8546210967089597,
+              "decision": "ROLLBACK",
+              "generation": 0,
+              "parent_SEARCH": 0.8487945144654991
+            },
+            {
+              "child_SEARCH": 0.8449696884347054,
+              "decision": "ACCEPT",
+              "generation": 1,
+              "parent_SEARCH": 0.8487945144654991
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 0.379712500005553,
+              "NUMERIC": 3.294348600007652,
+              "OOF": 0.14969009999913396,
+              "REFIT_FULL": 2.503867999999784,
+              "SCREEN": 0.30820339998899726
+            },
+            "external_score": 0.6997788147794706,
+            "fit_CPU_seconds": 8.546875,
+            "fit_seconds": 8.953324299996893,
+            "job_CPU_seconds": 11.5,
+            "job_private_commit_peak_bytes": 72765440,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 235312,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.668696299995645,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 10.9375,
+            "worker_OS_peak_working_set_bytes": 73383936,
+            "worker_sampled_RSS_bytes": 73383936,
+            "worker_seconds": 11.609000000004016
+          },
+          "native_case": "native312-regression",
+          "observed_fit_speed_ratio": 1.8297924269322854,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 0.6805349000060232,
+              "NUMERIC": 6.918830499998876,
+              "OOF": 0.23867449999670498,
+              "REFIT_FULL": 6.075570699998934,
+              "SCREEN": 0.49092190000374103
+            },
+            "external_score": 0.6997788147794706,
+            "fit_CPU_seconds": 16.09375,
+            "fit_seconds": 16.38272500000312,
+            "job_CPU_seconds": 18.921875,
+            "job_private_commit_peak_bytes": 74477568,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 235309,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.68938640000124,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 18.421875,
+            "worker_OS_peak_working_set_bytes": 67485696,
+            "worker_sampled_RSS_bytes": 67485696,
+            "worker_seconds": 19.015999999995984
+          },
+          "original_case": "python312-regression",
+          "task": "regression"
+        }
+      ],
+      "scale": "scale063"
+    },
+    {
+      "actual": {
+        "OOF_fits": 20,
+        "Optuna_trials": 12,
+        "native_fits": 68,
+        "public_calls": 6,
+        "scalar_trees": 212
+      },
+      "pairs": [
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 12,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "accuracy",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.5647348072844838,
+              "decision": "ACCEPT",
+              "generation": 0,
+              "parent_SEARCH": 0.5653379678896155
+            },
+            {
+              "child_SEARCH": 0.5649477606698883,
+              "decision": "ROLLBACK",
+              "generation": 1,
+              "parent_SEARCH": 0.5647348072844838
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 5.822709800006123,
+              "NUMERIC": 5.745552899999893,
+              "OOF": 7.327776000005542,
+              "REFIT_FULL": 5.406274399996619,
+              "SCREEN": 10.497156900004484
+            },
+            "external_score": 0.7049425861208187,
+            "fit_CPU_seconds": 88.25,
+            "fit_seconds": 88.86711780000041,
+            "job_CPU_seconds": 92.15625,
+            "job_private_commit_peak_bytes": 301166592,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 128849,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5589075000025332,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 91.609375,
+            "worker_OS_peak_working_set_bytes": 310435840,
+            "worker_sampled_RSS_bytes": 285233152,
+            "worker_seconds": 92.42199999999866
+          },
+          "native_case": "native312-binary",
+          "observed_fit_speed_ratio": 1.6387687797836494,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 16.063406599998416,
+              "NUMERIC": 15.670375299996522,
+              "OOF": 17.605302199997823,
+              "REFIT_FULL": 12.05074080000486,
+              "SCREEN": 21.52625829999306
+            },
+            "external_score": 0.7049425861208187,
+            "fit_CPU_seconds": 141.8125,
+            "fit_seconds": 145.6326581999965,
+            "job_CPU_seconds": 146.296875,
+            "job_private_commit_peak_bytes": 300527616,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 128844,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.7562031999987084,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 145.78125,
+            "worker_OS_peak_working_set_bytes": 309907456,
+            "worker_sampled_RSS_bytes": 275140608,
+            "worker_seconds": 149.89100000000326
+          },
+          "original_case": "python312-binary",
+          "task": "binary"
+        },
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 12,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "accuracy",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.8397766153326067,
+              "decision": "ACCEPT",
+              "generation": 0,
+              "parent_SEARCH": 0.8401082231857189
+            },
+            {
+              "child_SEARCH": 0.8450669305375198,
+              "decision": "ROLLBACK",
+              "generation": 1,
+              "parent_SEARCH": 0.8397766153326067
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 12.429611300001852,
+              "NUMERIC": 15.804285399994114,
+              "OOF": 14.236193199991249,
+              "REFIT_FULL": 14.532288399997924,
+              "SCREEN": 25.43866710000293
+            },
+            "external_score": 0.6390414378432352,
+            "fit_CPU_seconds": 131.109375,
+            "fit_seconds": 135.57232070000464,
+            "job_CPU_seconds": 134.796875,
+            "job_private_commit_peak_bytes": 364978176,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 139663,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.499141200001759,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 134.3125,
+            "worker_OS_peak_working_set_bytes": 379568128,
+            "worker_sampled_RSS_bytes": 373764096,
+            "worker_seconds": 138.96899999999732
+          },
+          "native_case": "native312-multiclass",
+          "observed_fit_speed_ratio": 2.0895348566530254,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 44.276943799995934,
+              "NUMERIC": 45.93719129999954,
+              "OOF": 45.36806240000442,
+              "REFIT_FULL": 33.09464440000011,
+              "SCREEN": 50.402101300009235
+            },
+            "external_score": 0.6390414378432352,
+            "fit_CPU_seconds": 280.671875,
+            "fit_seconds": 283.28308970000217,
+            "job_CPU_seconds": 284.640625,
+            "job_private_commit_peak_bytes": 366440448,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 139677,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5657616000025882,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 284.0625,
+            "worker_OS_peak_working_set_bytes": 375222272,
+            "worker_sampled_RSS_bytes": 370368512,
+            "worker_seconds": 286.84300000000076
+          },
+          "original_case": "python312-multiclass",
+          "task": "multiclass"
+        },
+        {
+          "all_component_content_and_phases_bitwise_exact": true,
+          "components": 10,
+          "final_variants_diagnostics_science_exact": true,
+          "metric": "R2",
+          "mutation_decisions": [
+            {
+              "child_SEARCH": 0.9220674235257901,
+              "decision": "ROLLBACK",
+              "generation": 0,
+              "parent_SEARCH": 0.9140096028556826
+            },
+            {
+              "child_SEARCH": 0.920434471525186,
+              "decision": "ROLLBACK",
+              "generation": 1,
+              "parent_SEARCH": 0.9140096028556826
+            }
+          ],
+          "native": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 6.6355403999987175,
+              "NUMERIC": 6.35340709999582,
+              "OOF": 5.350292800001625,
+              "REFIT_FULL": 5.600415100001555,
+              "SCREEN": 14.438684699991427
+            },
+            "external_score": 0.6213653396955856,
+            "fit_CPU_seconds": 79.828125,
+            "fit_seconds": 91.00674759999674,
+            "job_CPU_seconds": 83.578125,
+            "job_private_commit_peak_bytes": 311775232,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 168317,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.5219881999946665,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 82.96875,
+            "worker_OS_peak_working_set_bytes": 321814528,
+            "worker_sampled_RSS_bytes": 278839296,
+            "worker_seconds": 94.60900000000402
+          },
+          "native_case": "native312-regression",
+          "observed_fit_speed_ratio": 1.1577939216454518,
+          "original": {
+            "component_training_seconds_by_phase": {
+              "DESCENDANT": 12.866014999999607,
+              "NUMERIC": 10.296114400000079,
+              "OOF": 7.511953199995332,
+              "REFIT_FULL": 7.032933000002231,
+              "SCREEN": 19.592878900002688
+            },
+            "external_score": 0.6213653396955856,
+            "fit_CPU_seconds": 103.9375,
+            "fit_seconds": 105.36705919999804,
+            "job_CPU_seconds": 106.671875,
+            "job_private_commit_peak_bytes": 313704448,
+            "memory_scope": "OS-maintained peaks of sampled owned worker/launcher PIDs, not aggregate job RSS or a hard peak cap",
+            "model_bytes": 168312,
+            "phase_scope": "Native learner intervals only, not a disjoint partition of whole public fit",
+            "predict_seconds": 0.37704610000218963,
+            "resource_scope": "WINDOWS_OWNED_JOB_PRIVATE_COMMIT_NOT_RSS",
+            "worker_CPU_seconds": 106.171875,
+            "worker_OS_peak_working_set_bytes": 323608576,
+            "worker_sampled_RSS_bytes": 277938176,
+            "worker_seconds": 107.9059999999954
+          },
+          "original_case": "python312-regression",
+          "task": "regression"
+        }
+      ],
+      "scale": "scale068"
+    }
+  ],
+  "model_fits_for_this_document": 0,
+  "phase_event_measurements": [
+    {
+      "diagnosis_seconds": 0.44984439999825554,
+      "full_fit_seconds": 11.67242499999702,
+      "input_seconds": 0.9799475999971037,
+      "mutation_seconds": 0.9991503999990528,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 7.574688699991384,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 0.5983904000022449,
+      "size": 10003,
+      "task": "binary"
+    },
+    {
+      "diagnosis_seconds": 0.3304735999990953,
+      "full_fit_seconds": 5.159084599996277,
+      "input_seconds": 0.9487188999992213,
+      "mutation_seconds": 0.24235030000272673,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 3780,
+        "histogram_seconds_including_bridge": 1.7258737005249714,
+        "indices_copy_bytes": 81952440,
+        "traversal_calls": 63,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 2.771075999997265,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 0.35916720000386704,
+      "size": 10003,
+      "task": "binary"
+    },
+    {
+      "diagnosis_seconds": 1.792308399999456,
+      "full_fit_seconds": 20.50428429999738,
+      "input_seconds": 0.9311785999962012,
+      "mutation_seconds": 2.5619271000032313,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 8.54740970000421,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 1.344066700003168,
+      "size": 10003,
+      "task": "multiclass"
+    },
+    {
+      "diagnosis_seconds": 0.7120310999962385,
+      "full_fit_seconds": 10.168588699998509,
+      "input_seconds": 0.9759769000011147,
+      "mutation_seconds": 1.2205634999991162,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 6660,
+        "histogram_seconds_including_bridge": 3.8202161997032817,
+        "indices_copy_bytes": 156704520,
+        "traversal_calls": 111,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 3.9867414999898756,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 0.6961152000003494,
+      "size": 10003,
+      "task": "multiclass"
+    },
+    {
+      "diagnosis_seconds": 0.4576052000047639,
+      "full_fit_seconds": 16.38272500000312,
+      "input_seconds": 0.9713797000003979,
+      "mutation_seconds": 0.8199475000001257,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 6.918830499998876,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 0.6037699000007706,
+      "size": 10003,
+      "task": "regression"
+    },
+    {
+      "diagnosis_seconds": 0.4562535000004573,
+      "full_fit_seconds": 8.953324299996893,
+      "input_seconds": 1.2342254000031971,
+      "mutation_seconds": 0.5526968000049237,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 5460,
+        "histogram_seconds_including_bridge": 3.441281699728279,
+        "indices_copy_bytes": 119732160,
+        "traversal_calls": 91,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 3.294348600007652,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 0.43739279999863356,
+      "size": 10003,
+      "task": "regression"
+    },
+    {
+      "diagnosis_seconds": 33.45646459999989,
+      "full_fit_seconds": 145.6326581999965,
+      "input_seconds": 41.348161699999764,
+      "mutation_seconds": 17.314321500001824,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 15.670375299996522,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 24.10400269999809,
+      "size": 200003,
+      "task": "binary"
+    },
+    {
+      "diagnosis_seconds": 20.13656009999977,
+      "full_fit_seconds": 88.86711780000041,
+      "input_seconds": 36.96952559999772,
+      "mutation_seconds": 6.859243699997023,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 1320,
+        "histogram_seconds_including_bridge": 19.13217519997852,
+        "indices_copy_bytes": 629555040,
+        "traversal_calls": 22,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 5.745552899999893,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 12.136795200000051,
+      "size": 200003,
+      "task": "binary"
+    },
+    {
+      "diagnosis_seconds": 62.7778713000007,
+      "full_fit_seconds": 283.28308970000217,
+      "input_seconds": 39.14223140000104,
+      "mutation_seconds": 46.44223399999464,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 45.93719129999954,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 53.414835499999754,
+      "size": 200003,
+      "task": "multiclass"
+    },
+    {
+      "diagnosis_seconds": 23.82506270000158,
+      "full_fit_seconds": 135.57232070000464,
+      "input_seconds": 36.60897530000511,
+      "mutation_seconds": 13.510147699998925,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 3960,
+        "histogram_seconds_including_bridge": 47.525852399856376,
+        "indices_copy_bytes": 1894558320,
+        "traversal_calls": 66,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 15.804285399994114,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 28.832919100001163,
+      "size": 200003,
+      "task": "multiclass"
+    },
+    {
+      "diagnosis_seconds": 14.000098399999843,
+      "full_fit_seconds": 105.36705919999804,
+      "input_seconds": 37.91682149999542,
+      "mutation_seconds": 13.980264699996042,
+      "native_bridge": {
+        "fallback_calls": null,
+        "histogram_calls": null,
+        "histogram_seconds_including_bridge": null,
+        "indices_copy_bytes": null,
+        "traversal_calls": null,
+        "traversal_fallback_calls": null
+      },
+      "numeric_learner_seconds": 10.296114400000079,
+      "route": "original",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 21.09190579999995,
+      "size": 200003,
+      "task": "regression"
+    },
+    {
+      "diagnosis_seconds": 13.666696399995999,
+      "full_fit_seconds": 91.00674759999674,
+      "input_seconds": 39.41558339999756,
+      "mutation_seconds": 7.7325946999990265,
+      "native_bridge": {
+        "fallback_calls": 0,
+        "histogram_calls": 1080,
+        "histogram_seconds_including_bridge": 20.983285799855366,
+        "indices_copy_bytes": 565432440,
+        "traversal_calls": 18,
+        "traversal_fallback_calls": 0
+      },
+      "numeric_learner_seconds": 6.35340709999582,
+      "route": "native",
+      "scope": "Inclusive event durations overlap internal learner intervals;numeric learner cost excludes Optuna scheduler overhead",
+      "screen_seconds": 16.56297810000251,
+      "size": 200003,
+      "task": "regression"
+    }
+  ],
+  "scope": "Measured single matched Windows312pairs only"
+}

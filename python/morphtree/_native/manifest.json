@@ -1,0 +1,29 @@
+{
+  "ABI": 1,
+  "binary_sha256": "1c577f636a74d873942d31ab81a1278eda8096252531c52520d00db2471d2a14",
+  "build_settings": {
+    "CRT": "static /MT",
+    "compiler_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+    "flags": [
+      "/nologo",
+      "/LD",
+      "/std:c11",
+      "/W4",
+      "/WX",
+      "/O2",
+      "/fp:strict",
+      "/MT",
+      "/Brepro"
+    ],
+    "setup_sha256": "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209"
+  },
+  "floating_point": "binary64 ordered / strict,without reassociation or contracted multiply-add",
+  "library": "bin/win_amd64/morphtree_kernels.dll",
+  "platform": "win_amd64",
+  "runtime_compilation": false,
+  "schema": "MORPHTREE_NATIVE_ABI_1",
+  "sources": {
+    "src/histogram.c": "4b05c05dab1de35c2b8c7cee69cf743b51f746e1d0a14b782df73d3ce959bf39",
+    "src/traversal.c": "487d8ca46c96faded18d99dcda0abcb3c8a0fa783070a7da23dd5692a7a69406"
+  }
+}
