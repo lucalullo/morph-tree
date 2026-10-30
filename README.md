@@ -8,22 +8,23 @@ MorphTree combines automatic tabular preprocessing, evolutionary search, optiona
 
 ## Install
 
-MorphTree **2.1.0** is available from the project source on GitHub. To install this version directly:
+For the MorphTree **2.1.0** distribution on PyPI, where a compatible artifact is available:
+
+```bash
+python -m pip install "morphtree==2.1.0"
+```
+
+To install the development source from GitHub instead:
 
 ```bash
 python -m pip install "git+https://github.com/lucalullo/morph-tree.git@main"
 ```
 
-Verify the installed package:
-
-```python
-import morphtree
-print(morphtree.__version__)
-```
-
-The updated 2.1.0 native distribution has **not yet been published to PyPI**. An installation from the package index is not necessarily the same build as the current GitHub source. Installing from source requires a compatible C toolchain; compatible prebuilt wheels do not require a compiler. See [installation details](docs/INSTALLATION.md).
+The `main` branch can change independently of a released package. Check the installed version with `python -c "import morphtree; print(morphtree.__version__)"`. Building from source requires a suitable C compiler; installing a compatible prebuilt wheel does not. See the [installation guide](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md).
 
 ## Quick start
+
+The examples below use the optional scikit-learn and pandas packages to load datasets. Install them separately if needed (`python -m pip install scikit-learn pandas`).
 
 Binary classification with a real dataset:
 
@@ -118,7 +119,7 @@ Predict, inspect, save, or export
 
 Evolution is enabled in the normal adaptive mode, but a successful mutation is **not guaranteed**. A model may complete training with every structural proposal rejected. `mode="baseline"` is available for controlled comparisons without structural evolution.
 
-The mutation grammar is intentionally finite. MorphTree does not autonomously invent unrestricted Python algorithms or guarantee that evolution improves predictive accuracy. See the [architecture](docs/ARCHITECTURE.md) and [research record](research/README.md).
+The mutation grammar is intentionally finite. MorphTree does not autonomously invent unrestricted Python algorithms or guarantee that evolution improves predictive accuracy. See the [architecture](https://github.com/lucalullo/morph-tree/blob/main/docs/ARCHITECTURE.md) and [research record](https://github.com/lucalullo/morph-tree/blob/main/research/README.md).
 
 ## Configuration and inspection
 
@@ -141,7 +142,7 @@ For an explicitly higher-capacity configuration:
 model = MorphTreeClassifier(random_state=42, capacity={"n_estimators": 8})
 ```
 
-The eight-round configuration is **optional**, not the default. More capacity can increase training cost and does not guarantee better generalization. Advanced controls include `max_mutations`, `n_trials`, `time_budget`, `memory_budget`, `n_jobs`, and `mode`. See the [API reference](docs/API.md) for details.
+The eight-round configuration is **optional**, not the default. More capacity can increase training cost and does not guarantee better generalization. Advanced controls include `max_mutations`, `n_trials`, `time_budget`, `memory_budget`, `n_jobs`, and `mode`. See the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md) for details.
 
 After fitting, you can inspect the selected program and the search decisions:
 
@@ -168,7 +169,7 @@ Fitted models can also export a standalone inference program:
 model.export_standalone("predictor.py")
 ```
 
-Standalone inference does not rerun evolutionary training. Training-program export is a separate advanced facility documented in the [API reference](docs/API.md). Use compatible package versions when loading saved models; see [migration and persistence guidance](docs/MIGRATION.md).
+Standalone inference does not rerun evolutionary training. Training-program export is a separate advanced facility documented in the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md). Use compatible package versions when loading saved models; see [migration and persistence guidance](https://github.com/lucalullo/morph-tree/blob/main/docs/MIGRATION.md).
 
 ## Environments, development, and dependencies
 
@@ -180,7 +181,7 @@ Standalone inference does not rerun evolutionary training. Training-program expo
 
 The public classifier and regressor support the scalable training path, including internal batching for prediction. Dataset admission and completion still depend on available memory, execution budgets, feature characteristics, and workload size. Rows are not silently discarded to satisfy an admission limit.
 
-For supported environments, build instructions, and resource considerations, see [installation](docs/INSTALLATION.md), [public API limits](docs/PUBLIC_API_LIMITS.md), and [qualification scope](docs/QUALIFICATION.md).
+For supported environments, build instructions, and resource considerations, see [installation](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md), [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md), and [qualification scope](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md).
 
 ## Architecture and performance
 
@@ -188,20 +189,20 @@ The learning logic, search controller, and public interface are implemented in P
 
 The compiled kernels are not a separate learning algorithm, and they do not accelerate every step of evolutionary search. End-to-end runtime can be dominated by tree-family screening, out-of-fold diagnostics, mutation trials, and Optuna optimization.
 
-Performance and predictive accuracy depend on the dataset, hardware, search settings, and chosen capacity. Measurements are documented in the [benchmark methodology](BENCHMARKS.md) and [comparison report](docs/COMPARISON.md); they do not establish general superiority over other tabular learners. In particular, improvements from additional tree capacity must not be attributed to structural evolution without an equal-capacity comparison.
+Performance and predictive accuracy depend on the dataset, hardware, search settings, and chosen capacity. Measurements are documented in the [benchmark methodology](https://github.com/lucalullo/morph-tree/blob/main/BENCHMARKS.md) and [comparison report](https://github.com/lucalullo/morph-tree/blob/main/docs/COMPARISON.md); they do not establish general superiority over other tabular learners. In particular, improvements from additional tree capacity must not be attributed to structural evolution without an equal-capacity comparison.
 
 ## Documentation
 
-- [API reference](docs/API.md)
-- [Installation guide](docs/INSTALLATION.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Examples](examples/)
-- [Performance comparisons](docs/COMPARISON.md)
-- [Qualification and supported scope](docs/QUALIFICATION.md)
-- [Resource limits](docs/PUBLIC_API_LIMITS.md)
-- [Research record](research/README.md)
-- [Contributing](CONTRIBUTING.md)
-- [Release and publishing guide](PUBLISHING.md)
+- [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md)
+- [Installation guide](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md)
+- [Architecture](https://github.com/lucalullo/morph-tree/blob/main/docs/ARCHITECTURE.md)
+- [Examples](https://github.com/lucalullo/morph-tree/tree/main/examples/)
+- [Performance comparisons](https://github.com/lucalullo/morph-tree/blob/main/docs/COMPARISON.md)
+- [Qualification and supported scope](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md)
+- [Resource considerations](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md)
+- [Research record](https://github.com/lucalullo/morph-tree/blob/main/research/README.md)
+- [Contributing](https://github.com/lucalullo/morph-tree/blob/main/CONTRIBUTING.md)
+- [Release and publishing guide](https://github.com/lucalullo/morph-tree/blob/main/PUBLISHING.md)
 
 ## Limitations
 
@@ -212,15 +213,15 @@ Performance and predictive accuracy depend on the dataset, hardware, search sett
 - Native kernels accelerate selected operations, not the complete training pipeline; some paths can consume more memory.
 - Large-scale training, cross-platform portability, and competitive predictive performance require additional independent validation.
 
-## Status
+## Release scope
 
-**MorphTree 2.1.0** is the current GitHub source version. Its Python+C implementation has passed scoped local technical checks, a manual hosted CI build/test workflow, and initial Kaggle smoke tests for binary classification, multiclass classification, and regression. These checks include use of the native kernels and model save/load.
+This README describes **MorphTree 2.1.0**. Technical checks have covered native training, classification, regression, model persistence, and installed-package workflows on the documented environments, including a manual hosted CI run and Kaggle smoke tests. These checks do not establish universal platform compatibility, predictive superiority, or performance on arbitrary large datasets.
 
-The updated 2.1.0 native build has **not yet been published to TestPyPI or PyPI**. Large-dataset Kaggle benchmarking and final public-API verification remain separate from the completed smoke tests. The [qualification record](docs/QUALIFICATION.md) describes the verified scope; source availability is not a claim of universal compatibility or accuracy.
+See the [qualification record](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md) for the verified scope and the [publishing guide](https://github.com/lucalullo/morph-tree/blob/main/PUBLISHING.md) for release procedures.
 
 ## License
 
-MorphTree is created by Luca Lullo and released under the [MIT License](LICENSE).
+MorphTree is created by Luca Lullo and released under the [MIT License](https://github.com/lucalullo/morph-tree/blob/main/LICENSE).
 
 ## Author
 
