@@ -16,6 +16,14 @@ from .source_markers import controlled_source
 
 
 def scalar(v,*,preserve_integral=False):
+    kind=type(v)
+    if kind is str or v is None:return v
+    if kind is int and preserve_integral:return v
+    if kind is float or kind is int or kind is bool:
+        f=float(v)
+        if math.isnan(f):return None
+        if math.isfinite(f):return f
+        raise ValueError('Finite numeric/string category/None/NaN/nullable scalar required')
     if type(v).__module__.split('.')[0]=='numpy' and hasattr(v,'item'):v=v.item()
     if v is None or (sys.modules.get('pandas') is not None and v is getattr(sys.modules['pandas'],'NA',None)):return None
     if preserve_integral and type(v) is int:return v

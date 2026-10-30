@@ -1,3 +1,28 @@
+#2.1.0 — native Python+C delivery,30October2026
+
+Owner-selected definitive package version. Supersedes the temporary3.0.0rc1
+delivery label only. All native functionality,performance optimizations,model
+compatibility and explicit8round configuration are retained without a default
+or learning-policy change. Earlier2.1.0Python and native references remain
+preserved by source paths and hashes. No publication or history rewrite.
+
+Corrective inventory review: backed up external checkout additions, retained
+reviewed public maintainer guides and aggregate benchmarks, and excluded stale
+historical navigation from the transfer archive. Corrected public-versus-legacy
+admission documentation and Linux wheel instructions; added zero-fit dispatch
+and large-shape admission regressions. Runtime Python/C and defaults unchanged.
+
+## Historical release labels and evidence (not current version)
+
+#3.0.0rc1 — local release candidate,30October2026
+
+Integrated verified C histograms/traversal and092 scalar fast path; distinct
+prerelease identity,Python API/model compatibility retained. Capacity8 available
+explicitly;default unchanged. Refreshed source inventories,build/install tests
+and precise historical/current qualification. No experimental learning rules.
+
+## Historical changelog
+
 # 2.1.0 — native candidate, owner-approved version, not yet published
 
 Ordered C histograms and cached traversal integrated; Python API and mathematics
@@ -78,4 +103,4 @@ The Python-only reference and its release notes below remain historical evidence
 - Supply a documented research archive retaining negative, failed and inconclusive experiments and the canonical product specification.
 - Target Windows x64 and CPython 3.12 initially; document limits and the manual hosted-CI verification gate.
 
-This is the **first public release**. Earlier experimental labels were local research and packaging checkpoints, not previous public releases. For their preserved details see [historical development changelog](research/HISTORY.md).
+This historical section describes the **first public release**. Earlier experimental labels were local research and packaging checkpoints. The original development records are preserved privately; see the [public research summary](research/README.md) for the scope of distributed evidence.

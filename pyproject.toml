@@ -7,8 +7,6 @@ name = "morphtree"
 version = "2.1.0"
 description = "MorphTree diagnostic structural evolution with integrated Python and C kernels"
 readme = "README_PYPI.md"
-authors = [{ name = "Luca Lullo" }]
-keywords = ["machine-learning", "tabular", "decision-trees", "evolutionary-learning", "explainability"]
 requires-python = ">=3.12,<3.15"
 license = "MIT"
 dependencies = ["optuna==5.0.0"]
@@ -16,10 +14,6 @@ dependencies = ["optuna==5.0.0"]
 [project.urls]
 Homepage = "https://github.com/lucalullo/morph-tree"
 Source = "https://github.com/lucalullo/morph-tree"
-Repository = "https://github.com/lucalullo/morph-tree"
-Documentation = "https://github.com/lucalullo/morph-tree/blob/main/docs/API.md"
-Issues = "https://github.com/lucalullo/morph-tree/issues"
-Changelog = "https://github.com/lucalullo/morph-tree/blob/main/CHANGELOG.md"
 
 [project.scripts]
 morphtree = "morphtree.cli:main"
@@ -36,5 +30,5 @@ packages = ["python/morphtree"]
 exclude = ["**/__pycache__", "**/*.pyc"]
 
 [tool.hatch.build.targets.sdist]
-include = ["/pyproject.toml", "/hatch_build.py", "/LICENSE", "/README.md", "/README_PYPI.md", "/AGENTS.md", "/CONTRIBUTING.md", "/SECURITY.md", "/CODE_OF_CONDUCT.md", "/PUBLISHING.md", "/VERSIONING.md", "/RELEASE_CHECKLIST.md", "/DEPENDENCIES.md", "/CHANGELOG.md", "/BENCHMARKS.md", "/ROADMAP.md", "/SOURCE_MANIFEST.json", "/.gitignore", "/.gitattributes", "/.github/", "/tools/", "/python/morphtree/", "/python/SOURCE_MANIFEST.json", "/python/tests/product/", "/tests/", "/examples/", "/docs/", "/research/"]
+include = ["/pyproject.toml", "/hatch_build.py", "/LICENSE", "/README.md", "/README_PYPI.md", "/AGENTS.md", "/CONTRIBUTING.md", "/CODE_OF_CONDUCT.md", "/PUBLISHING.md", "/RELEASE_CHECKLIST.md", "/VERSIONING.md", "/SECURITY.md", "/DEPENDENCIES.md", "/CHANGELOG.md", "/BENCHMARKS.md", "/ROADMAP.md", "/SOURCE_MANIFEST.json", "/.gitignore", "/.gitattributes", "/.github/", "/tools/", "/python/morphtree/", "/python/SOURCE_MANIFEST.json", "/python/tests/product/", "/tests/", "/examples/", "/docs/", "/research/"]
 exclude = ["/python/morphtree/_native/bin/", "**/__pycache__", "**/*.pyc"]

@@ -1,0 +1,269 @@
+{
+  "algorithm_changes": false,
+  "cases": [
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "RC116",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 16.796875,
+      "fit_seconds": 17.00390999999945,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled process working-set peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5715637163520288,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5726279670509301
+        },
+        {
+          "child_SEARCH": 0.5694378575060625,
+          "decision": "ACCEPT",
+          "generation": 1,
+          "parent_SEARCH": 0.5715637163520288
+        }
+      ],
+      "peak_memory_bytes": 79376384,
+      "predict_seconds": 0.4419477999981609,
+      "score": 0.7214178731902147,
+      "score_kind": "accuracy",
+      "source_model_sha256": "9e7662931427c1aaa87403000d1866fc582b5e7051074920fa929f78963d0913",
+      "task": "binary",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 2,
+        "Optuna_trials": 2,
+        "native_fits": 10,
+        "public_calls": 1,
+        "scalar_trees": 117
+      },
+      "campaign": "RC116",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 20.21875,
+      "fit_seconds": 20.29128209999908,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled process working-set peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.8251913101182619,
+          "decision": "ROLLBACK",
+          "generation": 0,
+          "parent_SEARCH": 0.8199871286607217
+        },
+        {
+          "child_SEARCH": 0.820210989358991,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.8199871286607217
+        }
+      ],
+      "peak_memory_bytes": 89411584,
+      "predict_seconds": 0.45754390000001877,
+      "score": 0.6565152271592611,
+      "score_kind": "accuracy",
+      "source_model_sha256": "b0f78b1309084a67ab27b36a031d324a16fbeb615f8b7ec742bdd70df3c180de",
+      "task": "multiclass",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "RC116",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 15.21875,
+      "fit_seconds": 15.31488890000037,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled process working-set peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5291092985231044,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5494087915387839
+        },
+        {
+          "child_SEARCH": 0.5388766611541371,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.5291092985231044
+        }
+      ],
+      "peak_memory_bytes": 79216640,
+      "predict_seconds": 0.4707027000004018,
+      "score": 0.8792401494727546,
+      "score_kind": "R2",
+      "source_model_sha256": "9e399d69fcb9f153ddf36f33d3a363b2b09f6ea51a00eb654473d73956e1ac31",
+      "task": "regression",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "RC117",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 7.534657513,
+      "fit_seconds": 12.372535457000001,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled owned-session group RSS peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5715637163520288,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5726279670509301
+        },
+        {
+          "child_SEARCH": 0.5694378575060625,
+          "decision": "ACCEPT",
+          "generation": 1,
+          "parent_SEARCH": 0.5715637163520288
+        }
+      ],
+      "peak_memory_bytes": 95240192,
+      "predict_seconds": 0.5976752539999985,
+      "score": 0.7214178731902147,
+      "score_kind": "accuracy",
+      "source_model_sha256": "cb645ba24f61db719d1755d0a3844b6596d4083ba49972eae31e0cc54c73c495",
+      "task": "binary",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 2,
+        "Optuna_trials": 2,
+        "native_fits": 10,
+        "public_calls": 1,
+        "scalar_trees": 117
+      },
+      "campaign": "RC117",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 9.092914874,
+      "fit_seconds": 13.767862239999996,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled owned-session group RSS peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.8251913101182619,
+          "decision": "ROLLBACK",
+          "generation": 0,
+          "parent_SEARCH": 0.8199871286607217
+        },
+        {
+          "child_SEARCH": 0.820210989358991,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.8199871286607217
+        }
+      ],
+      "peak_memory_bytes": 105611264,
+      "predict_seconds": 0.625601666999998,
+      "score": 0.6565152271592611,
+      "score_kind": "accuracy",
+      "source_model_sha256": "d3a9bbcddeb1649620381648f62daea9689a4b82098facae40032d27226d2757",
+      "task": "multiclass",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "RC117",
+      "diagnostics_genealogy_exact": true,
+      "fit_CPU_seconds": 7.281860799,
+      "fit_seconds": 12.233740218000001,
+      "full_input_rows": 25003,
+      "memory_scope": "Sampled owned-session group RSS peak",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5291092985231044,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5494087915387839
+        },
+        {
+          "child_SEARCH": 0.5388766611541371,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.5291092985231044
+        }
+      ],
+      "peak_memory_bytes": 94109696,
+      "predict_seconds": 0.6075027620000029,
+      "score": 0.8792401494727546,
+      "score_kind": "R2",
+      "source_model_sha256": "41465a393e4e98bf89270022b85ae9996881ac2bab7740e00384d9ba2cffdf47",
+      "task": "regression",
+      "weights_predictions_probabilities_exact": true
+    }
+  ],
+  "groups": [
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "account_CPU": 313.0,
+      "account_wall": 373.6560000000027,
+      "authority_residual": 0,
+      "closed": true,
+      "counts": {
+        "OOF_fits": 10,
+        "Optuna_trials": 6,
+        "native_fits": 34,
+        "public_calls": 3,
+        "scalar_trees": 291
+      },
+      "id": "RC116"
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "account_CPU": 281.123383601,
+      "account_wall": 375.03170104400004,
+      "authority_residual": 0,
+      "closed": true,
+      "counts": {
+        "OOF_fits": 10,
+        "Optuna_trials": 6,
+        "native_fits": 34,
+        "public_calls": 3,
+        "scalar_trees": 291
+      },
+      "id": "RC117"
+    }
+  ],
+  "original_reference_refits": 0,
+  "publications": 0,
+  "scope": "HISTORICAL3.0.0rc1 training evidence retained unchanged;not new2.1.0 fits. Six new installed default fits,synthetic25003x7/EXTERNAL2003;software equivalence,not an independent predictive-improvement experiment",
+  "version": "3.0.0rc1"
+}

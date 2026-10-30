@@ -1,0 +1,17 @@
+{
+  "ELF_binary_identical": true,
+  "extra_shared_libraries": 0,
+  "package_files_identical": true,
+  "platform_tags": [
+    "manylinux1_x86_64",
+    "manylinux2014_x86_64",
+    "manylinux_2_17_x86_64",
+    "manylinux_2_5_x86_64"
+  ],
+  "scope": "auditwheel ABI/symbol/ISA assessment;only Ubuntu24.04WSL2 whole-pipeline qualification is claimed",
+  "status": "PASS_AUDIT_NO_CODE_OR_LIBRARY_CHANGE",
+  "tool": "auditwheel6.8.2",
+  "versioned_symbols": [
+    "GLIBC_2.2.5"
+  ]
+}

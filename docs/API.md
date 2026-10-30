@@ -8,6 +8,11 @@
 `export_standalone` and `export_algorithm`. Classification also has `predict_proba`.
 `score` returns accuracy or R². `load_model` chooses the correct public task class.
 
+The package-level classes resolve to `morphtree.scalable`, not the legacy
+`morphtree.estimators` wrappers. The legacy input caps do not apply to the
+scalable task classes. See [public API and resource limits](PUBLIC_API_LIMITS.md)
+for resource admission, historical-model limits and the scope of large-data tests.
+
 Defaults are `random_state=None`, `verbosity=0`, `use_optuna=True`,
 `max_mutations=2`, `n_trials='auto'`, `n_jobs=1`, `mode='adaptive'`,
 `operators=None`, `capacity=None`, `time_budget='auto'`, `memory_budget='auto'`,

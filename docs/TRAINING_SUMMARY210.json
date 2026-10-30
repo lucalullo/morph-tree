@@ -1,0 +1,278 @@
+{
+  "GitHub": false,
+  "architecture": "Python+C;unchanged qualified numerical and evolutionary code",
+  "cases": [
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "VERSION121",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.7214178731902147,
+      "fit_CPU_seconds": 11.765625,
+      "fit_seconds": 11.88890900000115,
+      "full_input_refit": true,
+      "memory_scope": "sampled process working-set peaks",
+      "model_sha256": "53e2550e475a7553e59b2c5f8b5ac3311a2469188c6b20786dabdfe36d66d1c7",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5715637163520288,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5726279670509301
+        },
+        {
+          "child_SEARCH": 0.5694378575060625,
+          "decision": "ACCEPT",
+          "generation": 1,
+          "parent_SEARCH": 0.5715637163520288
+        }
+      ],
+      "peak_memory_bytes": 79712256,
+      "predict_seconds": 0.38096090000180993,
+      "score_kind": "accuracy",
+      "task": "binary",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 2,
+        "Optuna_trials": 2,
+        "native_fits": 10,
+        "public_calls": 1,
+        "scalar_trees": 117
+      },
+      "campaign": "VERSION121",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.6565152271592611,
+      "fit_CPU_seconds": 13.890625,
+      "fit_seconds": 14.023343100001512,
+      "full_input_refit": true,
+      "memory_scope": "sampled process working-set peaks",
+      "model_sha256": "ff74826ca2f3fea8d4c068880995068ee8feb70ddd73b0777dbc55ea0996688f",
+      "mutations": [
+        {
+          "child_SEARCH": 0.8251913101182619,
+          "decision": "ROLLBACK",
+          "generation": 0,
+          "parent_SEARCH": 0.8199871286607217
+        },
+        {
+          "child_SEARCH": 0.820210989358991,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.8199871286607217
+        }
+      ],
+      "peak_memory_bytes": 89239552,
+      "predict_seconds": 0.29892730000210577,
+      "score_kind": "accuracy",
+      "task": "multiclass",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "VERSION121",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.8792401494727546,
+      "fit_CPU_seconds": 7.75,
+      "fit_seconds": 7.814268699999957,
+      "full_input_refit": true,
+      "memory_scope": "sampled process working-set peaks",
+      "model_sha256": "95f11ededcbb9c2d88fb2a34293aea0710c86bdd2452d16ce28fb88403687b56",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5291092985231044,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5494087915387839
+        },
+        {
+          "child_SEARCH": 0.5388766611541371,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.5291092985231044
+        }
+      ],
+      "peak_memory_bytes": 78090240,
+      "predict_seconds": 0.1880100999987917,
+      "score_kind": "R2",
+      "task": "regression",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "VERSION122",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.7214178731902147,
+      "fit_CPU_seconds": 7.046515080000001,
+      "fit_seconds": 11.316187056999999,
+      "full_input_refit": true,
+      "memory_scope": "sampled owned-session group RSS",
+      "model_sha256": "d0f37a23a35860666cb6645f78a10a659dce8f850d41e597406965507056aa17",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5715637163520288,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5726279670509301
+        },
+        {
+          "child_SEARCH": 0.5694378575060625,
+          "decision": "ACCEPT",
+          "generation": 1,
+          "parent_SEARCH": 0.5715637163520288
+        }
+      ],
+      "peak_memory_bytes": 93863936,
+      "predict_seconds": 0.5167570220000002,
+      "score_kind": "accuracy",
+      "task": "binary",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 2,
+        "Optuna_trials": 2,
+        "native_fits": 10,
+        "public_calls": 1,
+        "scalar_trees": 117
+      },
+      "campaign": "VERSION122",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.6565152271592611,
+      "fit_CPU_seconds": 7.915187915000001,
+      "fit_seconds": 11.944383337000001,
+      "full_input_refit": true,
+      "memory_scope": "sampled owned-session group RSS",
+      "model_sha256": "ecdff599daac158eec6eef6d24ec33562642291ea75ea164b139a97ac0105aaa",
+      "mutations": [
+        {
+          "child_SEARCH": 0.8251913101182619,
+          "decision": "ROLLBACK",
+          "generation": 0,
+          "parent_SEARCH": 0.8199871286607217
+        },
+        {
+          "child_SEARCH": 0.820210989358991,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.8199871286607217
+        }
+      ],
+      "peak_memory_bytes": 105357312,
+      "predict_seconds": 0.5019039000000021,
+      "score_kind": "accuracy",
+      "task": "multiclass",
+      "weights_predictions_probabilities_exact": true
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "Optuna_after_freeze": true,
+      "actual": {
+        "OOF_fits": 4,
+        "Optuna_trials": 2,
+        "native_fits": 12,
+        "public_calls": 1,
+        "scalar_trees": 87
+      },
+      "campaign": "VERSION122",
+      "diagnostics_genealogy_exact": true,
+      "external_score": 0.8792401494727546,
+      "fit_CPU_seconds": 6.010144574,
+      "fit_seconds": 9.981874496000003,
+      "full_input_refit": true,
+      "memory_scope": "sampled owned-session group RSS",
+      "model_sha256": "14921b006c6ea7d51d871c165fa8d9666adbcc59ae8ef877eda79c6b6ba324be",
+      "mutations": [
+        {
+          "child_SEARCH": 0.5291092985231044,
+          "decision": "ACCEPT",
+          "generation": 0,
+          "parent_SEARCH": 0.5494087915387839
+        },
+        {
+          "child_SEARCH": 0.5388766611541371,
+          "decision": "ROLLBACK",
+          "generation": 1,
+          "parent_SEARCH": 0.5291092985231044
+        }
+      ],
+      "peak_memory_bytes": 94543872,
+      "predict_seconds": 0.5113258200000033,
+      "score_kind": "R2",
+      "task": "regression",
+      "weights_predictions_probabilities_exact": true
+    }
+  ],
+  "data": "Synthetic25003x7;fixedEXTERNAL2003;not a new general predictive superiority experiment",
+  "groups": [
+    {
+      "OS": "Windowsx64/Python3.12.10",
+      "account_CPU": 290.9375,
+      "account_wall": 351.54699999999866,
+      "actual": {
+        "OOF_fits": 10,
+        "Optuna_trials": 6,
+        "native_fits": 34,
+        "public_calls": 3,
+        "scalar_trees": 291
+      },
+      "authority_residual": 0,
+      "campaign": "VERSION121",
+      "full_closure_reserve": {
+        "CPU": 20,
+        "wall": 20
+      }
+    },
+    {
+      "OS": "Ubuntu24.04WSL2x64/Python3.12.3",
+      "account_CPU": 276.132595586,
+      "account_wall": 366.603124875,
+      "actual": {
+        "OOF_fits": 10,
+        "Optuna_trials": 6,
+        "native_fits": 34,
+        "public_calls": 3,
+        "scalar_trees": 291
+      },
+      "authority_residual": 0,
+      "campaign": "VERSION122",
+      "full_closure_reserve": {
+        "CPU": 20,
+        "wall": 20
+      }
+    }
+  ],
+  "network": false,
+  "publication": false,
+  "reference_refits": 0,
+  "retries": 0,
+  "version": "2.1.0"
+}

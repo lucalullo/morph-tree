@@ -1,65 +1,99 @@
-# Qualification — 28 October2026
+# Qualification — source lineage versus current RC
+2.1.0 is the definitive owner-selected native version, not yet published.
+Learning implementation and C sources are identical to the frozen native092
+engine except package/API version literals and reviewed metadata. Separate RC
+installed checks and any new training are recorded in RELEASE_STATUS.json.
 
-**GO for the scoped local functional candidate and owner review.** Public release
-and publication remain NO_GO until the post-transfer CI/TestPyPI procedure and
-separate owner approval. The owner has approved version **2.1.0** for this native
-candidate, superseding the earlier 3.0.0 proposal and experimental identifier.
-The Python-only 2.1.0 reference stays separate and unchanged. No account, Git write,
-hosted workflow or publication was used during this qualification.
+Historical integrated lineage:Windowsx64 CPython3.12 three tasks at10,003×15,
+25,003×7,200,003×15;Windows3.13/3.14 and Ubuntu24.04WSL2x64/glibc2.39
+3.12–3.14 three tasks at25,003×7. These are retained results,not new RC fits.
+092 installed wheel/sdist and historical-model checks cover Windows/Linux
+3.12–3.14. SCIENCE099 ran45controlled pipelines across three synthetic
+distributions/three seeds; it did not establish general evolutionary superiority.
+REAL108 and PREDICTIVE110 are frozen stellar results. Capacity8 improved only
+the reported VALIDATION; four proposed structural changes all rolled back.
+OBSERVATION112 acquired two genuine OOF models/48trees with exact old pointloss;
+STARinM had low recall but no stable aggregate STARgradient bias in those folds.
+PREDICTIVE089 had incomplete preflight; subsequent checks do not repair it.
 
-| Environment | Actual full automatic C training | Installation |
-| --- | --- | --- |
-| Windows11 build26300 x64 CPython3.12.10 | Three tasks at10,003×15,25,003×7,200,003×15 | Wheel and sdist |
-| Windows11 build26300 x64 CPython3.13.17/3.14.9 | Three tasks at25,003×7 | Wheel and sdist |
-| Ubuntu24.04.4WSL2 x86_64/glibc2.39 Python3.12.3/3.13.17/3.14.9 | Three tasks at25,003×7 | Wheel and sdist |
+Historical APIs,save/load,standalone,exports,refit and automatic backend have
+scoped LIVE evidence. Reuse depends on source identity; metadata-only version
+updates do not by themselves qualify a new physical fit. Fresh RC zero-fit
+checks must verify actual installed artifacts and historical models separately.
+Cross-OS tiny differences from CRT/glibc math.exp are known; exact comparisons
+use the same OS/interpreter. Million-row inference is a retained Windows3.12
+check,not million-row training. Compatible wheels need no compiler; sdist does.
 
-Small/large data include1024nominal categories and numeric/categorical missing.
-Every eligible input observation is accounted for in full refit. All original
-families, one parent, TRAIN-only OOF diagnosis, executable structural descendants,
-acceptance/rollback, continuation, freeze, default final Optuna, persistence and
-exports remain active. Acceptance is not forced; both accepted and rejected
-descendants are valid observations. Medium binary accepts two successive changes;
-other task/scale combinations include correct rollback.
+Unqualified:Python3.15,authentic macOS,other Linux/manylinux,Linux large training,
+million-row training,hosted Kaggle,arbitrary concurrent model mutation,universal
+accuracy or speed superiority. Local checks do not replace future hosted CI on
+the final transferred commit. Publication approval remains false.
 
-Per OS, medium evidence includes nine fresh automatic pipelines, three312refits
-and three exported trainers. Windows102intermediate components and every
-small/large component are exact against actual same-OS2.1references. Linux reused
-nine valid Linux references without retraining. Saved variants, prediction,
-probability, score, report, genealogy and standard-library standalone exports passed.
+## Fresh RC116/RC117 completion
+Three default installedRCfits perOS,Windows3.12.10/UbuntuWSL23.12.3 completed.
+PerOS3calls,34fit including10OOF,6Optunatrials,291scalar trees. Weights,split
+programs,diagnoses,lineage,accept/rollback,probabilities and predictions are
+exact against retained same-OSPython2.1references. Every25003input row is
+accounted for in final refit;Optuna begins after freeze. Save/load,variants,
+score,recipe,training export and standalone inference passed. No reference
+retraining or tolerance relaxation. See RC_TRAINING_SUMMARY.json.
 
-Original wheel/sdist matrices ran432zero-fit tests across12clean installations.
-The previous staged repository was built independently on both OS: its 73 package
-files matched the qualified platform packages byte for byte. Its12clean installs ran
-444portable public checks plus432retained-model regression checks, all passing.
-After document-only transfer fixes, wheels remained byte-identical and two fresh
-source installs passed additional portable/retained-model checks. Final artifact
-checks are separately bound to the final source inventory. The corrective review
-changes identity labels and buffer pin timing, not C kernels or learning rules.
-The new builds have new hashes. Retained LIVE evidence is reused through an
-explicit source comparison and zero-fit installed regression checks; no new full
-training or updated performance measurement is implied by these checks.
+Final source differences after these fits are qualification labels,documentation
+and corresponding test assertions only. Learning code and native binaries are
+unchanged;final artifact checks record that transfer explicitly. FreshRCtraining
+was NOT repeated on3.13/3.14:historical unchanged-engine evidence and freshRC
+installation/inference tests are identified separately.
 
-`morphtree.__runtime__` describes the automatic backend policy; native loading is
-lazy and `_native.loader.runtime_info()` identifies the actual loaded binary.
-The package manifest records scoped native qualification separately from
-`historical_provenance`, which retains earlier pure-Python and unqualified labels.
-`docs/RELEASE_STATUS.json` separately records version approval and the publication
-block. Building cannot grant qualification or reset it to an obsolete status.
+## Definitive2.1.0 version alignment
+RC116/RC117 were physically trained as3.0.0rc1. Their evidence is historical,
+not relabelled as new2.1.0 fits. This successor changes only two package/API
+version literals,identity metadata,tests and documentation. Learning code and
+C binaries remain unchanged. Fresh2.1.0 installs and any separately authorized
+training are recorded explicitly. Historical Python-only2.1.0 remains distinct.
 
-Genuine2.0models passed three tasks on all six OS/interpreter profiles, including
-save/load and transactional blocked refit, with exact probabilities. This is not
-itself successful native legacy-refit training evidence. Windows/Linux sanitizer
-harnesses each passed4,512requests. Linux shared-runtime two-thread contracts
-passed48histograms/48traversals per interpreter; PyDLL retains the GIL.
+## Linux binary distribution audit
+Auditwheel6.8.2 found onlyGLIBC_2.2.5 versioned symbols fromlibc and no extra
+shared libraries to bundle. The repaired wheel carries manylinux platform tags,
+including manylinux2014/manylinux_2_17. File-by-file validation confirms identical
+MorphTree code and native ELF bytes:only WHEEL/RECORD container metadata changes.
+This is a binary ABI/symbol/ISA audit,not a new complete-pipeline qualification
+on older glibc or other Linux distributions. Actual runtime tests remain the
+documented Ubuntu24.04WSL2x86_64/Python3.12–3.14 profiles. No compiler is needed
+when installing the compatible precompiled wheel.
 
-Negatives remain preserved:004/027recorder stops;052cross-OS exact-weight failure
-(maximum node delta2.22e-16), diagnosed CRT/glibc math.exp differences;064zero-fit
-CPU stop.052was not relabeled PASS.068reused only064's complete valid Python
-profile check and verified the missing native profile under a new finite scope.
-No interrupted training was automatically retried; no old LIVE budget was reused.
+Linux builders can install the development-only tools auditwheel==6.8.2,
+pyelftools==0.33,packaging==26.3,patchelf==0.19.1.0 into an isolated environment,
+along with build==1.3.0/hatchling==1.27.0,then run:
 
-Not qualified: Linux small/large training, million-row training, Python3.15 ordinary
-installation, authentic macOS, other Linux distributions/manylinux, hosted Kaggle,
-arbitrary parallel model mutation or universal performance/accuracy superiority.
-These are explicit limits, not fabricated successes. Future support needs its own
-environment and authorization where training is required.
+    python -I -B tools/build_artifacts.py --manylinux
+
+The build retains its raw wheel and audit logs in its owned temporary copy.
+It refuses repair if any code/library/other file payload changes;no new runtime
+dependency is added. Standard source builds still require a local C toolchain.
+
+## Fresh2.1.0 training completion
+VERSION121/122 each completed3installed facade calls,34native fits including
+10OOF,6trials and291scalar trees. All same-OS reference weights,predictions,
+probabilities,diagnostics and evolutionary decisions are exact. Binary accepts
+two successive generations,multiclass rolls back,regression accepts then rolls
+back. Optuna follows freeze;all25003input rows enter final refit. Save/load,
+variants,score,recipe,training exports and standalone inference pass.
+Final label-only successor changes qualification JSON/test assertions/documents,
+not learning code or compiled libraries;final installed checks bind that transfer.
+No new pipeline fits on3.13/3.14 are implied by their clean installation checks.
+
+## Public task API versus legacy admission
+
+The public package exports the classes in `morphtree.scalable`; its final imports
+supersede the older task wrappers. The 2 MiB/65,536 TRAIN-row/128 encoded-feature
+checks in `api._new_user_session` belong to the separate legacy API. They do not
+limit the current public task classes. The large supervised comparisons called
+those public classes; their wrappers counted native fits, saved receipts and
+checked stop conditions while invoking the original learner. They did not remove
+input caps or replace preprocessing, selection or evolution.
+
+Completed supervised large training, zero-fit admission, metadata-only shape
+tests and ordinary unattended completion are different claims. No additional
+physical training was run for the inventory/documentation correction. See
+[the detailed resource guide](PUBLIC_API_LIMITS.md); retained LIVE evidence stays
+historical and conditional on unchanged runtime source identity.

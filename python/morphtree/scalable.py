@@ -44,6 +44,16 @@ def verify_source_identity():
 
 def digest(v):return hashlib.sha256(json.dumps(v,sort_keys=True,allow_nan=False,separators=(',',':')).encode()).hexdigest()
 def point_loss(task,y,p):
+    # Invalid internal predictions must stop selection, not become an apparently
+    # excellent loss through NaN comparison/clipping or zip truncation.
+    if task not in ('binary','multiclass','regression') or not len(y) or len(y)!=len(p):raise ValueError('Known task and nonempty aligned loss inputs required')
+    if task=='regression':
+        if any(not math.isfinite(a) or not math.isfinite(b) or not math.isfinite((a-b)**2) for a,b in zip(y,p)):raise ValueError('Finite regression loss inputs and squared errors required')
+    elif task=='binary':
+        if any(a not in (0,1) or not math.isfinite(b) or not 0<=b<=1 for a,b in zip(y,p)):raise ValueError('Binary labels and finite probabilities in [0,1] required')
+    else:
+        k=len(p[0])
+        if k<2 or any(type(a) is not int or not 0<=a<k or len(b)!=k or any(not math.isfinite(v) or not 0<=v<=1 for v in b) or abs(math.fsum(b)-1)>1e-10 for a,b in zip(y,p)):raise ValueError('Aligned multiclass labels and finite probability simplexes required')
     if task=='regression':return array('d',((a-b)**2 for a,b in zip(y,p)))
     if task=='binary':return array('d',(-math.log(max(1e-15,min(1-1e-15,b if a else 1-b))) for a,b in zip(y,p)))
     return array('d',(-math.log(max(1e-15,min(1-1e-15,b[a]))) for a,b in zip(y,p)))

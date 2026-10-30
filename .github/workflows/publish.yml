@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       expected_version:
-        description: Final approved version; internal lab versions are refused
+        description: Explicitly approved version; RC only on TestPyPI, final version on PyPI
         required: true
         type: string
       target:

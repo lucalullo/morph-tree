@@ -29,17 +29,18 @@ class ReleaseMetadata(unittest.TestCase):
     def test_qualification_has_scope_and_does_not_grant_publication(self):
         current=self.manifest()['native_lab']
         self.assertTrue(current['whole_pipeline_native_qualified'])
+        self.assertEqual(len(current['fresh_RC_profiles']),2)
+        self.assertEqual(current['evidence_campaigns'],['VERSION121','VERSION122'])
+        self.assertEqual(current['training_distribution_version'],'2.1.0')
         self.assertTrue(current['version_approved'])
         self.assertFalse(current['public_release'])
         self.assertFalse(current['publication_approved'])
-        self.assertEqual(len(current['qualified_profiles']), 3)
-        self.assertIn('million-row training', current['unqualified'])
-        self.assertIn('Python 3.15 ordinary install', current['unqualified'])
-
+        self.assertEqual(len(current['qualified_profiles']),3)
+        self.assertIn('million-row training',current['unqualified'])
+        self.assertIn('Python 3.15 ordinary install',current['unqualified'])
     def test_historical_provenance_is_retained_and_labelled(self):
         old=self.manifest()['historical_provenance']
-        self.assertEqual(old['predecessor_version'], '2.1.0+native.lab')
-        self.assertEqual(old['original_python_reference_version'], '2.1.0')
-        self.assertFalse(old['inherited_metadata']['native_lab']['whole_pipeline_native_qualified'])
-        self.assertIn('lineage', old['inherited_metadata'])
-        self.assertIn('release200_preparation', old['inherited_metadata'])
+        self.assertEqual(old['original_python_reference_version'],'2.1.0')
+        self.assertEqual(old['previous_native_reference_version'],'2.1.0')
+        self.assertFalse(old['learning_mathematics_changed'])
+        self.assertFalse(self.manifest()['capacity_profile']['new_default_adopted'])

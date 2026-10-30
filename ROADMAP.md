@@ -1,12 +1,7 @@
-# Remaining work
-
-Windows3.12 small, medium and large full training comparisons are complete.
-Windows3.13/3.14 and UbuntuWSL2 Python3.12–3.14 are qualified at medium scale.
-Linux large and million-row training remain future qualifications outside this
-candidate's declared scope; million-row inference has passed on Windows3.12.
-Final version approval and post-transfer CI/TestPyPI belong to the owner.
-Preserve precision, reproducibility, refit stability, budgets, all-row data,
-introspection, structural mutation, genealogy and Optuna.
-New families, mutation policies and statistical innovations require owner review
-after faithful reconstruction. Python3.15 ordinary installs, authentic macOS,
-broader Linux portability and hosted notebook qualification remain open.
+# Roadmap
+First complete currentRC artifact checks and specifically approved installed
+training,then owner-run hostedCI/TestPyPI and separate publication approval.
+Future work:independent datasets,seeds,fold-local diagnostic selection,missing/
+nominal/interactions,authentic macOS/Python3.15,manylinux portability and measured
+whole-fit efficiency. New rules need separate approval,preflight and LIVE budget.
+No experimental diagnostic102,planner100 or regional111 operator is adopted.

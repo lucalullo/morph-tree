@@ -1,15 +1,21 @@
 {
-  "local_technical_status": "GO_QUALIFIED_SCOPE",
-  "previous_version_proposal": "3.0.0 superseded by owner",
-  "proposed_version": null,
+  "current_distribution_training_verified": true,
+  "historical_2_0_models_checked": 18,
+  "index_version_check": "See public index check;recheck immediately before upload",
+  "local_technical_status": "GO_SCOPED_LOCAL_DELIVERY",
+  "offline_installed_profiles": 12,
   "publication_approved": false,
   "remaining": [
-    "Owner final transfer approval",
-    "Hosted CI on definitive transferred commit",
-    "Owner TestPyPI validation before PyPI approval"
+    "Owner manually transfers files and performs Git operations",
+    "Owner hosted CI on the final transferred commit",
+    "Owner verifies TestPyPI distribution and version availability",
+    "Separate owner approval before PyPI publication"
   ],
+  "repeated_public_test_executions": 1128,
+  "retained_native_test_executions": 432,
   "schema": "MORPHTREE_DELIVERY_GATE_1",
   "status": "NO_GO_PUBLICATION",
+  "training_evidence_distribution_version": "2.1.0",
   "version": "2.1.0",
   "version_approved": true
 }

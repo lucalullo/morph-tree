@@ -32,7 +32,7 @@ assert list(restored.predict(X[60:])) == list(predictions)
 
 For regression, replace `MorphTreeClassifier` with `MorphTreeRegressor` and use `predict()`; for multiclass classification, use the same classifier. `fit(X, y)` accepts supported tabular input without a separate task flag.
 
-The standard workflow includes automatic handling of supported missing and categorical values. Internally, MorphTree handles supported inference batches and rejects inputs it cannot admit safely; it does not silently drop rows. **Current ordinary-user training has explicit admission limits:** an estimated input payload of at most **2 MiB**, at most **65,536 TRAIN rows** after the internal split, and at most **128 encoded features**. These are implementation limits, not recommended dataset sizes. Large-scale qualification runs used controlled research execution paths and do **not** demonstrate that ordinary `fit(X, y)` can train on those larger datasets. See [qualification and API limitations](docs/QUALIFICATION.md).
+The public `MorphTreeClassifier` and `MorphTreeRegressor` use the scalable, columnar training path. They handle supported missing and categorical values without the legacy **2 MiB / 65,536 TRAIN rows / 128 encoded features** admission caps. Those caps remain in the separate legacy `morphtree.api.MorphTree` path; they are not limits of these public task classes. Admission depends on the estimated workspace, observed memory headroom and time budget. An admitted dataset can still exhaust resources during training; there is no promise that every dataset fits on every machine. Rows are not silently dropped, and prediction uses internal blocks without requiring manual batching. See [public API and resource limits](docs/PUBLIC_API_LIMITS.md).
 
 ## What makes MorphTree different?
 
@@ -99,7 +99,7 @@ py -3.12 -m venv .venv
 
 ```bash
 python3.12 -m venv .venv
-.venv/bin/python -m pip install /path/to/morphtree-2.1.0-py3-none-linux_x86_64.whl
+.venv/bin/python -m pip install /path/to/morphtree-2.1.0-py3-none-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl
 .venv/bin/python -m pip check
 .venv/bin/python -m morphtree --help
 ```
@@ -108,7 +108,7 @@ Paths are examples: replace them with the location of the **actual** wheel. Do n
 
 - **Python:** CPython 3.12–3.14 on qualified 64-bit x86 systems.
 - **Windows:** wheel built with MSVC, no compiler required for a compatible wheel.
-- **Linux:** verified on Ubuntu 24.04 under WSL2; the available `linux_x86_64` wheel is **not** a universal manylinux portability guarantee.
+- **Linux:** the wheel has auditwheel-verified manylinux ABI tags. Complete-pipeline runtime qualification remains Ubuntu 24.04 under WSL2; the ABI audit is not a claim that every Linux distribution has been tested.
 - **Source installation:** requires a compatible C toolchain, a linker and system development headers; building from source compiles the native kernels.
 - **Core dependency:** Optuna 5.0.0. Pandas and scikit-learn are optional integrations, not required for the basic NumPy-style workflow.
 
@@ -160,7 +160,15 @@ On Windows/Python 3.12, **single paired fits** with 200,003 rows and 15 columns 
 | Multiclass classification | 2.09× |
 | Regression | 1.16× |
 
-These are **individual measurements, not replicated statistical estimates**. They do not establish universal accuracy, speed or memory superiority; some native paths use more memory. Inference has been checked up to 1,000,003 rows, but **million-row training has not been qualified**. Large Linux training, Python 3.15, macOS, broad Linux portability and hosted Kaggle are also unqualified. **The 200,003-row fit results come from controlled qualification pipelines, not from an ordinary-user call; the public `fit()` admission limits above remain in force.**
+These are **individual measurements, not replicated statistical estimates**. They do not establish universal accuracy, speed or memory superiority; some native paths use more memory. Inference has been checked up to 1,000,003 rows, but **million-row training has not been qualified**. Large Linux training, Python 3.15, macOS, broad Linux runtime portability and hosted Kaggle are also unqualified. The 200,003-row results are supervised measurements of the public scalable `fit()` path, with resource accounting and stop callbacks. They are not new unsupervised replications or guarantees that default resource planning will complete any dataset of that size. Zero-fit admission checks are reported separately from completed training.
+
+## Explicit higher capacity
+
+```python
+model = MorphTreeClassifier(random_state=42, capacity={"n_estimators": 8})
+```
+
+Eight rounds remain an available configuration, not a new default. On the frozen stellar VALIDATION, PREDICTIVE110 improved balanced accuracy from 0.879211 to 0.920422 and reached log-loss 0.144333. Equal-capacity static and evolutionary models were identical and all four structural proposals rolled back. This is a capacity result, not an established mutation benefit or confirmation on a new independent TEST. See [comparison](docs/COMPARISON.md) and `examples/capacity8.py`.
 
 See [measurements](docs/COMPARISON.md), [qualification details](docs/QUALIFICATION.md) and [benchmark methodology](BENCHMARKS.md) for caveats and evidence provenance.
 

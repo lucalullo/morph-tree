@@ -43,11 +43,9 @@ belong in the repository.
    identical to those approved in the staged TestPyPI step. Never overwrite
    an existing PyPI/TestPyPI release using the same version.
 
-NeuroTabular uses a different release workflow (including GitHub OIDC trusted
-publishing). Do not assume its tokens, environments or package-index setup
-apply to MorphTree. MorphTree currently has a separate, review-controlled
-Twine-based publishing gate. Switching to trusted publishing is an independent
-security-sensitive change requiring maintainer configuration and verification.
+MorphTree currently has a review-controlled Twine-based publishing gate.
+Switching to trusted publishing is a separate security-sensitive change
+requiring maintainer configuration and verification.
 
 For exact conditions see [the release checklist](RELEASE_CHECKLIST.md),
 [the version policy](VERSIONING.md), and [handoff](docs/LOCAL_HANDOFF.md).
