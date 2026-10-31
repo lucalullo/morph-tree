@@ -8,7 +8,7 @@ approved. This revision explains evolutionary discovery cost and the separate
 contracts for saved-model inference and frozen-program training. Earlier README
 bytes and qualified deliveries remain preserved.
 
-Current source SHA-256: `7eb0397c1f2ba40b5b572f92923723e06020a807810ef7d4e42e0783df4d5430`.
+Current source SHA-256: `0c567465e0db8cf91112fef749f83f31d78e5aa48f7088817a3617c91154d9f4`.
 
 `pyproject.toml` selects `README.md` with `text/markdown`. The internal description
 contract records the source hash, normalized metadata hash and explicit revision

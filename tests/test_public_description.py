@@ -18,6 +18,6 @@ class PublicDescription(unittest.TestCase):
         self.assertRegex(c['README_sha256'],r'^[0-9a-f]{64}$')
         self.assertTrue(c['README_modified_by_agent'])
         self.assertEqual(c['source_revision_authorization'],'EXPLICIT_OWNER_DIRECTIVE')
-        self.assertEqual(c['authorization_sha256'],'c84e83ffbda12890490ba317c34615f6c75468555e3afceec3658ef31acd2b39')
+        self.assertEqual(c['authorization_sha256'],'da902c3c4bc4ca321a2e94e5e4513dc1f714935fa17c1d602c9e08e2d059f0b3')
         self.assertTrue(c['source_owner_review_pending'])
 if __name__=='__main__':unittest.main()

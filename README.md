@@ -18,7 +18,7 @@ This command selects the latest compatible release available on PyPI. Compatible
 
 ## Quick start
 
-The examples below use optional sample-data dependencies: `pip install scikit-learn pandas`.
+These independent examples require the optional scikit-learn package: `pip install scikit-learn`.
 
 ### Binary classification
 
@@ -27,48 +27,61 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from morphtree import MorphTreeClassifier
 
-X, y = load_breast_cancer(return_X_y=True, as_frame=True)
+X, y = load_breast_cancer(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-classifier = MorphTreeClassifier(random_state=42)
-classifier.fit(X_train, y_train)
+model = MorphTreeClassifier(random_state=42)
+model.fit(X_train, y_train)
 
-predictions = classifier.predict(X_test)
-probabilities = classifier.predict_proba(X_test)
-second_class_probabilities = probabilities[:, 1]
-print("Probability columns:", classifier.classes_)
-print("Test accuracy:", classifier.score(X_test, y_test))
+predictions = model.predict(X_test)
+probabilities = model.predict_proba(X_test)
+print("Test accuracy:", model.score(X_test, y_test))
 ```
-
-`predict()` returns a NumPy array of shape `(n_samples,)`. Classification probabilities are a numeric NumPy array of shape `(n_samples, n_classes)`: column `j` corresponds to `classes_[j]`. Values are finite, lie in `[0, 1]` and sum to one per row within floating-point tolerance. Select the column corresponding to your intended positive class; column 1 is the second class in `classes_`.
 
 ### Multiclass classification
 
 ```python
 from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 from morphtree import MorphTreeClassifier
 
-X_multi, y_multi = load_iris(return_X_y=True, as_frame=True)
-multiclass_model = MorphTreeClassifier(random_state=42).fit(X_multi, y_multi)
-labels = multiclass_model.predict(X_multi)
-class_probabilities = multiclass_model.predict_proba(X_multi)
-print(multiclass_model.classes_)
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+model = MorphTreeClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+probabilities = model.predict_proba(X_test)
+print("Test accuracy:", model.score(X_test, y_test))
 ```
 
 ### Regression
 
 ```python
 from sklearn.datasets import load_diabetes
+from sklearn.model_selection import train_test_split
 from morphtree import MorphTreeRegressor
 
-X_reg, y_reg = load_diabetes(return_X_y=True, as_frame=True)
-regressor = MorphTreeRegressor(random_state=42).fit(X_reg, y_reg)
-values = regressor.predict(X_reg)
+X, y = load_diabetes(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = MorphTreeRegressor(random_state=42)
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+print("Test R2:", model.score(X_test, y_test))
 ```
 
-The multiclass and regression snippets illustrate the interface using training rows. Assess predictive quality on separate validation and test data. Classifier `score()` reports accuracy; regressor `score()` reports R².
+`predict()` returns a NumPy array of shape `(n_samples,)`. Classification `predict_proba()` returns a numeric NumPy array of shape `(n_samples, n_classes)`; column `j` follows `classes_[j]`. Probabilities are finite, lie in `[0, 1]` and sum to one within floating-point tolerance. NumPy slicing such as `probabilities[:, 1]` works directly; select the column for your intended class.
+
+Classifier `score()` reports accuracy; regressor `score()` reports R². Each example evaluates on its held-out TEST split.
 
 ## Structural evolution
 
@@ -121,13 +134,13 @@ Other controls include `max_mutations`, `n_trials`, `time_budget`, `memory_budge
 After fitting the binary classifier above:
 
 ```python
-print(classifier.get_algorithm_program())
-print(classifier.get_recipe())
-print(classifier.get_mutation_history())
-print(classifier.get_search_report())
-print(classifier.cost_report())
+print(model.get_algorithm_program())
+print(model.get_recipe())
+print(model.get_mutation_history())
+print(model.get_search_report())
+print(model.cost_report())
 
-classifier.save("morphtree-model.json")
+model.save("morphtree-model.json")
 restored = MorphTreeClassifier.load("morphtree-model.json")
 restored_predictions = restored.predict(X_test)
 ```
@@ -135,7 +148,7 @@ restored_predictions = restored.predict(X_test)
 `get_algorithm_program()` describes the retained family's executable learning rules. `get_recipe()` also records its numerical parameters, fitted preprocessing and class ordering; inspecting a recipe does not train a model. `save()` and `load()` preserve the learned weights for inference on new observations with the same feature schema, without repeating discovery. Regression uses the same `save()` method and `MorphTreeRegressor.load()`.
 
 ```python
-classifier.export_standalone("predictor.py", output_format="numpy")
+model.export_standalone("predictor.py", output_format="numpy")
 ```
 
 The standalone predictor includes the fitted weights and performs inference without importing MorphTree; this explicit NumPy format requires NumPy. The default export format remains dependency-free Python lists.
@@ -143,7 +156,7 @@ The standalone predictor includes the fitted weights and performs inference with
 To export the learning program for a separate training operation:
 
 ```python
-classifier.export_algorithm("training_program.py")
+model.export_algorithm("training_program.py")
 ```
 
 Exporting does not train. The generated `train_encoded()` function trains new weights for the frozen family, rules and numerical parameters, without repeating family screening, OOF diagnosis, mutations or Optuna. It requires the exact MorphTree runtime used for export, input encoded with the exported preprocessing, compatible task/class labels in compact numeric buffers and an explicit TRAIN identity. It is an advanced training fragment, not a raw-data `fit(X, y)` replacement or a standalone predictor. The [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md) documents its encoded-data example and integrity requirements, alongside reports, genealogy and model variants.
@@ -177,6 +190,10 @@ Measured results and their limitations are recorded in the [comparison report](h
 - [Qualification](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md)
 - [Contributing](https://github.com/lucalullo/morph-tree/blob/main/CONTRIBUTING.md)
 
-## License and author
+## License
 
-Created by [Luca Lullo](https://github.com/lucalullo). Released under the [MIT License](https://github.com/lucalullo/morph-tree/blob/main/LICENSE).
+MorphTree is created by Luca Lullo and released under the [MIT License](https://github.com/lucalullo/morph-tree/blob/main/LICENSE).
+
+## Author
+
+Created by [Luca Lullo](https://github.com/lucalullo).
