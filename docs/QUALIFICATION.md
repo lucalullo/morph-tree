@@ -1,5 +1,6 @@
-# Qualification — source lineage versus current RC
-2.1.0 is the definitive owner-selected native version, not yet published.
+# Qualification — MorphTree 2.1.0
+2.1.0 is the owner-selected native package version. Local qualification does
+not establish package-index availability or publication approval.
 Learning implementation and C sources are identical to the frozen native092
 engine except package/API version literals and reviewed metadata. Separate RC
 installed checks and any new training are recorded in RELEASE_STATUS.json.
@@ -110,8 +111,26 @@ physical training was run for the inventory/documentation correction. See
 historical and conditional on unchanged runtime source identity.
 
 
-## Approved README:owner-reported versus local checks
-The owner-approved README reports hosted CI and Kaggle smoke tests. Logs tied to
-the final commit/artifact are not part of the available local evidence and have
-not been fetched. This record distinguishes those owner statements from local
-qualification;no fresh hosted qualification is inferred. See README_REVIEW.md.
+## Current public description
+The README revision authorized by the owner describes the native implementation and its measured
+limitations without declaring hosted CI or Kaggle qualification. README_REVIEW.md
+records the current source hash, metadata checks and remaining release gates.
+Historical RC labels and qualification records above identify their actual runs;
+they are not relabelled as newly executed final-package training.
+
+## CAPACITY132: completed physical training
+
+The installed RELEASE131 native wheel completed 54 complete fits: six datasets,
+three seeds and explicit capacities 2/4/8, on Windows x64 / CPython 3.12.10.
+All three tasks, native histogram use, final refit, OOF, Optuna after program
+freeze and 108 structural decisions (34 acceptances, 74 rollbacks) were recorded.
+Consumption was 980 native fits including 244 OOF, 108 trials and 4,172 scalar
+trees. All 54 models and validation assessments were frozen before TEST.
+See [the comparative results and limitations](CAPACITY.md). No automatic default
+changed and no causal evolutionary gain is inferred without a static control.
+
+The subsequent README/documentation revision changes no runtime Python or C
+source, default or numerical rule. Its rebuilt artifacts require fresh packaging
+and installed software checks; it does not relabel CAPACITY132 as new Linux
+training or as a fresh fit of a differently named artifact. Runtime equivalence
+and artifact hashes are recorded separately in the local delivery report.

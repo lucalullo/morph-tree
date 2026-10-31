@@ -1,4 +1,4 @@
-"""Installed Markdown description approval, without new training."""
+"""Installed Markdown description integrity and authorized revision, without new training."""
 import email.policy,hashlib,importlib.metadata,json,unittest
 from email.parser import Parser
 from pathlib import Path
@@ -6,12 +6,18 @@ import morphtree
 
 class PublicDescription(unittest.TestCase):
     def contract(self):return json.loads((Path(morphtree.__file__).parent/'_experimental/manifest.json').read_text('utf8'))['public_description']
-    def test_installed_description_is_approved(self):
+    def test_installed_description_matches_source_contract(self):
         text=importlib.metadata.distribution('morphtree').read_text('METADATA')
         body=Parser(policy=email.policy.compat32).parsestr(text).get_payload()
         self.assertEqual(hashlib.sha256(body.replace('\r\n','\n').encode('utf8')).hexdigest(),self.contract()['normalized_description_sha256'])
     def test_explicit_markdown_content_type(self):
         self.assertEqual(importlib.metadata.metadata('morphtree')['Description-Content-Type'],'text/markdown')
-    def test_source_approval_is_recorded(self):
-        c=self.contract();self.assertEqual(c['source'],'README.md');self.assertEqual(len(c['README_sha256']),64);self.assertFalse(c['README_modified_by_agent'])
+    def test_source_revision_authority_is_recorded(self):
+        c=self.contract()
+        self.assertEqual(c['source'],'README.md')
+        self.assertRegex(c['README_sha256'],r'^[0-9a-f]{64}$')
+        self.assertTrue(c['README_modified_by_agent'])
+        self.assertEqual(c['source_revision_authorization'],'EXPLICIT_OWNER_DIRECTIVE')
+        self.assertEqual(c['authorization_sha256'],'de9322e129139b7e930aab6b25f26f3a637126a83f8033209934e0d871c25787')
+        self.assertTrue(c['source_owner_review_pending'])
 if __name__=='__main__':unittest.main()

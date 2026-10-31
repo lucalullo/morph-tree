@@ -8,7 +8,7 @@ Do not copy private backups,models,datasets,raw results or environments.
 1.Review source/artifactSHA256 and remaining qualification gates.
 2.Transfer locally,then the owner performs all Git operations personally.
 3.Run hosted build/test on the exact final commit; retain wheel/sdist hashes.
-4.Only after separate approval,owner uploads the reviewedRC toTestPyPI,creates
+4.Only after separate approval,owner uploads the reviewed2.1.0 artifacts toTestPyPI,creates
 fresh environments,installs the exact version,checks native loading,three tasks,
 API,persistence,exports and historical models. Local checks do not replace this.
 5.PyPI requires separate final approval after TestPyPI validation;never rebuild

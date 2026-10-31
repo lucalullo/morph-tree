@@ -1,6 +1,7 @@
-"""Native candidate workflow. Importing does not train; callers provide the full data.
+"""MorphTree 2.1.0 tabular workflow. Importing does not train.
 
-Install a compatible verified native wheel first. See docs/QUALIFICATION.md.
+Install with pip install morphtree. See docs/INSTALLATION.md for supported profiles.
+Callers provide their training data and matching prediction features.
 The returned model retains evolution, final default Optuna, and full-input refit.
 """
 from morphtree import MorphTreeClassifier, MorphTreeRegressor

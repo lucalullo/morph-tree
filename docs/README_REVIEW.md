@@ -1,31 +1,39 @@
-# Approved README and description qualification
+# Public description verification
 
-The owner prohibited any change to README.md during this alignment. Raw SHA-256:
-`57003080919ef130a9a1051715faaec19166a5c597cb0471111ffb6cb562895a`.
-The build uses that file directly as text/markdown. Wheel METADATA and sdist
-PKG-INFO are compared to its full text; no rewriting or README_PYPI.md copy is
-used. CRLF/LF normalization is distinct from unchanged source bytes. The obsolete
-duplicate is preserved in the private backup.
+MorphTree 2.1.0 uses `README.md` as its sole Markdown long description. The owner
+explicitly authorized this editorial revision on 31 October 2026, superseding
+the earlier immutable-README instruction. The revised text is ready for owner
+review; authorization to edit is not a claim that the new wording was already
+approved. Earlier README bytes and qualified deliveries remain preserved.
 
-The implementation supports the documented tasks, preprocessing, evolutionary
-stages, default final Optuna, explicit capacity8, NumPy outputs and persistence.
-No learning rule or default was changed to match prose. New training of the README
-examples is not authorized by this review; input/admission tests and retained-model
-inference do not become fresh successful fits or independent quality evidence.
+Current source SHA-256: `7d9ffb26fb493feb1ee3c25573ec6e2480e663349b7e7550de290a243552517a`.
 
-## Statements requiring owner evidence or later checks
+`pyproject.toml` selects `README.md` with `text/markdown`. The internal description
+contract records the source hash, normalized metadata hash and explicit revision
+authority. Installed tests require that authority and exact METADATA text.
+The distribution checker requires the complete wheel METADATA and sdist
+PKG-INFO descriptions to equal the current README and rejects obsolete duplicate
+descriptions. No integrity or publication guard has been weakened.
 
-- The README reports manual hosted CI and hosted Kaggle smoke tests. Available
-  local qualification records do not include logs binding these owner-reported
-  runs to the final transferred commit and artifact hashes. They are not newly
-  verified by the agent. Smoke tests alone do not qualify full Kaggle behavior,
-  large-data completion or predictive superiority.
-- The PyPI installation command is conditional on a compatible artifact being
-  available. Publication, version availability and an actual install from PyPI
-  remain owner-controlled checks, not local packaging results.
-- The source command follows main, which may differ from a released distribution,
-  as the README explains. Documentation targets can be checked against the local
-  tree; remote URL existence and rendered pages have not been accessed.
+Examples cover the three tasks, NumPy output shapes and class-column ordering,
+inspection, persistence and explicit NumPy standalone inference. Simulated example
+checks verify orchestration without training; installed retained-model checks and
+the completed CAPACITY132 physical fits are reported separately. The initial
+two-round capacity is distinguished from automatic final numerical capacity;
+fixed 4/8-round results do not establish a universal default. See [capacity](CAPACITY.md).
 
-These points are flagged without editing the approved README. Local packaging
-and Twine checks do not replace final hosted CI, TestPyPI and publication approval.
+## Scope of release checks
+
+- `pip install morphtree` selects the latest compatible release available on the
+  index. Local checks do not assert index availability or execute an index install.
+- README links use absolute public URLs; local targets and example syntax are
+  checked. Remote reachability is not verified because network access is prohibited.
+- Windows/Linux local builds and tests do not replace hosted CI, maintainer
+  TestPyPI validation or final publication approval.
+- Linux ABI auditing does not qualify every glibc distribution. Python 3.15,
+  macOS and other architectures remain outside runtime qualification.
+- No new default, numerical planner or diagnostic rule was adopted in this revision.
+
+Current README makes no universal predictive or evolutionary superiority claim.
+Historical compatibility tests, changelog entries and scientific evidence remain
+preserved. No new training is implied by metadata-only artifact rebuilding.

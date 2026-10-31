@@ -2,31 +2,23 @@
 
 **Adaptive tree learning for tabular data, with structural evolution and a simple Python API.**
 
-MorphTree is a machine learning library for binary classification, multiclass classification, and single-target regression. It evaluates supported tree-learning strategies, analyzes training errors, and explores structural changes to its learning program. Proposed changes are retained only when they satisfy the search evaluation criteria.
+MorphTree 2.1.0 supports binary classification, multiclass classification and single-target regression. It screens applicable tree families, selects a parent, diagnoses training errors and evaluates structural changes to the executable learning program. A descendant replaces its parent only when the selection criteria are satisfied; otherwise the parent is retained.
 
-MorphTree combines automatic tabular preprocessing, evolutionary search, optional numerical optimization, and model persistence behind a familiar `fit()` / `predict()` interface.
+Automatic preprocessing, structural evolution, final numerical optimization and model persistence are available through `fit()` and `predict()`.
 
-## Install
-
-For the MorphTree **2.1.0** distribution on PyPI, where a compatible artifact is available:
+## Installation
 
 ```bash
-python -m pip install "morphtree==2.1.0"
+pip install morphtree
 ```
 
-To install the development source from GitHub instead:
-
-```bash
-python -m pip install "git+https://github.com/lucalullo/morph-tree.git@main"
-```
-
-The `main` branch can change independently of a released package. Check the installed version with `python -c "import morphtree; print(morphtree.__version__)"`. Building from source requires a suitable C compiler; installing a compatible prebuilt wheel does not. See the [installation guide](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md).
+This command selects the latest compatible release available on PyPI. Compatible prebuilt wheels include the native components and require no C compiler. See the [installation guide](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md) for supported environments, local wheel installation and source-build requirements.
 
 ## Quick start
 
-The examples below use the optional scikit-learn and pandas packages to load datasets. Install them separately if needed (`python -m pip install scikit-learn pandas`).
+The examples below use optional sample-data dependencies: `pip install scikit-learn pandas`.
 
-Binary classification with a real dataset:
+### Binary classification
 
 ```python
 from sklearn.datasets import load_breast_cancer
@@ -38,191 +30,140 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-model = MorphTreeClassifier(random_state=42)
-model.fit(X_train, y_train)
+classifier = MorphTreeClassifier(random_state=42)
+classifier.fit(X_train, y_train)
 
-labels = model.predict(X_test)
-probabilities = model.predict_proba(X_test)
-print("Test accuracy:", model.score(X_test, y_test))
+predictions = classifier.predict(X_test)
+probabilities = classifier.predict_proba(X_test)
+second_class_probabilities = probabilities[:, 1]
+print("Probability columns:", classifier.classes_)
+print("Test accuracy:", classifier.score(X_test, y_test))
 ```
 
-The example uses scikit-learn to load and split the dataset; scikit-learn is not required by MorphTree's core training API. Evaluate predictive quality on data not used for fitting.
+`predict()` returns a NumPy array of shape `(n_samples,)`. Classification probabilities are a numeric NumPy array of shape `(n_samples, n_classes)`: column `j` corresponds to `classes_[j]`. Values are finite, lie in `[0, 1]` and sum to one per row within floating-point tolerance. Select the column corresponding to your intended positive class; column 1 is the second class in `classes_`.
 
-Multiclass classification uses the same estimator:
+### Multiclass classification
 
 ```python
 from sklearn.datasets import load_iris
 from morphtree import MorphTreeClassifier
 
-X, y = load_iris(return_X_y=True, as_frame=True)
-model = MorphTreeClassifier(random_state=42).fit(X, y)
-labels = model.predict(X)
-probabilities = model.predict_proba(X)
-print(model.classes_)
+X_multi, y_multi = load_iris(return_X_y=True, as_frame=True)
+multiclass_model = MorphTreeClassifier(random_state=42).fit(X_multi, y_multi)
+labels = multiclass_model.predict(X_multi)
+class_probabilities = multiclass_model.predict_proba(X_multi)
+print(multiclass_model.classes_)
 ```
 
-Regression uses `MorphTreeRegressor`:
+### Regression
 
 ```python
 from sklearn.datasets import load_diabetes
 from morphtree import MorphTreeRegressor
 
-X, y = load_diabetes(return_X_y=True, as_frame=True)
-model = MorphTreeRegressor(random_state=42).fit(X, y)
-predictions = model.predict(X)
+X_reg, y_reg = load_diabetes(return_X_y=True, as_frame=True)
+regressor = MorphTreeRegressor(random_state=42).fit(X_reg, y_reg)
+values = regressor.predict(X_reg)
 ```
 
-These two short examples demonstrate the API, not a measured generalization score. Use a held-out validation or test split for actual evaluation.
+The multiclass and regression snippets illustrate the interface using training rows. Assess predictive quality on separate validation and test data. Classifier `score()` reports accuracy; regressor `score()` reports R².
 
-## Highlights
+## Structural evolution
 
-- **Automatic task handling:** one classifier for binary and multiclass targets, plus a dedicated regressor.
-- **Tabular preprocessing:** supported numerical, categorical, and missing values are handled inside the estimator.
-- **Tree-family screening:** MorphTree evaluates applicable built-in learners and selects a starting parent.
-- **Error-guided search:** out-of-fold training diagnostics help identify regions where the model struggles.
-- **Structural evolution:** changes to the executable learning program are tested, accepted, or rolled back according to evaluation criteria.
-- **Multi-generation search:** accepted descendants can become parents of subsequent proposals; acceptance is never forced.
-- **Final optimization:** Optuna tunes numerical parameters after the selected program is frozen, by default.
-- **Model inspection and persistence:** inspect the program and mutation history, save and reload fitted models, and export standalone inference.
-- **Native execution:** compiled C kernels accelerate selected training and prediction operations while the public API and evolutionary controller remain in Python.
-
-## How MorphTree works
-
-MorphTree does more than tune the numerical parameters of a fixed tree model. Its adaptive training process evaluates learning strategies and tests bounded structural changes to the learning program:
+MorphTree evaluates changes to its learning program as well as numerical parameters:
 
 ```text
-Input data (X, y)
-      |
-      v
-Preprocessing and resource planning
-      |
-      v
-Screen supported tree families and select a parent
-      |
-      v
-Diagnose training errors using out-of-fold evidence
-      |
-      v
-Propose and evaluate structural mutations
-      |
-      +--> Accept improvement or roll back
-      |
-      v
-Freeze the selected learning program
-      |
-      v
-Optional Optuna tuning and final refit
-      |
-      v
-Predict, inspect, save, or export
+Preprocess data and plan resources
+    -> Screen applicable tree families and select one parent
+    -> Diagnose errors from out-of-fold training evidence
+    -> Propose and train structural descendants
+    -> Evaluate on internal SEARCH data; accept or roll back
+    -> Continue from the retained parent when the budget permits
+    -> Freeze the learning program
+    -> Run final Optuna numerical tuning and refit
 ```
 
-Evolution is enabled in the normal adaptive mode, but a successful mutation is **not guaranteed**. A model may complete training with every structural proposal rejected. `mode="baseline"` is available for controlled comparisons without structural evolution.
+The current finite mutation grammar changes split-objective weighting and tree-growth policy. Mutations execute during descendant training; they are not merely annotations. Accepted descendants can become parents for subsequent proposals. Evolution never forces acceptance, and a completed fit may retain its initial parent after rejecting every proposal.
 
-The mutation grammar is intentionally finite. MorphTree does not autonomously invent unrestricted Python algorithms or guarantee that evolution improves predictive accuracy. See the [architecture](https://github.com/lucalullo/morph-tree/blob/main/docs/ARCHITECTURE.md) and [research record](https://github.com/lucalullo/morph-tree/blob/main/research/README.md).
+Adaptive evolution and final Optuna tuning are enabled by default. `mode="baseline"` provides a control without structural evolution; `use_optuna=False` disables the final numerical search. These options change the scope of fitting. See the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md) and [architecture](https://github.com/lucalullo/morph-tree/blob/main/docs/ARCHITECTURE.md).
 
-## Configuration and inspection
+## Data and resources
 
-The default constructor is the intended starting point:
+The public estimators accept supported NumPy arrays, pandas DataFrames and row-based tabular input. Preprocessing handles numerical and categorical columns, including supported missing-value representations. Preserve the training feature schema when predicting. Missing-value and category handling are learned from the permitted training partition.
+
+Prediction uses internal batching, preserving row order. Training does not silently discard observations to pass resource admission. Memory, time, feature cardinality and model complexity still determine whether a workload can complete. See [data and resource limits](https://github.com/lucalullo/morph-tree/blob/main/docs/PUBLIC_API_LIMITS.md) for input contracts and qualified workloads.
+
+The Python learning program remains mutable. Compiled C kernels accelerate supported numerical operations and are selected automatically; normal use requires no backend configuration. Python retains the evolutionary controller and operations outside those kernels.
+
+## Capacity and defaults
+
+The default constructor is the recommended starting point. The initial screening/evolution capacity is two rounds; with `capacity=None`, the final numerical search uses a resource-dependent domain. The selected final round count is therefore not necessarily two. Automatic trial count currently resolves to two Optuna trials.
+
+An explicit eight-round profile is available through the same API:
 
 ```python
-model = MorphTreeClassifier(random_state=42)
-model.fit(X_train, y_train)
+eight_round_classifier = MorphTreeClassifier(
+    random_state=42, capacity={"n_estimators": 8}
+)
+eight_round_regressor = MorphTreeRegressor(
+    random_state=42, capacity={"n_estimators": 8}
+)
 ```
 
-Adaptive search and final Optuna tuning are enabled by default, so a full fit may take longer than training a single fixed tree model. To skip final numerical tuning:
+This fixes the round capacity for the profile; it is not guaranteed to exceed the final capacity selected by the automatic policy. More rounds can improve accuracy and increase work, but can also worsen generalization. The [capacity comparison](https://github.com/lucalullo/morph-tree/blob/main/docs/CAPACITY.md) reports results for 2, 4 and 8 rounds across six datasets and explains why the defaults remain unchanged.
+
+Other controls include `max_mutations`, `n_trials`, `time_budget`, `memory_budget`, `n_jobs` and `mode`. Their semantics and resource limits are documented in the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md).
+
+## Inspect, save and reuse
+
+After fitting the binary classifier above:
 
 ```python
-model = MorphTreeClassifier(random_state=42, use_optuna=False)
-```
+print(classifier.get_algorithm_program())
+print(classifier.get_mutation_history())
+print(classifier.get_search_report())
+print(classifier.cost_report())
 
-For an explicitly higher-capacity configuration:
-
-```python
-model = MorphTreeClassifier(random_state=42, capacity={"n_estimators": 8})
-```
-
-The eight-round configuration is **optional**, not the default. More capacity can increase training cost and does not guarantee better generalization. Advanced controls include `max_mutations`, `n_trials`, `time_budget`, `memory_budget`, `n_jobs`, and `mode`. See the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md) for details.
-
-After fitting, you can inspect the selected program and the search decisions:
-
-```python
-print(model.get_algorithm_program())
-print(model.get_mutation_history())
-print(model.get_search_report())
-print(model.cost_report())
-```
-
-Mutation history distinguishes accepted and rejected changes. Inspection reports describe the search actually performed, not an assumed improvement.
-
-## Persistence and export
-
-```python
-model.save("morphtree-model.json")
+classifier.save("morphtree-model.json")
 restored = MorphTreeClassifier.load("morphtree-model.json")
-predictions = restored.predict(X_test)
+restored_predictions = restored.predict(X_test)
 ```
 
-Fitted models can also export a standalone inference program:
+Regression uses the same `save()` method and `MorphTreeRegressor.load()`.
 
 ```python
-model.export_standalone("predictor.py")
+classifier.export_standalone("predictor.py", output_format="numpy")
 ```
 
-Standalone inference does not rerun evolutionary training. Training-program export is a separate advanced facility documented in the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md). Use compatible package versions when loading saved models; see [migration and persistence guidance](https://github.com/lucalullo/morph-tree/blob/main/docs/MIGRATION.md).
+The standalone predictor performs inference without importing MorphTree; this explicit NumPy format requires NumPy. The default export format remains dependency-free Python lists. `export_algorithm()` is a separate advanced API for training a frozen program, not a standalone inference export. Reports, recipes, genealogy, available model variants and loading-integrity checks are described in the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md).
 
-## Environments, development, and dependencies
+## Supported environments
 
-- **Python:** CPython 3.12-3.14 on the qualified x86-64 Windows and Linux profiles.
-- **Windows:** native wheel builds and installed-package checks have been exercised with supported Python versions.
-- **Linux:** local Ubuntu/WSL2 qualification and hosted Kaggle smoke tests have exercised the native backend.
-- **macOS and other architectures:** not part of the documented qualification scope for this release.
-- **Dependencies:** Optuna is part of the core workflow; pandas and scikit-learn are optional integrations.
+The verified runtime scope is CPython 3.12–3.14 on Windows x86-64 and Ubuntu 24.04 WSL2 x86-64. Linux wheel ABI auditing is separate from full runtime qualification on other distributions. Python 3.15, macOS and other architectures are outside the established scope.
 
-The public classifier and regressor support the scalable training path, including internal batching for prediction. Dataset admission and completion still depend on available memory, execution budgets, feature characteristics, and workload size. Rows are not silently discarded to satisfy an admission limit.
+Optuna and NumPy are core dependencies. pandas and scikit-learn are optional integrations. NumPy predictions support standard slicing, vectorized operations and compatible scikit-learn metrics; this does not imply support for every scikit-learn estimator protocol.
 
-For supported environments, build instructions, and resource considerations, see [installation](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md), [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md), and [qualification scope](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md).
+## Evidence and limitations
 
-## Architecture and performance
+Predictive quality, training cost and memory use depend on the dataset, family, capacity and search budget. Local checks cover native dispatch, the three tasks, persistence, exported inference and structural decision handling within the [qualification scope](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md).
 
-The learning logic, search controller, and public interface are implemented in Python. Native C kernels handle selected histogram and tree-traversal operations. Users do not need to interact with the C backend when fitting or predicting with the public API.
+- Accepted mutations do not by themselves prove better generalization; controlled comparisons are needed to isolate their contribution.
+- An independent predictive benefit from structural evolution has not been established across diverse real-world benchmarks.
+- Screening, OOF diagnostics, descendants and Optuna add work beyond a single fixed model fit.
+- Kernel acceleration does not imply an equivalent speedup for the complete pipeline.
+- Capacity comparisons show dataset-specific gains and regressions, not a universally optimal setting.
 
-The compiled kernels are not a separate learning algorithm, and they do not accelerate every step of evolutionary search. End-to-end runtime can be dominated by tree-family screening, out-of-fold diagnostics, mutation trials, and Optuna optimization.
-
-Performance and predictive accuracy depend on the dataset, hardware, search settings, and chosen capacity. Measurements are documented in the [benchmark methodology](https://github.com/lucalullo/morph-tree/blob/main/BENCHMARKS.md) and [comparison report](https://github.com/lucalullo/morph-tree/blob/main/docs/COMPARISON.md); they do not establish general superiority over other tabular learners. In particular, improvements from additional tree capacity must not be attributed to structural evolution without an equal-capacity comparison.
+Measured results and their limitations are recorded in the [comparison report](https://github.com/lucalullo/morph-tree/blob/main/docs/COMPARISON.md), [capacity study](https://github.com/lucalullo/morph-tree/blob/main/docs/CAPACITY.md) and [benchmark methodology](https://github.com/lucalullo/morph-tree/blob/main/BENCHMARKS.md).
 
 ## Documentation
 
+- [Installation](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md)
 - [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md)
-- [Installation guide](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md)
 - [Architecture](https://github.com/lucalullo/morph-tree/blob/main/docs/ARCHITECTURE.md)
 - [Examples](https://github.com/lucalullo/morph-tree/tree/main/examples/)
-- [Performance comparisons](https://github.com/lucalullo/morph-tree/blob/main/docs/COMPARISON.md)
-- [Qualification and supported scope](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md)
-- [Resource considerations](https://github.com/lucalullo/morph-tree/blob/main/docs/INSTALLATION.md)
-- [Research record](https://github.com/lucalullo/morph-tree/blob/main/research/README.md)
+- [Qualification](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md)
 - [Contributing](https://github.com/lucalullo/morph-tree/blob/main/CONTRIBUTING.md)
-- [Release and publishing guide](https://github.com/lucalullo/morph-tree/blob/main/PUBLISHING.md)
 
-## Limitations
+## License and author
 
-- Structural mutations are evaluated conditionally and may all be rejected.
-- An evolutionary improvement in predictive generalization has not been independently established across diverse real-world benchmarks.
-- Final tuning and evolutionary evaluation can make fitting substantially more expensive than a single fixed-model fit.
-- Higher tree capacity is opt-in and can increase runtime and resource use.
-- Native kernels accelerate selected operations, not the complete training pipeline; some paths can consume more memory.
-- Large-scale training, cross-platform portability, and competitive predictive performance require additional independent validation.
-
-## Release scope
-
-This README describes **MorphTree 2.1.0**. Technical checks have covered native training, classification, regression, model persistence, and installed-package workflows on the documented environments, including a manual hosted CI run and Kaggle smoke tests. These checks do not establish universal platform compatibility, predictive superiority, or performance on arbitrary large datasets.
-
-See the [qualification record](https://github.com/lucalullo/morph-tree/blob/main/docs/QUALIFICATION.md) for the verified scope and the [publishing guide](https://github.com/lucalullo/morph-tree/blob/main/PUBLISHING.md) for release procedures.
-
-## License
-
-MorphTree is created by Luca Lullo and released under the [MIT License](https://github.com/lucalullo/morph-tree/blob/main/LICENSE).
-
-## Author
-
-Created by [Luca Lullo](https://github.com/lucalullo).
+Created by [Luca Lullo](https://github.com/lucalullo). Released under the [MIT License](https://github.com/lucalullo/morph-tree/blob/main/LICENSE).

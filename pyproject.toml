@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "morphtree"
 version = "2.1.0"
-description = "MorphTree diagnostic structural evolution with integrated Python and C kernels"
+description = "Adaptive tree learning for tabular data with diagnostic structural evolution"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.12,<3.15"
 license = "MIT"

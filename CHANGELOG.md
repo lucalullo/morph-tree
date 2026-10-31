@@ -1,5 +1,18 @@
 #2.1.0 — native Python+C delivery,30October2026
 
+The current README has an explicitly authorized editorial revision, with standard
+`pip install morphtree` instructions and one exact package long description.
+Notebook examples distinguish classifier probabilities and task-specific loading.
+CAPACITY132 adds a completed 2/4/8-round comparison across six datasets; current
+defaults are retained because evidence does not establish a universal improvement.
+Runtime Python/C sources, learning rules and model compatibility are unchanged.
+The entries below preserve earlier changes and their original evidence.
+
+The final approved README remains unchanged. Installation guidance now starts
+with the standard pip command; package metadata and description hashes follow
+the current README. Historical qualification records and publication guards
+are retained. Numerical defaults and executable learning rules are unchanged.
+
 Packaging uses the owner-approved README.md directly as Markdown long description.
 The obsolete duplicate is removed after backup;distribution and installed-metadata
 checks bind the approved description hash. Workflows retain publication guards

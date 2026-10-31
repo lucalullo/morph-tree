@@ -30,6 +30,14 @@ Defaults are `random_state=None`, `verbosity=0`, `use_optuna=True`,
 `refit_full=True`, `checkpoint_dir='auto'`. Explicit integer seeds are repeatable;
 None draws a fresh seed for each fit and records it as `effective_seed` in the
 report. The constructor parameter remains None, including after save/load.
+With `capacity=None`, initial screening/evolution uses two rounds; the final
+numerical domain is resource-dependent and may select a larger round count.
+Explicit `capacity={"n_estimators": 8}` fixes that profile's round capacity,
+including final numerical search; it is not a promise of a higher capacity than
+the automatic policy. Two Optuna trials are startup trials, not evidence of
+adaptive TPE improvement. [Capacity comparisons](CAPACITY.md) document why
+classifier and regressor defaults remain unchanged after the 2/4/8 pilot.
+
 `n_jobs='auto'` selects the supported serial scheduler. It never spawns extra
 workers outside the resource plan. `n_trials='auto'` resolves to two trials.
 

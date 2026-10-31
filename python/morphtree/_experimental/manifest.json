@@ -186,11 +186,14 @@
   },
   "private_research": false,
   "public_description": {
-    "README_modified_by_agent": false,
-    "README_sha256": "57003080919ef130a9a1051715faaec19166a5c597cb0471111ffb6cb562895a",
+    "README_modified_by_agent": true,
+    "README_sha256": "7d9ffb26fb493feb1ee3c25573ec6e2480e663349b7e7550de290a243552517a",
+    "authorization_sha256": "de9322e129139b7e930aab6b25f26f3a637126a83f8033209934e0d871c25787",
     "content_type": "text/markdown",
-    "normalized_description_sha256": "57003080919ef130a9a1051715faaec19166a5c597cb0471111ffb6cb562895a",
-    "source": "README.md"
+    "normalized_description_sha256": "7d9ffb26fb493feb1ee3c25573ec6e2480e663349b7e7550de290a243552517a",
+    "source": "README.md",
+    "source_owner_review_pending": true,
+    "source_revision_authorization": "EXPLICIT_OWNER_DIRECTIVE"
   },
   "schema": "morph030-installed-payload-v1",
   "scientific_training_authority": 0,
