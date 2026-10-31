@@ -6,6 +6,8 @@ MorphTree 2.1.0 supports binary classification, multiclass classification and si
 
 Automatic preprocessing, structural evolution, final numerical optimization and model persistence are available through `fit()` and `predict()`.
 
+Discovering a learning program involves more work than fitting a single fixed model: MorphTree compares families, diagnoses errors, evaluates descendants and tunes the retained program. This search happens during `fit()`. A saved model can then predict without repeating it, while an exported frozen program can train new weights without rerunning the search, within the advanced API's data and runtime requirements. These are different forms of reuse; their costs and predictive quality depend on the workload.
+
 ## Installation
 
 ```bash
@@ -120,6 +122,7 @@ After fitting the binary classifier above:
 
 ```python
 print(classifier.get_algorithm_program())
+print(classifier.get_recipe())
 print(classifier.get_mutation_history())
 print(classifier.get_search_report())
 print(classifier.cost_report())
@@ -129,13 +132,23 @@ restored = MorphTreeClassifier.load("morphtree-model.json")
 restored_predictions = restored.predict(X_test)
 ```
 
-Regression uses the same `save()` method and `MorphTreeRegressor.load()`.
+`get_algorithm_program()` describes the retained family's executable learning rules. `get_recipe()` also records its numerical parameters, fitted preprocessing and class ordering; inspecting a recipe does not train a model. `save()` and `load()` preserve the learned weights for inference on new observations with the same feature schema, without repeating discovery. Regression uses the same `save()` method and `MorphTreeRegressor.load()`.
 
 ```python
 classifier.export_standalone("predictor.py", output_format="numpy")
 ```
 
-The standalone predictor performs inference without importing MorphTree; this explicit NumPy format requires NumPy. The default export format remains dependency-free Python lists. `export_algorithm()` is a separate advanced API for training a frozen program, not a standalone inference export. Reports, recipes, genealogy, available model variants and loading-integrity checks are described in the [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md).
+The standalone predictor includes the fitted weights and performs inference without importing MorphTree; this explicit NumPy format requires NumPy. The default export format remains dependency-free Python lists.
+
+To export the learning program for a separate training operation:
+
+```python
+classifier.export_algorithm("training_program.py")
+```
+
+Exporting does not train. The generated `train_encoded()` function trains new weights for the frozen family, rules and numerical parameters, without repeating family screening, OOF diagnosis, mutations or Optuna. It requires the exact MorphTree runtime used for export, input encoded with the exported preprocessing, compatible task/class labels in compact numeric buffers and an explicit TRAIN identity. It is an advanced training fragment, not a raw-data `fit(X, y)` replacement or a standalone predictor. The [API reference](https://github.com/lucalullo/morph-tree/blob/main/docs/API.md) documents its encoded-data example and integrity requirements, alongside reports, genealogy and model variants.
+
+Calling the ordinary estimator's `fit()` again runs its configured learning process; loading a model does not turn `fit()` into frozen-program training. Evaluate a reused program on fresh held-out data before relying on it for a new problem: avoiding another search does not guarantee better accuracy or a particular speedup.
 
 ## Supported environments
 

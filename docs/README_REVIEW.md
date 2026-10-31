@@ -4,9 +4,11 @@ MorphTree 2.1.0 uses `README.md` as its sole Markdown long description. The owne
 explicitly authorized this editorial revision on 31 October 2026, superseding
 the earlier immutable-README instruction. The revised text is ready for owner
 review; authorization to edit is not a claim that the new wording was already
-approved. Earlier README bytes and qualified deliveries remain preserved.
+approved. This revision explains evolutionary discovery cost and the separate
+contracts for saved-model inference and frozen-program training. Earlier README
+bytes and qualified deliveries remain preserved.
 
-Current source SHA-256: `7d9ffb26fb493feb1ee3c25573ec6e2480e663349b7e7550de290a243552517a`.
+Current source SHA-256: `7eb0397c1f2ba40b5b572f92923723e06020a807810ef7d4e42e0783df4d5430`.
 
 `pyproject.toml` selects `README.md` with `text/markdown`. The internal description
 contract records the source hash, normalized metadata hash and explicit revision
@@ -21,6 +23,22 @@ checks verify orchestration without training; installed retained-model checks an
 the completed CAPACITY132 physical fits are reported separately. The initial
 two-round capacity is distinguished from automatic final numerical capacity;
 fixed 4/8-round results do not establish a universal default. See [capacity](CAPACITY.md).
+
+`get_algorithm_program()` describes the executable family and rules;
+`get_recipe()` adds fitted preprocessing, classes and numerical parameters.
+Neither inspection method trains a model. Saved weights and standalone inference
+exports predict without repeating search. `export_algorithm()` instead creates
+an exact-runtime-bound `train_encoded()` fragment: new weights can be trained
+with the frozen family, program, parameters and encoder, using compatible encoded
+TRAIN data and explicit provenance. That path does not repeat screening, OOF,
+mutations or Optuna and is not a raw-data estimator replacement. The README links
+to the advanced encoded-data contract rather than implying an unsupported simple
+trainer API. Fresh validation is required for reuse on a new problem.
+
+Export inspection and mocked trainer delegation are zero-fit checks, distinct
+from physical frozen-program training. Retained-model prediction and save/load
+checks provide inference evidence only. The text promises neither a universal
+speedup nor an independent predictive benefit from mutations or program reuse.
 
 ## Scope of release checks
 
