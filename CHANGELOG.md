@@ -1,5 +1,17 @@
 #2.1.0 — native Python+C delivery,30October2026
 
+Packaging uses the owner-approved README.md directly as Markdown long description.
+The obsolete duplicate is removed after backup;distribution and installed-metadata
+checks bind the approved description hash. Workflows retain publication guards
+and add strict Twine validation. README bytes and learner behavior unchanged.
+
+Public prediction correction:predict returns a NumPy vector;predict_proba returns
+a float64 sample-by-class array with unchanged values and classes_ order.
+Historical task facades,sklearn view and CLI serialization are aligned. NumPy is
+an explicit dependency. Standalone list exports remain the dependency-free default;
+output_format='numpy' provides the array contract without importing MorphTree.
+Training mathematics,C kernels,default capacity/evolution/Optuna are unchanged.
+
 Owner-selected definitive package version. Supersedes the temporary3.0.0rc1
 delivery label only. All native functionality,performance optimizations,model
 compatibility and explicit8round configuration are retained without a default

@@ -1,7 +1,8 @@
 # Dependencies
 
 MorphTree combines Python and two proprietary C kernels; no vendor learner.
-Optuna==5.0.0 is mandatory and final tuning remains on by default. NumPy,
+Optuna==5.0.0 and NumPy>=1.26,<3 are mandatory; final tuning remains on by default.
+NumPy supplies the public prediction array boundary. NumPy,
 SQLAlchemy, PyYAML and transitive dependencies can contain upstream compiled
 components. Official compatible wheels avoid user compilation.
 Hatchling==1.27.0 and build==1.3.0 are the verified backend/frontend.

@@ -1,6 +1,6 @@
-"""Optional sklearn array boundary; the proprietary learner stays Pure Python.
+"""Optional sklearn parameter-routing adapter for the native public estimator.
 
-The underlying facade keeps its list outputs and independent public API.
+The underlying facade already returns NumPy arrays.
 This view delegates fitting to that same facade and adds no training, tuning,
 sampling or preprocessing. sklearn is optional; NumPy is used only for arrays.
 """
@@ -9,14 +9,8 @@ from .scalable_data import Input
 
 
 def _labels(values):
-    import numpy as np
-    result=np.asarray(values,dtype=object if values and isinstance(values[0],str) else None)
-    # In particular do not round mixed large integers to binary64 merely to
-    # satisfy an external scorer. Such scorers may reject object labels; the
-    # original facade supports them and this view must keep their exact values.
-    if any((v.item() if hasattr(v,'item') else v)!=old for v,old in zip(result,values)):
-        result=np.asarray(values,dtype=object)
-    return result
+    from .prediction_output import prediction_array
+    return prediction_array(values)
 
 
 class _ClassifierMethod:
@@ -69,17 +63,17 @@ class SklearnView:
         self.estimator.fit(X,y)
         return self
     def predict(self,X):
-        if not hasattr(self.estimator,'model_'):raise RuntimeError('Not fitted')
+        if not self.estimator.__sklearn_is_fitted__():raise RuntimeError('Not fitted')
         resources=self.estimator._resources()
         resources.reserve(Input(X).n*64,'Native prediction list plus sklearn output array')
         values=self.estimator.predict(X);resources.check()
-        result=_labels(values);resources.check();return result
+        return values
     @_ClassifierMethod
     def predict_proba(self,X):
         import numpy as np
-        if not hasattr(self.estimator,'model_'):raise RuntimeError('Not fitted')
+        if not self.estimator.__sklearn_is_fitted__():raise RuntimeError('Not fitted')
         resources=self.estimator._resources()
         resources.reserve(Input(X).n*(len(self.estimator.classes_)*48+64),'Native probability rows plus sklearn output array')
         values=self.estimator.predict_proba(X);resources.check()
-        result=np.asarray(values,dtype=float);resources.check();return result
+        return values
     def score(self,X,y):return self.estimator.score(X,y)

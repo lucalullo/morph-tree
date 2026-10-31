@@ -62,7 +62,8 @@ class _TaskEstimator:
         return self
 
     def predict(self, X):
-        return self._engine.predict(X)
+        from .prediction_output import prediction_array
+        return prediction_array(self._engine.predict(X),regression=self._task_kind=='regression')
 
     def save(self, path, *, variant='all'):
         return self._engine.save(path, variant=variant)
@@ -107,11 +108,23 @@ class _TaskEstimator:
     def save_recipe(self, path, *, variant='selected'):
         return self._engine.save_recipe(path, variant=variant)
 
-    def export_python(self, path, *, variant='selected'):
-        return self._engine.export_python(path, variant=variant)
+    def export_python(self, path, *, variant='selected',output_format='python'):
+        if output_format not in ('python','numpy'):raise ValueError('output_format must be python or numpy')
+        if output_format=='python':return self._engine.export_python(path,variant=variant)
+        from .prediction_output import numpy_export_source
+        from .persistence import atomic_text,read_regular_bytes
+        import hashlib
+        # Keep the historical public-output guards and owned work directory.
+        with self._engine._public_output(path):
+            self._engine.export_python(path,variant=variant)
+            source=read_regular_bytes(path,32*1024**2).decode('utf8')
+            source=numpy_export_source(source,self.classes_ if self._task_kind=='classification' else [],self._task_kind=='regression')
+            if len(source.encode('utf8'))>32*1024**2:raise MemoryError('Historical standalone source cap exceeded')
+            atomic_text(path,source)
+        return hashlib.sha256(source.encode('utf8')).hexdigest()
 
-    def export_standalone(self, path):
-        return self._engine.export_standalone(path)
+    def export_standalone(self,path,*,output_format='python'):
+        return self.export_python(path,output_format=output_format)
 
     def export_algorithm(self, path):
         return self._engine.export_algorithm(path)
@@ -123,12 +136,13 @@ class MorphTreeClassifier(_TaskEstimator):
     _estimator_type = 'classifier'
 
     def predict_proba(self, X):
-        return self._engine.predict_proba(X)
+        from .prediction_output import probability_array
+        return probability_array(self._engine.predict_proba(X),len(self.classes_),n_samples=len(X))
 
     def score(self, X, y):
         prediction = self.predict(X)
         targets = _score_targets(y, len(prediction))
-        return sum(a == b for a, b in zip(targets, prediction)) / len(targets)
+        return sum(a == (b.item() if hasattr(b,'item') else b) for a, b in zip(targets, prediction)) / len(targets)
 
 
 class MorphTreeRegressor(_TaskEstimator):

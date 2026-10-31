@@ -51,7 +51,7 @@ jobs:
           github-token: ${{ github.token }}
           path: dist/linux
       - name: Install upload frontend
-        run: python -m pip --isolated install twine
+        run: python -m pip --isolated install twine==6.2.0
       - name: Enforce version, qualification and reviewed artifact hashes
         env:
           TWINE_USERNAME: __token__

@@ -40,7 +40,7 @@ class Compatibility(unittest.TestCase):
                     result=io.StringIO();target=Path(d)/f'{task}.py'
                     with contextlib.redirect_stdout(result):self.assertEqual(main([command,'--model',str(p),'--input',str(q),'--output',str(target)]),0)
                     response=json.loads(result.getvalue())
-                    if command=='predict':self.assertEqual(response['prediction'],m.predict([[1.],[None]]))
+                    if command=='predict':self.assertEqual(response['prediction'],m.predict([[1.],[None]]).tolist())
                     if command=='export':self.assertIn('def predict',target.read_text('utf8'))
     def test_cli_accepts_resource_admitted_json_beyond_two_mib(self):
         with tempfile.TemporaryDirectory() as d:

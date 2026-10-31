@@ -4,6 +4,7 @@ import hashlib,json,math,subprocess,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 import morphtree
+import numpy as np
 from morphtree import MorphTreeClassifier as C,MorphTreeRegressor as R
 from morphtree import scalable
 from morphtree.config import AlgorithmGenome,HyperParams
@@ -66,16 +67,16 @@ class ScalableProduct(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             for task in ('binary','multiclass','regression'):
                 m=self.model(task);path=Path(d)/(task+'.json');h=m.save(path);loaded=morphtree.load_model(path,sha256=h)
-                self.assertEqual(loaded.model_.packet(),m.model_.packet());self.assertEqual(loaded.predict([[1.],[None]]),m.predict([[1.],[None]]))
+                self.assertEqual(loaded.model_.packet(),m.model_.packet());np.testing.assert_array_equal(loaded.predict([[1.],[None]]),m.predict([[1.],[None]]))
                 self.assertEqual(set(loaded.available_variants()),{'selected'})
                 self.assertTrue(loaded.get_algorithm_program()['training_program_export'])
-                if task!='regression':self.assertEqual(loaded.predict_proba([[1.]]),m.predict_proba([[1.]]))
+                if task!='regression':np.testing.assert_array_equal(loaded.predict_proba([[1.]]),m.predict_proba([[1.]]))
     def test_standalone_is_stdlib_only_and_prediction_exact(self):
         with tempfile.TemporaryDirectory() as d:
             m=self.model();path=Path(d)/'predict.py';m.export_standalone(path)
             code='import json,runpy,sys;m=runpy.run_path(sys.argv[1]);print(json.dumps(m["predict_proba"]([[1.],[None]])))'
             r=subprocess.run([sys.executable,'-I','-B','-S','-c',code,str(path)],capture_output=True,text=True,timeout=10)
-            self.assertEqual(r.returncode,0,r.stderr);self.assertEqual(json.loads(r.stdout),m.predict_proba([[1.],[None]]))
+            self.assertEqual(r.returncode,0,r.stderr);np.testing.assert_array_equal(json.loads(r.stdout),m.predict_proba([[1.],[None]]))
     def test_invalid_json_and_changed_hash_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d)/'model.json';m=self.model();h=m.save(p);p.write_bytes(p.read_bytes()+b' ')

@@ -26,6 +26,7 @@ def main():
         unique[artifact.name]=artifact
     if not expected or set(unique)!=set(expected):raise SystemExit('Missing reviewed distributions')
     artifacts=list(unique.values())
-    subprocess.run([sys.executable,'-m','twine','check',*map(str,artifacts)],check=True)
+    subprocess.run([sys.executable,'-I','-B',str(ROOT/'tools/check_distribution.py'),*map(str,artifacts)],check=True)
+    subprocess.run([sys.executable,'-m','twine','check','--strict',*map(str,artifacts)],check=True)
     subprocess.run([sys.executable,'-m','twine','upload','--non-interactive','--repository',a.target,*map(str,artifacts)],check=True)
 if __name__=='__main__':main()

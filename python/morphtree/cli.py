@@ -45,8 +45,8 @@ def main(argv=None):
             v=decode_json_bytes(raw,LoadLimits(max_bytes=max(1,res.bytes_limit//12)+9),reserve=res.reserve)
             if positional:v=v['rows']
             x=_NamedRows(v['rows'],v['columns']) if type(v) is dict and set(v)=={'columns','rows'} else v
-            v={'prediction':m.predict(x)}
-            if m.task_!='regression':v['probabilities']=m.predict_proba(x)
+            v={'prediction':m.predict(x).tolist()}
+            if m.task_!='regression':v['probabilities']=m.predict_proba(x).tolist()
         print(json.dumps(v,ensure_ascii=False,allow_nan=False));return 0
     except (ValueError,TypeError,OSError,RuntimeError,ImportError,MemoryError) as e:p.exit(2,type(e).__name__+': '+str(e)+'\n')
 if __name__=='__main__':raise SystemExit(main())

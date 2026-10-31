@@ -38,7 +38,7 @@ jobs:
       - name: Verify reviewed sources
         run: python -I -B tools/check_repository.py
       - name: Install isolated build tools
-        run: python -m pip --isolated install build==1.3.0 hatchling==1.27.0
+        run: python -m pip --isolated install build==1.3.0 hatchling==1.27.0 twine==6.2.0
       - name: Install Linux audit tools in the CI environment
         if: runner.os == 'Linux'
         run: python -m pip --isolated install auditwheel==6.8.2 pyelftools==0.33 packaging==26.3 patchelf==0.19.1.0
@@ -64,6 +64,15 @@ jobs:
               run([py,'-I','-B','-m','pip','--isolated','install',artifact])
               run([py,'-I','-B','-m','pip','check'])
               run([py,'-I','-B',root/'tools/check_installed.py'])
+      - name: Verify approved README in distribution metadata
+        run: python -I -B tools/check_distribution.py dist
+      - name: Validate distributions with Twine
+        shell: python
+        run: |
+          import pathlib,subprocess,sys
+          artifacts=sorted(pathlib.Path('dist').glob('*.whl'))+sorted(pathlib.Path('dist').glob('*.tar.gz'))
+          assert artifacts
+          subprocess.run([sys.executable,'-I','-B','-m','twine','check','--strict',*map(str,artifacts)],check=True,timeout=120)
       - name: Preserve verified build artifacts
         uses: actions/upload-artifact@v4
         with:

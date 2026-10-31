@@ -6,10 +6,10 @@ build-backend = "hatchling.build"
 name = "morphtree"
 version = "2.1.0"
 description = "MorphTree diagnostic structural evolution with integrated Python and C kernels"
-readme = "README_PYPI.md"
+readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.12,<3.15"
 license = "MIT"
-dependencies = ["optuna==5.0.0"]
+dependencies = ["optuna==5.0.0", "numpy>=1.26.0,<3"]
 
 [project.urls]
 Homepage = "https://github.com/lucalullo/morph-tree"
@@ -30,5 +30,5 @@ packages = ["python/morphtree"]
 exclude = ["**/__pycache__", "**/*.pyc"]
 
 [tool.hatch.build.targets.sdist]
-include = ["/pyproject.toml", "/hatch_build.py", "/LICENSE", "/README.md", "/README_PYPI.md", "/AGENTS.md", "/CONTRIBUTING.md", "/CODE_OF_CONDUCT.md", "/PUBLISHING.md", "/RELEASE_CHECKLIST.md", "/VERSIONING.md", "/SECURITY.md", "/DEPENDENCIES.md", "/CHANGELOG.md", "/BENCHMARKS.md", "/ROADMAP.md", "/SOURCE_MANIFEST.json", "/.gitignore", "/.gitattributes", "/.github/", "/tools/", "/python/morphtree/", "/python/SOURCE_MANIFEST.json", "/python/tests/product/", "/tests/", "/examples/", "/docs/", "/research/"]
+include = ["/pyproject.toml", "/hatch_build.py", "/LICENSE", "/README.md", "/AGENTS.md", "/CONTRIBUTING.md", "/CODE_OF_CONDUCT.md", "/PUBLISHING.md", "/RELEASE_CHECKLIST.md", "/VERSIONING.md", "/SECURITY.md", "/DEPENDENCIES.md", "/CHANGELOG.md", "/BENCHMARKS.md", "/ROADMAP.md", "/SOURCE_MANIFEST.json", "/.gitignore", "/.gitattributes", "/.github/", "/tools/", "/python/morphtree/", "/python/SOURCE_MANIFEST.json", "/python/tests/product/", "/tests/", "/examples/", "/docs/", "/research/"]
 exclude = ["/python/morphtree/_native/bin/", "**/__pycache__", "**/*.pyc"]

@@ -92,8 +92,26 @@ those public classes; their wrappers counted native fits, saved receipts and
 checked stop conditions while invoking the original learner. They did not remove
 input caps or replace preprocessing, selection or evolution.
 
+## NumPy prediction boundary correction
+
+Public task prediction outputs now use NumPy arrays, including historical-model
+facades. Learning, splitting, diagnosis, acceptance, numerical tuning and C
+sources are unchanged. Qualification of this correction uses installed zero-fit
+comparisons against retained predictions, exact model packets and genealogy,
+both Python and native inference, serialization and explicit output formats.
+The previous LIVE runs remain historical training evidence; this correction does
+not claim new physical fits. Default dependency-free exports and CLI JSON retain
+their list/JSON contracts; explicit NumPy exports use output_format='numpy'.
+
 Completed supervised large training, zero-fit admission, metadata-only shape
 tests and ordinary unattended completion are different claims. No additional
 physical training was run for the inventory/documentation correction. See
 [the detailed resource guide](PUBLIC_API_LIMITS.md); retained LIVE evidence stays
 historical and conditional on unchanged runtime source identity.
+
+
+## Approved README:owner-reported versus local checks
+The owner-approved README reports hosted CI and Kaggle smoke tests. Logs tied to
+the final commit/artifact are not part of the available local evidence and have
+not been fetched. This record distinguishes those owner statements from local
+qualification;no fresh hosted qualification is inferred. See README_REVIEW.md.

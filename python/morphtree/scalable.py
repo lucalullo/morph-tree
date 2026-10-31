@@ -370,20 +370,37 @@ class _Scalable:
             raw=Table.read(source,res,start,min(source.n,start+batch));yield self.model_.probabilities(raw,res)
     def predict(self,X):
         if not hasattr(self,'model_'):raise RuntimeError('Not fitted')
-        self._resources().reserve(Input(X).n*40,'Returned prediction vector')
-        result=[]
+        import numpy as np
+        from .prediction_output import prediction_array
+        n=Input(X).n;res=self._resources()
+        res.reserve(n*40+len(self.classes_)*64,'Returned prediction array and class dtype')
+        dtype=np.float64 if self.task_=='regression' else prediction_array(self.classes_).dtype
+        result=np.empty(n,dtype=dtype);offset=0
         for values in self._blocks(X):
-            if self.task_=='regression':result.extend(values)
-            elif self.task_=='binary':result.extend(self.classes_[int(p>=.5)] for p in values)
-            else:result.extend(self.classes_[max(range(len(p)),key=p.__getitem__)] for p in values)
+            res.check();stop=offset+len(values)
+            if stop>n:raise ValueError('Unexpected prediction row count')
+            if self.task_=='regression':result[offset:stop]=values
+            elif self.task_=='binary':result[offset:stop]=[self.classes_[int(p>=.5)] for p in values]
+            else:result[offset:stop]=[self.classes_[max(range(len(p)),key=p.__getitem__)] for p in values]
+            offset=stop
+        if offset!=n:raise ValueError('Incomplete prediction rows')
+        if self.task_=='regression' and not np.isfinite(result).all():raise ValueError('Finite regression predictions required')
+        res.check()
         return result
     def predict_proba(self,X):
         if not hasattr(self,'model_'):raise RuntimeError('Not fitted')
         if self.task_=='regression':raise AttributeError('Regression has no class probabilities')
-        res=self._resources();res.reserve(Input(X).n*(len(self.classes_)*40+64),'Returned probability matrix')
-        result=[]
-        for values in self._blocks(X):result.extend([[1-p,p] for p in values] if self.task_=='binary' else values)
-        return result
+        import numpy as np
+        from .prediction_output import probability_array
+        n=Input(X).n;k=len(self.classes_);res=self._resources();res.reserve(n*(k*40+64),'Returned probability array and bounded validation')
+        result=np.empty((n,k),dtype=np.float64);offset=0
+        for values in self._blocks(X):
+            res.check();stop=offset+len(values)
+            if stop>n:raise ValueError('Unexpected probability row count')
+            result[offset:stop]=[[1-p,p] for p in values] if self.task_=='binary' else values
+            offset=stop
+        if offset!=n:raise ValueError('Incomplete probability rows')
+        return probability_array(result,k,n_samples=n,check=res.check)
     def available_variants(self):
         from .scalable_variants import describe
         return describe(self)
@@ -420,14 +437,18 @@ class _Scalable:
         estimate=1024+nodes*4096+cuts*64+(words+names+labels)*32+len(self.report_.get('events',()))*4096
         if self.time_budget=='auto':res.configure_time(io_seconds(estimate))
         res.reserve(estimate,description+' estimated serialization workspace');return res
-    def export_python(self,path,*,variant='selected'):
-        if variant!='selected':return self._variant_view(variant).export_python(path)
+    def export_python(self,path,*,variant='selected',output_format='python'):
+        if output_format not in ('python','numpy'):raise ValueError('output_format must be python or numpy')
+        if variant!='selected':return self._variant_view(variant).export_python(path,output_format=output_format)
         import inspect
         if not hasattr(self,'model_'):raise RuntimeError('Not fitted')
         res=self._serialization_resources('Standalone snapshot')
         packet=dict(model=self.model_.packet(),classes=self.classes_)
         guard_source=(_PACKAGE/'source_markers.py').read_text('utf8')
         source='# Private frozen Python inference; no training or external libraries.\nMODEL='+repr(packet)+'\n'+guard_source+'\n'+inspect.getsource(memory_snapshot)+'\n'+inspect.getsource(memory_allowance)+'\n'+inspect.getsource(available_memory)+'\n'+inspect.getsource(_standalone)+'\ndef predict(X):return _standalone(X,MODEL,False)\ndef predict_proba(X):return _standalone(X,MODEL,True)\n'
+        if output_format=='numpy':
+            from .prediction_output import numpy_export_source
+            source=numpy_export_source(source,self.classes_,self.task_=='regression')
         res.reserve(len(source.encode())*4,'Standalone source');atomic_text(Path(path),source);return hashlib.sha256(Path(path).read_bytes()).hexdigest()
     @classmethod
     def load(cls,path,*,sha256=None,memory_budget='auto',workdir=None):
@@ -599,9 +620,9 @@ class _Scalable:
         res.reserve(len(raw.encode('utf8'))*4,'Serialized recipe')
         atomic_text(Path(path),raw)
         return hashlib.sha256(raw.encode('utf8')).hexdigest()
-    def export_standalone(self,path,*,variant='selected'):
+    def export_standalone(self,path,*,variant='selected',output_format='python'):
         """Export the fitted dependency-free predictor; this does not export training."""
-        return self.export_python(path,variant=variant)
+        return self.export_python(path,variant=variant,output_format=output_format)
     def export_algorithm(self,path):
         """Export the frozen family trainer, distinct from fitted inference.
 
@@ -643,14 +664,16 @@ class _Scalable:
             if regression:
                 if type(value) not in (int,float):raise ValueError('Regression score requires finite numeric targets')
                 targets.append(value)
-            else:correct+=value==prediction[count]
+            else:
+                predicted=prediction[count]
+                correct+=value==(predicted.item() if hasattr(predicted,'item') else predicted)
             count+=1
         if count!=n:raise ValueError('Score target iterator/length mismatch')
         if not regression:return correct/n
         def residuals():
             for index,(target,predicted) in enumerate(zip(targets,prediction)):
                 if index%4096==0:res.check()
-                value=target-predicted
+                value=target-predicted.item()
                 if not math.isfinite(value):raise ArithmeticError('Regression residual outside floating-point range')
                 yield value
         error_scale=max(map(abs,residuals()),default=0.)

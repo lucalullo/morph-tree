@@ -1,7 +1,7 @@
 # Installation and development
 
-Use Python>=3.12,<3.15 on a qualified x86_64 platform. This candidate is not
-published. Create a fresh venv and use its interpreter for all commands:
+Use Python>=3.12,<3.15 on a qualified x86_64 platform. For local review, use
+the supplied wheel in a fresh venv and its interpreter for all commands:
 
 Windows PowerShell (choose an absolute path to the supplied Windows wheel):
 

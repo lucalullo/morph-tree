@@ -8,6 +8,17 @@
 `export_standalone` and `export_algorithm`. Classification also has `predict_proba`.
 `score` returns accuracy or R². `load_model` chooses the correct public task class.
 
+`predict(X)` returns a NumPy ndarray of shape `(n_samples,)` for classification
+and regression. Numeric class IDs retain exact identity, including large integers;
+object dtype is used when coercion would lose identity. `predict_proba(X)` is a
+float64 ndarray shaped `(n_samples,n_classes)`. Column j corresponds to
+`classes_[j]`; all values are finite and in [0,1], and rows sum to one within
+floating-point tolerance. The boundary validates without clipping or renormalizing.
+`model.predict_proba(X)[:,1]` works directly. A single observation retains the
+sample dimension. Public historical-model facades use the same array contract.
+Low-level learner outputs, JSON serialization, reports, recipes and the CLI keep
+their existing documented formats. NumPy is an explicit runtime dependency.
+
 The package-level classes resolve to `morphtree.scalable`, not the legacy
 `morphtree.estimators` wrappers. The legacy input caps do not apply to the
 scalable task classes. See [public API and resource limits](PUBLIC_API_LIMITS.md)
@@ -61,7 +72,12 @@ program inspection and inference export. Missing weights raise before writing
 and never trigger training. `load_checkpoint(directory, stage='current'/'selected')`
 recovers validated checkpoints; it does not resume training automatically.
 
-`export_standalone(path)` exports a fitted standard-library predictor.
+`export_standalone(path)` exports a fitted standard-library predictor with its
+documented Python-list results. `export_standalone(path, output_format='numpy')`
+and `export_python(path, output_format='numpy')` instead export an independent
+predictor returning the public NumPy shapes/dtypes, with NumPy as its only extra
+dependency and no MorphTree import. Both default to `output_format='python'` to
+preserve the dependency-free export contract. Training exports are separate.
 `export_algorithm(path)` exports a genuine frozen native family training fragment,
 with resolved seed, parameters, encoder and classes, bound to the exact runtime
 manifest. Its `train_encoded` method accepts compact encoded TRAIN data, internal
@@ -84,8 +100,9 @@ validation. The fragment provides finite resource checks and an optional `check`
 callback. It does not repeat screening, OOF, evolution or Optuna. The historical
 2.0.0 exporter retains its original admitted-Session fragment contract.
 
-Optional `as_sklearn()` supplies NumPy predictions for supported sklearn
-Pipeline/scorers. No universal `check_estimator`, sparse input, sample weights,
+Optional `as_sklearn()` supplies parameter routing for supported sklearn
+Pipeline/scorers; the base estimator already returns NumPy predictions.
+No universal `check_estimator`, sparse input, sample weights,
 metadata routing or cross-validation qualification is claimed.
 
 The console commands `morphtree inspect`, `predict`, and `export` accept
