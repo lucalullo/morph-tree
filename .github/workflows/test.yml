@@ -19,6 +19,7 @@ env:
   PIP_NO_INPUT: '1'
 jobs:
   scoped-zero-fit:
+    name: zero-fit-${{ matrix.os }}-${{ matrix.python }}
     if: ${{ inputs.confirm_zero_fit_scope }}
     strategy:
       fail-fast: false
@@ -38,7 +39,9 @@ jobs:
       - name: Verify reviewed sources
         run: python -I -B tools/check_repository.py
       - name: Install isolated build tools
-        run: python -m pip --isolated install build==1.3.0 hatchling==1.27.0 twine==6.2.0
+        run: python -m pip --isolated install build==1.3.0 hatchling==1.27.0 twine==6.2.0 PyYAML==6.0.3
+      - name: Verify publication protocol without network or upload
+        run: python -I -B -m unittest discover -s tools/tests -v
       - name: Install Linux audit tools in the CI environment
         if: runner.os == 'Linux'
         run: python -m pip --isolated install auditwheel==6.8.2 pyelftools==0.33 packaging==26.3 patchelf==0.19.1.0
@@ -73,6 +76,8 @@ jobs:
           artifacts=sorted(pathlib.Path('dist').glob('*.whl'))+sorted(pathlib.Path('dist').glob('*.tar.gz'))
           assert artifacts
           subprocess.run([sys.executable,'-I','-B','-m','twine','check','--strict',*map(str,artifacts)],check=True,timeout=120)
+      - name: Record exact commit and distribution SHA-256 after all checks pass
+        run: python -I -B tools/write_build_provenance.py
       - name: Preserve verified build artifacts
         uses: actions/upload-artifact@v4
         with:

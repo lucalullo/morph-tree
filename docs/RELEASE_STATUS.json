@@ -5,16 +5,32 @@
   "local_technical_status": "GO_SCOPED_LOCAL_DELIVERY",
   "offline_installed_profiles": 12,
   "publication_approved": false,
+  "pypi_upload_enabled": false,
   "remaining": [
-    "Owner manually transfers files and performs Git operations",
-    "Owner hosted CI on the final transferred commit",
-    "Owner verifies TestPyPI distribution and version availability",
-    "Separate owner approval before PyPI publication"
+    "Owner manual file transfer/commit/push",
+    "Owner TestPyPI Trusted Publisher and protected environment configuration",
+    "Owner six-profile CI on the exact final commit",
+    "Successful publication preflight with upload disabled",
+    "Separate explicit dispatch and environment approval before TestPyPI upload",
+    "Owner verification of actual TestPyPI files and installations",
+    "Official PyPI remains hard-blocked; separate future reviewed change required"
   ],
   "repeated_public_test_executions": 1128,
   "retained_native_test_executions": 432,
   "schema": "MORPHTREE_DELIVERY_GATE_1",
   "status": "NO_GO_PUBLICATION",
+  "testpypi_workflow": {
+    "artifact_approval": "Owner-reviewed Windows/Linux BUILD_PROVENANCE.json SHA-256 inputs",
+    "environment": "testpypi",
+    "official_PyPI": "HARD_BLOCKED",
+    "prepared": true,
+    "publication_approved_by_preparation": false,
+    "required_reviewers": true,
+    "requires_same_verified_commit": true,
+    "requires_six_successful_CI_profiles": true,
+    "runtime_dispatch_confirmation": "PUBLISH morphtree 2.1.0 TO TESTPYPI",
+    "trusted_publishing": "OIDC;job-scoped id-token: write"
+  },
   "training_evidence_distribution_version": "2.1.0",
   "version": "2.1.0",
   "version_approved": true

@@ -1,66 +1,195 @@
-name: MorphTree publication - owner approval required
+name: MorphTree TestPyPI - reviewed OIDC publication
 on:
   workflow_dispatch:
     inputs:
       expected_version:
-        description: Explicitly approved version; RC only on TestPyPI, final version on PyPI
+        description: Approved version (2.1.0 only)
+        required: true
+        default: '2.1.0'
+        type: string
+      reviewed_commit:
+        description: Full SHA of this exact main-branch commit and its successful CI run
         required: true
         type: string
-      target:
-        required: true
-        type: choice
-        options: [testpypi, pypi]
       reviewed_build_run:
-        description: Successful build run from the reviewed final commit
+        description: Successful manual test.yml run ID from that commit
         required: true
         type: string
-      windows_artifact:
+      reviewed_build_attempt:
+        description: Reviewed CI run attempt (use a fresh complete run)
+        required: true
+        default: '1'
+        type: string
+      windows_manifest_sha256:
+        description: Owner-reviewed SHA-256 of Windows 3.12 BUILD_PROVENANCE.json
         required: true
         type: string
-        default: morphtree-windows-latest-3.12
-      linux_artifact:
+      linux_manifest_sha256:
+        description: Owner-reviewed SHA-256 of Linux 3.12 BUILD_PROVENANCE.json
         required: true
         type: string
-        default: morphtree-ubuntu-24.04-3.12
+      publish_testpypi:
+        description: Explicitly request upload AFTER preflight and environment approval
+        required: true
+        default: false
+        type: boolean
+      approval:
+        description: For upload enter exactly PUBLISH morphtree 2.1.0 TO TESTPYPI
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
-  actions: read
+concurrency:
+  group: morphtree-testpypi-2.1.0
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
 jobs:
-  publish:
+  preflight:
+    if: ${{ github.repository == 'lucalullo/morph-tree' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    environment: ${{ inputs.target }}
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      bundle_manifest_sha256: ${{ steps.review.outputs.bundle_manifest_sha256 }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python -I -B tools/check_repository.py
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.windows_artifact }}
-          run-id: ${{ inputs.reviewed_build_run }}
-          github-token: ${{ github.token }}
-          path: dist/windows
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.linux_artifact }}
-          run-id: ${{ inputs.reviewed_build_run }}
-          github-token: ${{ github.token }}
-          path: dist/linux
-      - name: Install upload frontend
-        run: python -m pip --isolated install twine==6.2.0
-      - name: Enforce version, qualification and reviewed artifact hashes
+      - name: Validate explicit intent
         env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.MORPHTREE_PUBLICATION_TOKEN }}
-          EXPECTED_VERSION: ${{ inputs.expected_version }}
-          TARGET_REPOSITORY: ${{ inputs.target }}
+          REQUESTED: ${{ inputs.publish_testpypi }}
+          APPROVAL: ${{ inputs.approval }}
         shell: python
         run: |
-          import os,subprocess,sys
-          subprocess.run([sys.executable,'-I','-B','tools/publish_reviewed.py',
-                          '--target',os.environ['TARGET_REPOSITORY'],
-                          '--expected-version',os.environ['EXPECTED_VERSION']],check=True)
+          import os
+          assert os.environ['REQUESTED'] == 'false' or os.environ['APPROVAL'] == 'PUBLISH morphtree 2.1.0 TO TESTPYPI'
+      - run: python -I -B tools/check_repository.py
+      - name: Verify CI commit, six jobs, artifacts and environment protection
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.expected_version }}
+          COMMIT: ${{ inputs.reviewed_commit }}
+          BUILD_RUN: ${{ inputs.reviewed_build_run }}
+          BUILD_ATTEMPT: ${{ inputs.reviewed_build_attempt }}
+        shell: python
+        run: |
+          import os, subprocess, sys
+          subprocess.run([sys.executable, '-I', '-B', 'tools/publish_reviewed.py',
+              '--stage', 'origin', '--target', 'testpypi', '--expected-version', os.environ['VERSION'],
+              '--reviewed-commit', os.environ['COMMIT'], '--build-run', os.environ['BUILD_RUN'],
+              '--build-attempt', os.environ['BUILD_ATTEMPT'], '--output', 'review-origin.json'], check=True)
+      - uses: actions/download-artifact@v4
+        with:
+          name: morphtree-windows-latest-3.12
+          run-id: ${{ inputs.reviewed_build_run }}
+          github-token: ${{ github.token }}
+          path: downloaded/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: morphtree-ubuntu-24.04-3.12
+          run-id: ${{ inputs.reviewed_build_run }}
+          github-token: ${{ github.token }}
+          path: downloaded/linux
+      - name: Install metadata validator only
+        run: python -m pip --isolated install twine==6.2.0
+      - name: Verify approved hashes, source, metadata and TestPyPI availability
+        id: review
+        env:
+          VERSION: ${{ inputs.expected_version }}
+          COMMIT: ${{ inputs.reviewed_commit }}
+          BUILD_RUN: ${{ inputs.reviewed_build_run }}
+          BUILD_ATTEMPT: ${{ inputs.reviewed_build_attempt }}
+          WINDOWS_SHA: ${{ inputs.windows_manifest_sha256 }}
+          LINUX_SHA: ${{ inputs.linux_manifest_sha256 }}
+        shell: python
+        run: |
+          import os, subprocess, sys
+          subprocess.run([sys.executable, '-I', '-B', 'tools/publish_reviewed.py',
+              '--stage', 'preflight', '--target', 'testpypi', '--expected-version', os.environ['VERSION'],
+              '--reviewed-commit', os.environ['COMMIT'], '--build-run', os.environ['BUILD_RUN'],
+              '--build-attempt', os.environ['BUILD_ATTEMPT'], '--origin', 'review-origin.json',
+              '--windows', 'downloaded/windows', '--linux', 'downloaded/linux',
+              '--windows-manifest-sha256', os.environ['WINDOWS_SHA'],
+              '--linux-manifest-sha256', os.environ['LINUX_SHA'], '--output', 'approved-bundle'], check=True)
+      - name: Preserve verified bytes for the isolated publication job
+        uses: actions/upload-artifact@v4
+        with:
+          name: testpypi-approved-${{ github.run_id }}-${{ github.run_attempt }}
+          path: approved-bundle/
+          if-no-files-found: error
+          retention-days: 7
+  publish-testpypi:
+    needs: preflight
+    if: ${{ inputs.publish_testpypi && inputs.approval == 'PUBLISH morphtree 2.1.0 TO TESTPYPI' && needs.preflight.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/morphtree/
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: testpypi-approved-${{ github.run_id }}-${{ github.run_attempt }}
+          path: reviewed
+      # No checkout, repository code, build or package installation in this OIDC job.
+      - name: Recheck exact bundle and index immediately before OIDC upload
+        env:
+          APPROVED_MANIFEST_SHA256: ${{ needs.preflight.outputs.bundle_manifest_sha256 }}
+          REVIEWED_COMMIT: ${{ inputs.reviewed_commit }}
+          REVIEWED_RUN: ${{ inputs.reviewed_build_run }}
+          REVIEWED_ATTEMPT: ${{ inputs.reviewed_build_attempt }}
+          REQUESTED: ${{ inputs.publish_testpypi }}
+          APPROVAL: ${{ inputs.approval }}
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, re, urllib.error, urllib.request
+          def require(condition, message):
+              if not condition: raise RuntimeError(message)
+          require(os.environ['REQUESTED'] == 'true' and os.environ['APPROVAL'] == 'PUBLISH morphtree 2.1.0 TO TESTPYPI', 'Explicit upload approval missing')
+          path = pathlib.Path('reviewed/APPROVED.json')
+          require(path.is_file() and not path.is_symlink(), 'Missing or unsafe approval receipt')
+          require(re.fullmatch('[0-9a-f]{64}', os.environ['APPROVED_MANIFEST_SHA256']), 'Invalid approval SHA-256')
+          require(hashlib.sha256(path.read_bytes()).hexdigest() == os.environ['APPROVED_MANIFEST_SHA256'], 'Approval receipt hash mismatch')
+          value = json.loads(path.read_text('utf8'))
+          require(value['schema'] == 'MORPHTREE_TESTPYPI_APPROVAL_1', 'Wrong receipt schema')
+          require(value['repository'] == os.environ['GITHUB_REPOSITORY'] == 'lucalullo/morph-tree', 'Wrong repository')
+          require(re.fullmatch('[0-9a-f]{40}', value['commit']) and value['commit'] == os.environ['GITHUB_SHA'] == os.environ['REVIEWED_COMMIT'], 'Wrong commit')
+          require(str(value['build_run_id']) == os.environ['REVIEWED_RUN'] and str(value['build_run_attempt']) == os.environ['REVIEWED_ATTEMPT'], 'Wrong reviewed CI run or attempt')
+          require(value['target'] == 'testpypi' and value['version'] == '2.1.0', 'Only TestPyPI version 2.1.0 allowed')
+          require(value['repository_url'] == 'https://test.pypi.org/legacy/', 'Official PyPI is blocked')
+          root = pathlib.Path('reviewed/packages')
+          require(root.is_dir() and not root.is_symlink(), 'Unsafe package directory')
+          require({p.name for p in root.iterdir()} == set(value['files']) and len(value['files']) == 3, 'Unexpected package membership')
+          require(sum(name.endswith('.whl') for name in value['files']) == 2 and 'morphtree-2.1.0.tar.gz' in value['files'], 'Expected two wheels and one source archive')
+          for name, pin in value['files'].items():
+              require(pathlib.Path(name).name == name and '\\' not in name, 'Unsafe filename')
+              artifact = root / name
+              require(artifact.is_file() and not artifact.is_symlink(), 'Missing or unsafe package')
+              require(hashlib.sha256(artifact.read_bytes()).hexdigest() == pin, 'Package hash mismatch')
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  raise RuntimeError('Unexpected index redirect')
+          try:
+              urllib.request.build_opener(NoRedirect).open('https://test.pypi.org/pypi/morphtree/2.1.0/json', timeout=20).close()
+          except urllib.error.HTTPError as error:
+              require(error.code == 404, 'Index availability not verified')
+          else:
+              raise RuntimeError('Version already present on TestPyPI; no retry or overwrite')
+      - name: Publish approved artifacts to TestPyPI using OIDC
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: reviewed/packages/
+          skip-existing: false
+          attestations: true

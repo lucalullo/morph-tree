@@ -14,8 +14,10 @@ commit**, not the private working-tree qualification.
 - [ ] Review support scope: Windows and Ubuntu WSL2 CPython 3.12–3.14 are qualified as described; macOS, universal Linux/manylinux, 3.15 and million-row training are **not** thereby qualified.
 - [ ] Require exact-commit GitHub CI for all declared supported build profiles; investigate all failures rather than waiving them.
 - [ ] Independently check platform wheels, package metadata, archive inclusion and artifact hashes; do not promise universal Linux portability.
-- [ ] Verify TestPyPI under a separate explicit owner decision, download those artifacts and test their actual installation.
-- [ ] Approve any PyPI publication separately, with reviewed artifact identity and no silent rebuild or replacement.
+- [ ] Configure only the TestPyPI Trusted Publisher (`publish.yml`, environment `testpypi`) and required environment reviewers.
+- [ ] Review all six final-commit CI jobs and both 3.12 `BUILD_PROVENANCE.json` hashes; run the manual publication preflight with upload disabled.
+- [ ] Authorize TestPyPI explicitly with the dispatch confirmation and protected-environment approval; download those exact files and test their installation.
+- [ ] Keep official PyPI hard-blocked. Any future enablement requires a separate reviewed change and approval, with no silent rebuild or replacement.
 
 The repository's publication guard is intentionally **NO_GO** until the owner
 explicitly reviews and authorizes the remaining gates. No automatic or agent
