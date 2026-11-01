@@ -1,4 +1,10 @@
 {
+  "TestPyPI_owner_report": {
+    "date": "2026-11-01",
+    "independently_verified_by_preparation": false,
+    "publication_success_reported": true,
+    "version": "2.1.0"
+  },
   "current_distribution_training_verified": true,
   "historical_2_0_models_checked": 18,
   "index_version_check": "See public index check;recheck immediately before upload",
@@ -6,14 +12,22 @@
   "offline_installed_profiles": 12,
   "publication_approved": false,
   "pypi_upload_enabled": false,
+  "pypi_workflow": {
+    "deployment_branch": "main",
+    "environment": "pypi",
+    "legacy_flags": "Remain false; only dedicated protected manual workflow may authorize an upload at runtime",
+    "prepared": true,
+    "publication_approved_by_preparation": false,
+    "required_reviewer": "lucalullo",
+    "runtime_dispatch_confirmation": "PUBLISH morphtree 2.1.0 TO PYPI"
+  },
   "remaining": [
-    "Owner manual file transfer/commit/push",
-    "Owner TestPyPI Trusted Publisher and protected environment configuration",
-    "Owner six-profile CI on the exact final commit",
-    "Successful publication preflight with upload disabled",
-    "Separate explicit dispatch and environment approval before TestPyPI upload",
-    "Owner verification of actual TestPyPI files and installations",
-    "Official PyPI remains hard-blocked; separate future reviewed change required"
+    "Owner transfer and new final commit containing publish-pypi.yml",
+    "Fresh six-profile test.yml CI on that new commit",
+    "Owner review of new run/attempt/BUILD_PROVENANCE.json hashes",
+    "PyPI preflight with upload disabled; no reuse of older commit references",
+    "Separate explicit PyPI dispatch and protected environment approval",
+    "Owner verification of actual official-index artifacts and installations"
   ],
   "repeated_public_test_executions": 1128,
   "retained_native_test_executions": 432,

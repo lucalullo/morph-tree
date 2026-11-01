@@ -53,7 +53,7 @@ def require_version_absent(fetch=get_json):
         raise
     fail('Version already exists on TestPyPI; no overwrite, skip or retry')
 
-def validate_origin(run,jobs,artifacts,environment,commit,run_id,attempt):
+def validate_origin(run,jobs,artifacts,environment,commit,run_id,attempt,*,environment_name='testpypi'):
     if not re.fullmatch('[0-9a-f]{40}',commit):fail('Full reviewed commit SHA required')
     if not(str(run['id'])==str(run_id) and run['run_attempt']==attempt
         and run['repository']['full_name']==run['head_repository']['full_name']==REPOSITORY
@@ -72,20 +72,21 @@ def validate_origin(run,jobs,artifacts,environment,commit,run_id,attempt):
         if a['expired'] or type(a['id']) is not int or a['id']<=0 or a['size_in_bytes']<=0:fail('Invalid/expired build artifact')
         if a.get('workflow_run',{}).get('head_sha',commit)!=commit:fail('Artifact commit mismatch')
     rules=[r for r in environment.get('protection_rules',[]) if r.get('type')=='required_reviewers' and r.get('reviewers')]
-    if environment.get('name')!='testpypi' or not rules:fail('Protected testpypi environment with required reviewers required')
+    if environment_name not in ('testpypi','pypi') or environment.get('name')!=environment_name or not rules:fail('Protected publication environment with required reviewers required')
     return dict(schema='MORPHTREE_CI_ORIGIN_1',repository=REPOSITORY,commit=commit,build_run_id=int(run_id),
         build_run_attempt=attempt,workflow='.github/workflows/test.yml',required_jobs=sorted(PROFILES),
-        artifacts=artifacts,protected_environment='testpypi',required_reviewers_verified=True)
+        artifacts=artifacts,protected_environment=environment_name,required_reviewers_verified=True)
 
-def inspect_origin(commit,run_id,attempt,token,fetch=get_json):
+def inspect_origin(commit,run_id,attempt,token,fetch=get_json,*,environment_name='testpypi'):
+    if environment_name not in ('testpypi','pypi'):fail('Unknown publication environment')
     if not re.fullmatch('[1-9][0-9]*',str(run_id)) or attempt<1:fail('Positive run ID/attempt required')
     base=f'https://api.github.com/repos/{REPOSITORY}'
     run=fetch(f'{base}/actions/runs/{run_id}',token)
     jobs=fetch(f'{base}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100',token)
     artifacts=fetch(f'{base}/actions/runs/{run_id}/artifacts?per_page=100',token)
     if jobs['total_count']!=len(jobs['jobs']) or artifacts['total_count']!=len(artifacts['artifacts']):fail('Unexpected pagination')
-    environment=fetch(f'{base}/environments/testpypi',token)
-    return validate_origin(run,jobs['jobs'],artifacts['artifacts'],environment,commit,run_id,attempt)
+    environment=fetch(f'{base}/environments/{environment_name}',token)
+    return validate_origin(run,jobs['jobs'],artifacts['artifacts'],environment,commit,run_id,attempt,environment_name=environment_name)
 
 def check_build_manifest(folder,approved_sha,origin,system,root=ROOT):
     folder=Path(folder);manifest=folder/'BUILD_PROVENANCE.json'
@@ -127,7 +128,8 @@ def sdist_payload(path):
             result[member.name]=archive.extractfile(member).read()
     return result
 
-def prepare_bundle(windows,linux,windows_sha,linux_sha,origin,out,root=ROOT):
+def prepare_bundle(windows,linux,windows_sha,linux_sha,origin,out,root=ROOT,*,target='testpypi'):
+    if target not in ('testpypi','pypi'):fail('Unknown publication target')
     spec=importlib.util.spec_from_file_location('distribution_review',root/'tools/check_distribution.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     ww,ws=check_build_manifest(windows,windows_sha,origin,'Windows',root)
@@ -144,8 +146,8 @@ def prepare_bundle(windows,linux,windows_sha,linux_sha,origin,out,root=ROOT):
     if len({p.name for p in selected})!=3:fail('Upload filenames must be unique')
     out=Path(out);out.mkdir(parents=True,exist_ok=False);packages=out/'packages';packages.mkdir()
     for p in selected:shutil.copyfile(p,packages/p.name)
-    value=dict(schema='MORPHTREE_TESTPYPI_APPROVAL_1',repository=REPOSITORY,commit=origin['commit'],version=VERSION,
-        target='testpypi',repository_url=TESTPYPI,build_run_id=origin['build_run_id'],build_run_attempt=origin['build_run_attempt'],
+    value=dict(schema='MORPHTREE_'+target.upper()+'_APPROVAL_1',repository=REPOSITORY,commit=origin['commit'],version=VERSION,
+        target=target,repository_url=TESTPYPI if target=='testpypi' else 'https://upload.pypi.org/legacy/',build_run_id=origin['build_run_id'],build_run_attempt=origin['build_run_attempt'],
         windows_manifest_sha256=windows_sha,linux_manifest_sha256=linux_sha,canonical_sdist='Windows; both platform payloads verified identical',
         files={p.name:sha(p) for p in selected})
     publish(out/'APPROVED.json',value);return value

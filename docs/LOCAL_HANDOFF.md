@@ -15,11 +15,13 @@ API,persistence,exports and historical models. Local checks do not replace this.
 or overwrite approved filenames silently. A final version needs its own
 metadata/artifact rebuild and checks. No publication is executed here.
 
-The publication workflow is manual and TestPyPI-only. Follow [PUBLISHING.md](../PUBLISHING.md)
+The TestPyPI workflow is manual and TestPyPI-only. Follow [PUBLISHING.md](../PUBLISHING.md)
 for the separate preflight, reviewed CI artifact hashes, explicit dispatch approval
 and protected `testpypi` environment. Only its upload job can request OIDC.
-`publication_approved=false` and `pypi_upload_enabled=false` retain the official
-PyPI block; preparation alone grants no upload approval. No API token is needed.
+Official PyPI has a separate [protected manual workflow](PYPI_PUBLISHING.md).
+`publication_approved=false` and `pypi_upload_enabled=false` remain preparation
+flags, not permission to upload. Explicit dispatch and environment review are
+required for the dedicated PyPI job. No API token is needed.
 
 The current Linux delivery includes an auditwheel-verified manylinux wheel with
 unchanged code and ELF library bytes. Whole-pipeline qualification remains the

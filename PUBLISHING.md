@@ -1,10 +1,11 @@
 # TestPyPI publication — MorphTree 2.1.0
 
-This repository prepares **TestPyPI only**, using GitHub Actions and Trusted
+This guide covers **TestPyPI only**, using GitHub Actions and Trusted
 Publishing (OIDC). Nothing is uploaded by local checks. Official PyPI is
 hard-blocked: no selectable production target, token secret, Twine upload or
-production publisher exists in this procedure. A later PyPI release requires a
-separate reviewed change and explicit owner authorization.
+production publisher exists in this TestPyPI procedure. The separately reviewed
+official PyPI workflow and its own approval gates are documented in
+[Official PyPI publication](docs/PYPI_PUBLISHING.md). `publish.yml` is unchanged.
 
 The owner performs the account setup, file transfer, Git operations and remote
 workflow runs. The preparation agent does not access GitHub or personal accounts.
@@ -147,5 +148,5 @@ installation commands. The source build requires the documented compiler.
 If `2.1.0` is already present, stop. Do not overwrite, skip existing files,
 change artifact names or change the version automatically. Obtain an explicit
 owner decision. A404 observed during local preparation is time-specific, so
-both workflow jobs repeat the check. Any later official PyPI enablement requires
-its own security review, TestPyPI evidence and new explicit authorization.
+both workflow jobs repeat the check. Official PyPI uses only the separately
+reviewed `publish-pypi.yml`, TestPyPI evidence and its own explicit approval.
