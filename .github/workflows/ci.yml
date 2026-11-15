@@ -53,8 +53,46 @@ jobs:
       - name: Build and audit Linux wheel and sdist
         if: runner.os == 'Linux'
         run: python -I -B tools/build_artifacts.py --manylinux
-      - name: Verify wheel and sdist metadata
-        run: python -I -B tools/check_distribution.py dist
+      - name: Verify wheel and sdist contain the current README
+        shell: python
+        run: |
+          import email.policy, tarfile, tomllib, zipfile
+          from email.parser import BytesParser
+          from pathlib import Path
+
+          def normalized(data):
+              return data.replace(b"\r\n", b"\n")
+
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]
+          readme_bytes = Path("README.md").read_bytes()
+          wheels = list(Path("dist").glob("*.whl"))
+          sdists = list(Path("dist").glob("*.tar.gz"))
+          if len(wheels) != 1 or len(sdists) != 1:
+              raise RuntimeError("Expected exactly one wheel and one sdist")
+
+          with zipfile.ZipFile(wheels[0]) as archive:
+              names = [name for name in archive.namelist() if name.endswith(".dist-info/METADATA")]
+              if len(names) != 1:
+                  raise RuntimeError("Expected exactly one wheel METADATA")
+              wheel_metadata = archive.read(names[0])
+
+          with tarfile.open(sdists[0], "r:gz") as archive:
+              prefix = f"{project['name']}-{project['version']}/"
+              info = archive.extractfile(prefix + "PKG-INFO")
+              source_readme = archive.extractfile(prefix + "README.md")
+              if info is None or source_readme is None or source_readme.read() != readme_bytes:
+                  raise RuntimeError("Sdist README differs from source README")
+              sdist_metadata = info.read()
+
+          for label, raw in (("wheel", wheel_metadata), ("sdist", sdist_metadata)):
+              metadata = BytesParser(policy=email.policy.compat32).parsebytes(raw)
+              if metadata.get("Name") != project["name"] or metadata.get("Version") != project["version"]:
+                  raise RuntimeError(f"{label}: distribution name/version mismatch")
+              if metadata.get("Description-Content-Type", "").split(";", 1)[0].strip().lower() != "text/markdown":
+                  raise RuntimeError(f"{label}: Markdown description required")
+              if normalized(metadata.get_payload(decode=True) or b"") != normalized(readme_bytes):
+                  raise RuntimeError(f"{label}: package description differs from current README")
+              print(f"PASS: {label} metadata matches current README")
       - name: Verify distributions with Twine
         shell: python
         run: |
