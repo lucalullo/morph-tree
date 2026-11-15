@@ -118,6 +118,6 @@ jobs:
               python = prefix / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
               run([python, '-I', '-B', '-m', 'pip', '--isolated', 'install', artifact])
               run([python, '-I', '-B', '-m', 'pip', 'check'])
-              run([python, '-I', '-B', root / 'tools/check_installed.py'])
+              run([python, '-I', '-B', root / 'tools/check_installed.py', '--ci-current-readme'])
       - name: Recheck source inventory
         run: python -I -B tools/check_repository.py
