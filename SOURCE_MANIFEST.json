@@ -4,6 +4,7 @@
     ".github/ISSUE_TEMPLATE/bug_report.yml": "050857a7cc7cce99f1901ef7b740e3227a999f6f6ef38b95dc267788d5c59c17",
     ".github/ISSUE_TEMPLATE/feature_request.yml": "59bd3bc7ff51deffba45d98e63730b93baef189cadf40eac51fca470f1c724fb",
     ".github/PULL_REQUEST_TEMPLATE.md": "b96493b73587d3050fc1dff73268e2151fbc09b2fc918df81ff25258cfb05fb7",
+    ".github/workflows/ci.yml": "d15f6fa6632ac1a3cc5cae05e7872971865fe648d53e3e98ec4600ca5b950796",
     ".github/workflows/publish-pypi.yml": "9e2fc2f76470b4a8a30973da25791da768ecb1a214c7944669b641e9cff2bb8a",
     ".github/workflows/publish.yml": "c24ad3a312ce386242227fcb9a782eb2056af8f5dc3778ed8e82665b2e957703",
     ".github/workflows/test.yml": "b28c6f431e41e820469d9f61cb1a213bff2b62dee0fc7e97f375fd12a2127029",
